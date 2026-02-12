@@ -1,17 +1,32 @@
-from ok import BaseTask
 import ctypes
 import math
 import random
 import time
+from enum import Enum
+
 import win32gui
+from ok import BaseTask
 
 from src.essence.essence_recognizer import EssenceInfo, read_essence_info
 
 user32 = ctypes.windll.user32
 MOUSEEVENTF_MOVE = 0x0001
 TOLERANCE = 50
-all_list=["洁尔佩塔", "莱万汀", "伊冯", "骏卫", "余烬", "别礼", "黎风", "艾尔黛拉", "佩丽卡", "陈千语", "狼卫", "弧光", "赛希", "阿列什", "大潘", "艾维文娜", "昼雪", "秋栗", "埃特拉", "卡契尔", "萤石", "安塔尔"]
+all_list = ["洁尔佩塔", "莱万汀", "伊冯", "骏卫", "余烬", "别礼", "黎风", "艾尔黛拉", "佩丽卡", "陈千语", "狼卫",
+            "弧光", "赛希", "阿列什", "大潘", "艾维文娜", "昼雪", "秋栗", "埃特拉", "卡契尔", "萤石", "安塔尔"]
 
+
+class ScreenPosition(Enum):
+    TOP_LEFT = "top_left"
+    TOP_RIGHT = "top_right"
+    BOTTOM_LEFT = "bottom_left"
+    BOTTOM_RIGHT = "bottom_right"
+    CENTER = "center"
+    # 其他可能的位置
+    LEFT = "left"
+    RIGHT = "right"
+    TOP = "top"
+    BOTTOM = "bottom"
 
 class BaseEfTask(BaseTask):
 
@@ -19,8 +34,17 @@ class BaseEfTask(BaseTask):
         super().__init__(*args, **kwargs)
         self._logged_in = False
 
+
     def move_keys(self, keys, duration):
-        hwnd=self.hwnd.hwnd
+        """
+            Simulates pressing and holding specified keys for a duration, then releases them.
+            模拟按下并保持指定键位(w,a,s,d)组合一段时间，然后释放按键。
+
+            Parameters 参数:
+            keys – str or list[str]. Keys to press. 需要按下的键位，例如 "w" 或 ["w", "a"]。
+            duration – float. Duration to hold the keys in seconds. 按键持续的时间（秒）。
+            """
+        hwnd = self.hwnd.hwnd
         try:
             current_hwnd = win32gui.GetForegroundWindow()
             # 只有不在前台才激活
@@ -51,8 +75,23 @@ class BaseEfTask(BaseTask):
             user32.keybd_event(key_map[k.lower()], 0, KEYEVENTF_KEYUP, 0)
 
     def calc_direction_step(
-        self, from_pos, to_pos, max_step=100, min_step=20, slow_radius=200, deadzone=4
+            self, from_pos, to_pos, max_step=100, min_step=20, slow_radius=200, deadzone=4
     ):
+        """
+            Calculates the step size to move from one position to another with deadzone and non-linear speed.
+            计算从一个位置移动到另一个位置的步长，支持死区和非线性速度。
+
+            Parameters 参数:
+            from_pos – tuple[int, int]. Starting position (x, y). 起始位置坐标 (x, y)。
+            to_pos – tuple[int, int]. Target position (x, y). 目标位置坐标 (x, y)。
+            max_step – int. Maximum step size. 最大步长。
+            min_step – int. Minimum step size. 最小步长。
+            slow_radius – int. Distance within which speed scales down. 非线性减速半径。
+            deadzone – int. Distance threshold below which no movement occurs. 死区距离阈值。
+
+            Returns 返回值:
+            tuple[int, int]. Step in x and y directions. x 和 y 方向的步长。
+            """
         dx_raw = to_pos[0] - from_pos[0]
         dy_raw = to_pos[1] - from_pos[1]
 
@@ -81,11 +120,12 @@ class BaseEfTask(BaseTask):
             dx: x方向的移动距离
             dy: y方向的移动距离
             activate: 是否激活目标窗口，默认为True
+            only_activate: 是否只激活窗口，不移动鼠标，默认为False
             delay: 每次移动后的延迟时间，默认为0.02秒
             steps: 将移动分为多少步完成，默认为3步
         """
         if only_activate:
-            activate=True
+            activate = True
         if activate:
             try:
                 current_hwnd = win32gui.GetForegroundWindow()
@@ -106,11 +146,10 @@ class BaseEfTask(BaseTask):
                 user32.mouse_event(MOUSEEVENTF_MOVE, step_dx, step_dy, 0, 0)
                 time.sleep(delay)
 
-    def move_to_target_once(self,hwnd, ocr_obj, screen_center_func):
+    def move_to_target_once(self, hwnd, ocr_obj):
         """
         hwnd: 游戏窗口句柄
         ocr_obj: OCR类对象，必须有 x, y, width, height 属性
-        screen_center_func: 返回屏幕中心坐标
         step_pixels: 最大移动步长
         """
         if ocr_obj is None:
@@ -122,7 +161,7 @@ class BaseEfTask(BaseTask):
             ocr_obj.y + ocr_obj.height // 2,
         )
 
-        center_pos = screen_center_func()
+        center_pos = self.screen_center()
 
         dx, dy = self.calc_direction_step(center_pos, target_center)
 
@@ -141,40 +180,55 @@ class BaseEfTask(BaseTask):
     #         self.send_key(direction, down_time=0.05, after_sleep=0.5)
     #     self.center_camera()
 
-    def align_ocr_or_find_target_to_center(self, match_or_name,box=None,threshold=0.8, max_time=100,ocr=True,raise_if_fail=True,is_num=False):
+    def align_ocr_or_find_target_to_center(self, ocr_match_or_feature_name, only_x=False, only_y=False, box=None, threshold=0.8,
+                                           max_time=100, ocr=True, raise_if_fail=True, is_num=False):
         """
-        将OCR识别的目标或图像特征目标对准屏幕中心
-        参数:
-            match_or_name: 目标匹配名称或特征名称
-            max_time: 最大尝试次数，默认为50次
-            ocr: 是否使用OCR模式，默认为True
-        异常:
-            如果在最大尝试次数内无法对中目标，抛出"对中失败"异常
-        """
+    Aligns a target detected by OCR or image feature to the center of the screen.
+    将OCR识别的目标或图像特征目标对准屏幕中心。
 
-        last_target=None
+    Parameters 参数:
+    ocr_match_or_feature_name – str or Feature. OCR匹配模式或特征名称。
+    only_x – bool. If True, only align the X axis. 是否仅对齐X轴。
+    only_y – bool. If True, only align the Y axis. 是否仅对齐Y轴。
+    box – Box or None. Screen area to search. 查找区域框，None表示全屏。
+    threshold – float. Feature matching threshold. 特征匹配阈值。
+    max_time – int. Maximum number of attempts. 最大尝试次数。
+    ocr – bool. Whether to use OCR mode. 是否使用OCR模式。
+    raise_if_fail – bool. Raise exception if alignment fails. 对中失败时是否抛出异常。
+    is_num – bool. Adjust Y for numeric targets. 数字型目标Y坐标微调。
+
+    Returns 返回值:
+    bool. True if successfully aligned, False if failed and raise_if_fail is False.
+    成功对中返回True，失败返回False（当raise_if_fail为False时）。"""
+        if box:
+            feature_box = box
+        else:
+            feature_box = self.box_of_screen(
+                (1920 - 1550) / 1920,
+                150 / 1080,
+                1550 / 1920,
+                (1080 - 150) / 1080,
+            )
+        last_target = None
         last_target_fail_count = 0
         for i in range(max_time):
             if ocr:
                 # 使用OCR模式识别目标，设置超时时间为2秒，并启用日志记录
-                result = self.wait_ocr(match=match_or_name,box=box, time_out=2, log=True)
+                result = self.wait_ocr(match=ocr_match_or_feature_name, box=box, time_out=2, log=True)
             else:
                 self.sleep(2)
                 # 使用图像特征识别模式查找目标
-                box = self.box_of_screen(
-                    (1920 - 1550) / 1920,
-                    150 / 1080,
-                    1550 / 1920,
-                    (1080 - 150) / 1080,
-                )
-                result = self.find_feature(feature_name=match_or_name,threshold=threshold, box=box)
+                result = self.find_feature(feature_name=ocr_match_or_feature_name, threshold=threshold, box=feature_box)
             if result:
                 # OCR 成功
                 if isinstance(result, list):
                     result = result[0]
                 if is_num:
                     result.y = result.y - int(self.height * ((525 - 486) / 1080))
-
+                if only_y:
+                    result.x = self.width // 2 - result.width // 2
+                if only_x:
+                    result.y = self.height // 2 - result.height // 2
                 target_center = (
                     result.x + result.width // 2,
                     result.y + result.height // 2,
@@ -183,7 +237,9 @@ class BaseEfTask(BaseTask):
                 last_target = result
                 last_target_fail_count = 0
                 # 计算偏移量
+
                 dx = target_center[0] - screen_center_pos[0]
+
                 dy = target_center[1] - screen_center_pos[1]
 
                 # 如果目标在容忍范围内
@@ -191,22 +247,32 @@ class BaseEfTask(BaseTask):
                     return True
                 else:
                     self.move_to_target_once(
-                        self.hwnd.hwnd, result, self.screen_center
+                        self.hwnd.hwnd, result
                     )
 
             else:
                 # 每次 OCR 失败，直接随机移动
                 max_offset = 60  # 最大随机偏移
                 if last_target and last_target_fail_count < 3:
+                    decay = 0.8 ** last_target_fail_count
+                    # 计算目标中心到屏幕中心的偏移
+                    center_x = last_target.x + last_target.width // 2
+                    center_y = last_target.y + last_target.height // 2
+                    screen_center_x, screen_center_y = self.screen_center()
+                    offset_x = int((screen_center_x - center_x) * decay)
+                    offset_y = int((screen_center_y - center_y) * decay)
+                    # 直接修改 last_target 坐标
+                    last_target.x += offset_x
+                    last_target.y += offset_y
                     self.move_to_target_once(
-                        self.hwnd.hwnd, last_target, self.screen_center
+                        self.hwnd.hwnd, last_target
                     )
                     last_target_fail_count += 1
                 else:
                     last_target = None
                     last_target_fail_count = 0
-                    dx = random.randint(-max_offset//2, max_offset)
-                    dy = random.randint(-max_offset//2, max_offset)
+                    dx = random.randint(-max_offset // 2, max_offset)
+                    dy = random.randint(-max_offset // 2, max_offset)
 
                     # 移动鼠标
                     self.active_and_send_mouse_delta(
@@ -223,13 +289,14 @@ class BaseEfTask(BaseTask):
             raise Exception("对中失败")
         else:
             return False
-    def skip_dialog(self,end_list=None,end_box=None):
+
+    def skip_dialog(self, end_list=None, end_box=None):
         start_time = time.time()
         while True:
             if time.time() - start_time > 60:
                 self.log_info("skip_dialog 超时退出")
                 break
-            if self.wait_ocr(match=["工业","探索"],box="top_left", time_out=1.5):
+            if self.wait_ocr(match=["工业", "探索"], box="top_left", time_out=1.5):
                 break
             if self.find_one("skip_dialog_esc", horizontal_variance=0.05):
                 self.send_key("esc", after_sleep=0.1)
@@ -245,6 +312,7 @@ class BaseEfTask(BaseTask):
                         break
             if end_list and self.wait_ocr(match=end_list, box=end_box, time_out=0.5):
                 break
+
     def in_bg(self):
         return not self.hwnd.is_foreground()
 
@@ -280,17 +348,19 @@ class BaseEfTask(BaseTask):
             return True
         if esc:
             self.back(after_sleep=1.5)
+
     def wait_pop_up(self):
         count = 0
         while True:
             if count > 30:
                 raise Exception("提交后未检测到奖励界面，提交失败")
-            result = self.find_one(feature_name="reward_ok", box="bottom",threshold=0.8)
+            result = self.find_one(feature_name="reward_ok", box="bottom", threshold=0.8)
             if result:
                 self.click(result)
                 break
             self.sleep(1)
             count += 1
+
     def wait_login(self):
         if not self._logged_in:
             if self.in_world():

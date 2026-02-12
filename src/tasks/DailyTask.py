@@ -2,7 +2,7 @@ import re
 
 from qfluentwidgets import FluentIcon
 
-from src.tasks.BaseEfTask import BaseEfTask,all_list
+from src.tasks.BaseEfTask import BaseEfTask, all_list, ScreenPosition
 
 import time
 from enum import Enum
@@ -12,6 +12,40 @@ class LiaisonResult(Enum):
     SUCCESS = 1
     FAIL = 2
     FIND_CHAT_ICON = 3
+
+
+areas_list = ["武陵", "四号谷地"]
+outpost_dict = {
+    "武陵": ["天王坪援建点"],
+    "四号谷地": ["难民暂居处", "基建前站", "重建指挥部"]
+}
+default_goods = {
+    "四号谷地": [
+        "精选荞愈胶囊",
+        "高容谷地电池",
+    ],
+    "武陵": [
+        "低容武陵电池",
+        "芽针针剂",
+    ]
+}
+goods_dict = {
+    "四号谷地": [
+        "精选荞愈胶囊",
+        "高容谷地电池",
+        "精选柑实罐头",
+        "中容谷地电池",
+        "优质荞愈胶囊",
+        "优质柑实罐头",
+        "荞愈胶囊",
+        "柑实罐头",
+    ],
+    "武陵": [
+        "低容武陵电池",
+        "芽针针剂",
+        "锦草软饮"
+    ]
+}
 
 
 class DailyTask(BaseEfTask):
@@ -26,20 +60,23 @@ class DailyTask(BaseEfTask):
                 "送礼": True,
                 "造装备": True,
                 "日常奖励": True,
+                "据点兑换": True,
             }
         )
-        self.all_name_pattern=[re.compile(i) for i in all_list]
+        self.all_name_pattern = [re.compile(i) for i in all_list]
         # self.config_type["下拉菜单选项"] = {'type': "drop_down",
         #                               'options': ['第一', '第二', '第3']}
+
     # def run(self):
     #     self.collect_and_give_gifts()
     def run(self):
         self.log_info("开始执行日常任务...")
-        
+
         tasks = [
             ("送礼", self.give_gift_to_liaison),
             ("造装备", self.make_weapon),
             ("日常奖励", self.claim_daily_rewards),
+            ("据点兑换", self.exchange_outpost_goods)
         ]
 
         failed_tasks = []
@@ -54,7 +91,7 @@ class DailyTask(BaseEfTask):
                     continue
             self.ensure_main()
             result = func()  # 不捕获异常，异常自然向上传递
-            
+
             if result is False:
                 self.log_info(f"任务 {key} 执行失败或未完成")
                 failed_tasks.append(key)
@@ -64,8 +101,84 @@ class DailyTask(BaseEfTask):
         else:
             self.log_info("日常完成!", notify=True)
 
+    def to_model_area(self, area, model):
+        self.send_key("y", after_sleep=2)
+        if not self.wait_click_ocr(match="更换", box="left", time_out=2, after_sleep=2):
+            return
+        if not self.wait_click_ocr(match=re.compile(area),
+                                   box=self.box_of_screen(648 / 1920, 196 / 1080, 648 / 1920 + 628 / 1920,
+                                                          196 / 1080 + 192 / 1080),
+                                   time_out=2, after_sleep=2):
+            return
+        if not self.wait_click_ocr(match="确认", box="bottom_right", time_out=2, after_sleep=2):
+            return
+        box = self.wait_ocr(match=re.compile(f"{model}"), box="right", time_out=5)
+        if box:
+            self.click(box[0], move_back=True, after_sleep=0.5)
+        else:
+            self.log_error(f"未找到‘{model}’按钮，任务中止。")
+            return
+
+    def delivery_send_others(self):
+        self.info_set('current_task', "delivery_send_others")
+        for area in areas_list:
+            for _ in range(3):
+                self.to_model_area(area, "仓储节点")
+                if not self.wait_click_ocr(match="本地仓储节点", box="top_left", time_out=5, after_sleep=2):
+                    return
+
+    def exchange_the_outpost_goods(self, outpost_name):
+        self.wait_click_ocr(match=outpost_name, box="top", time_out=5, after_sleep=2)
+        not_enough = False
+        can_exchange_goods = default_goods.get(get_area_by_outpost_name(outpost_name), [])
+        max_attempts = 5
+        attempt = 0
+        skip_goods = []
+        while attempt < max_attempts and not not_enough:
+            attempt += 1
+            self.wait_click_ocr(match="更换货品", after_sleep=2)
+            goods = self.wait_ocr(match=[re.compile(i) for i in get_goods_by_outpost_name(outpost_name)], time_out=5)
+            for good in goods:
+                if good.name in skip_goods:
+                    continue
+                skip_goods.append(good.name)
+                if not any(i in good.name for i in can_exchange_goods):
+                    continue
+                self.click(good, after_sleep=2)
+                self.wait_click_ocr(match="确认", box="bottom_right", time_out=5, after_sleep=2)
+                num_str = self.wait_ocr(match=re.compile(r"\d+"),
+                                        box=self.box_of_screen(x=1224 / 1920, y=235 / 1080, width=327, height=121),
+                                        time_out=5)
+
+                try:
+                    num = int(num_str[0].name)
+                except (ValueError, TypeError, IndexError, AttributeError):
+                    num = 0
+
+                if num < 1000:
+                    not_enough = True
+                    break
+                plus_button = self.find_one(feature_name="plus_button", box=ScreenPosition.BOTTOM_RIGHT.value,
+                                            threshold=0.8)
+                if plus_button:
+                    self.click(plus_button, down_time=20)
+                    self.wait_click_ocr(match="交易", box=ScreenPosition.BOTTOM_RIGHT.value, time_out=5, after_sleep=2)
+                    self.wait_pop_up()
+                    self.sleep(2)
+
+    def test_ocr(self):
+        self.ocr(match="1", log=True)
+
+    def exchange_outpost_goods(self):
+        self.info_set('current_task', "exchange_outpost_goods")
+        for area in areas_list:
+            self.to_model_area(area, "据点管理")
+            for outpost_name in outpost_dict.get(area):
+                self.exchange_the_outpost_goods(outpost_name)
+            self.ensure_main()
+
     def make_weapon(self):
-        self.log_info("开始造装备任务")
+        self.info_set('current_task', "make_weapon")
         self.back()
         if not self.wait_click_ocr(match=re.compile("装备"), box="right", time_out=5, after_sleep=2):
             self.log_info("未找到装备按钮")
@@ -75,18 +188,20 @@ class DailyTask(BaseEfTask):
             return False
         self.wait_pop_up()
         return True
+
     def claim_daily_rewards(self):
-        self.log_info("开始领取日常奖励")
+        self.info_set('current_task', "claim_daily_rewards")
         self.send_key("f8", after_sleep=2)
-        if not self.wait_click_ocr(match=re.compile("日常"),box="top", time_out=5, after_sleep=2):
+        if not self.wait_click_ocr(match=re.compile("日常"), box="top", time_out=5, after_sleep=2):
             self.log_info("未找到日常奖励按钮")
             return False
         while self.wait_click_ocr(match=re.compile("领取"), box="right", time_out=5, after_sleep=2):
             pass
-        if result:=self.find_one(feature_name="claim_gift", box="left", threshold=0.8):
+        if result := self.find_one(feature_name="claim_gift", box="left", threshold=0.8):
             self.click(result, after_sleep=2)
             return True
         return False
+
     def transfer_to_home_point(self):
         """
         通过地图界面传送到帝江号指定点
@@ -138,11 +253,11 @@ class DailyTask(BaseEfTask):
         if result:
             self.click(result, after_sleep=2)
             if self.wait_click_ocr(
-                match="追踪", box="bottom_right", time_out=5, after_sleep=2
+                    match="追踪", box="bottom_right", time_out=5, after_sleep=2
             ):
                 self.send_key("m", after_sleep=2)
                 self.align_ocr_or_find_target_to_center(
-                    match_or_name="operator_liaison_station_out_map",
+                    ocr_match_or_feature_name="operator_liaison_station_out_map",
                     threshold=0.7,
                     ocr=False,
                 )
@@ -150,7 +265,7 @@ class DailyTask(BaseEfTask):
                 short_distance_flag = False
                 fail_count = 0
                 while not self.wait_ocr(
-                    match=re.compile("联络"), box="bottom_right", time_out=1
+                        match=re.compile("联络"), box="bottom_right", time_out=1
                 ):
                     chat_box = self.wait_ocr(match=self.all_name_pattern, box="bottom_right", time_out=2)
                     if chat_box:
@@ -174,7 +289,7 @@ class DailyTask(BaseEfTask):
                         if nav:
                             fail_count = 0
                             self.align_ocr_or_find_target_to_center(
-                                match_or_name="operator_liaison_station_out_map",
+                                ocr_match_or_feature_name="operator_liaison_station_out_map",
                                 threshold=0.7,
                                 ocr=False,
                             )
@@ -201,23 +316,23 @@ class DailyTask(BaseEfTask):
         for _ in range(10):
             self.send_key("f", after_sleep=2)
             if not self.wait_click_ocr(
-                match=[re.compile(i) for i in ["会客", "培养", "制造"]],
-                time_out=5,
-                after_sleep=2,
+                    match=[re.compile(i) for i in ["会客", "培养", "制造"]],
+                    time_out=5,
+                    after_sleep=2,
             ):
                 self.log_info("未找到信任度界面")
                 return False
             if not self.wait_click_ocr(
-                match="确认联络",
-                box="bottom_right",
-                time_out=5,
-                after_sleep=2,
-                log=True,
+                    match="确认联络",
+                    box="bottom_right",
+                    time_out=5,
+                    after_sleep=2,
+                    log=True,
             ):
                 self.log_info("未找到确认联络按钮")
                 return False
             find_flag = self.align_ocr_or_find_target_to_center(
-                match_or_name=[re.compile("工作"), re.compile("休息")],
+                ocr_match_or_feature_name=[re.compile("工作"), re.compile("休息")],
                 raise_if_fail=False,
                 max_time=7,
             )
@@ -284,7 +399,7 @@ class DailyTask(BaseEfTask):
         )
         self.click(144 / 1920, 855 / 1080, after_sleep=2)
         if self.wait_click_ocr(
-            match=re.compile("确认赠送"), box="bottom_right", time_out=5, after_sleep=2
+                match=re.compile("确认赠送"), box="bottom_right", time_out=5, after_sleep=2
         ):
             start_time = time.time()
             while True:
@@ -311,9 +426,9 @@ class DailyTask(BaseEfTask):
         self.sleep(1)
         start_time = time.time()
         result = self.wait_ocr(
-            match=[re.compile("帝江号")],box="top", time_out=20
+            match=[re.compile("帝江号")], box="top", time_out=20
         )
-        
+
         while not self.ocr(match="舰桥", box="bottom_left"):
             self.sleep(1)
             if time.time() - start_time > 20:
@@ -330,3 +445,31 @@ class DailyTask(BaseEfTask):
                     return self.collect_and_give_gifts()
             else:
                 raise Exception("前往联络站失败")
+
+
+def get_area_by_outpost_name(outpost_name: str) -> str:
+    """
+    根据据点名称获取该据点所在区域
+    参数:
+        outpost_name: 据点名称
+    返回值:
+        该据点所在区域，如果据点不存在返回空字符串
+    """
+    for area, outposts in outpost_dict.items():
+        if outpost_name in outposts:
+            return area
+    return ""
+
+
+def get_goods_by_outpost_name(outpost_name: str) -> list[str]:
+    """
+    根据据点名称获取该据点可交易的货物列表
+    参数:
+        outpost_name: 据点名称
+    返回值:
+        该据点的货物列表，如果据点不存在返回空列表
+    """
+    for area, outposts in outpost_dict.items():
+        if outpost_name in outposts:
+            return goods_dict.get(area, [])
+    return []

@@ -20,6 +20,7 @@ operator_liaison_station
 operator_liaison_station_out_map
 pick_f
 pick_recycle
+plus_button
 price_down
 price_up
 q

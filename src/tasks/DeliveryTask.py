@@ -1,9 +1,6 @@
+import ctypes
 import re
 import time
-import win32gui
-import ctypes
-import win32con
-from src.tasks.TakeDeliveryTask import TakeDeliveryTask
 
 user32 = ctypes.windll.user32
 
