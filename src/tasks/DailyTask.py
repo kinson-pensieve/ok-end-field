@@ -130,7 +130,7 @@ class DailyTask(BaseEfTask):
                 plus_button = self.find_one(feature_name="plus_button", box=screen_position.BOTTOM_RIGHT.value,
                                             threshold=0.8)
                 if plus_button:
-                    self.click(plus_button, down_time=20)
+                    self.click(plus_button, down_time=12)
                     self.wait_click_ocr(match="交易", box=screen_position.BOTTOM_RIGHT.value, time_out=5, after_sleep=2)
                     self.wait_pop_up()
                     self.sleep(2)
@@ -169,6 +169,7 @@ class DailyTask(BaseEfTask):
             pass
         if result := self.find_one(feature_name="claim_gift", box=screen_position.LEFT.value, threshold=0.8):
             self.click(result, after_sleep=2)
+            self.wait_pop_up()
             return True
         return False
 

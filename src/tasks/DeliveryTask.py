@@ -106,14 +106,67 @@ class DeliveryTask(BaseEfTask):
         right_items = [i for i in right_items if getattr(i, "name", "").strip()]
         mid_items = [i for i in mid_items if getattr(i, "name", "").strip()]
         # === 分组 ===
-        left_groups = split_items_by_marker(left_items, "查看位置")
-        right_groups = split_items_by_marker(right_items, "接取运送委托")
+        left_groups = [
+            g for g in split_items_by_marker(left_items, "查看位置") if len(g) >= 2
+        ]
+
+        right_groups = [
+            g for g in split_items_by_marker(right_items, "接取运送委托") if len(g) >= 2
+        ]
+        available_left = left_groups.copy()
+        available_mid = mid_items.copy()
+
         rows = []
 
-        count = min(len(left_groups), len(right_groups), len(mid_items))
-        for i in range(count):
-            elems = left_groups[i] + [mid_items[i]] + right_groups[i]
-            rows.append({"elems": elems})
+        for rg in right_groups:
+            if rg[0].y <rg[1].y:
+                rg_min_y = rg[0].y
+                rg_max_y = rg[1].y + rg[1].height  
+            else:
+                rg_min_y = rg[1].y
+                rg_max_y = rg[0].y + rg[0].height
+
+            matched_left = None
+            matched_mid = None
+
+            # ===== 找 left =====
+            for lg in available_left:
+                ys = [e.y for e in lg]
+                if min(ys) >= rg_min_y and max(ys) <= rg_max_y:
+                    matched_left = lg
+                    break
+
+            # ===== 找 mid =====
+            for m in available_mid:
+                if rg_min_y <= m.y <= rg_max_y:
+                    matched_mid = m
+                    break
+
+            # ===== 任意成功就 remove =====
+            if matched_left:
+                available_left.remove(matched_left)
+
+            if matched_mid:
+                available_mid.remove(matched_mid)
+
+            # ===== 构建 elems（顺序必须固定）=====
+            elems = []
+
+            if matched_left:
+                elems += matched_left
+
+            if matched_mid:
+                elems += [matched_mid]
+
+            elems += rg
+
+            # ===== 不足5个不加入 =====
+            if len(elems) >= 5:
+                min_x=min(e.x for e in [elems[0], elems[-1]])
+                max_x=max(e.x for e in [elems[0], elems[-1]])
+                min_y=min(e.y for e in [elems[-2], elems[-1]])
+                max_y=max(e.y + e.height for e in [elems[-2], elems[-1]])
+                rows.append({"elems": elems, "box": (min_x, min_y, max_x, max_y)})
 
         return rows
 
@@ -147,7 +200,7 @@ class DeliveryTask(BaseEfTask):
         for _ in range(6):
             self.scroll(cx, cy, -8)
             self.sleep(0.2)
-        self.sleep(2.0)
+        self.sleep(7)
         # 读取券种配置
         # enable_valley = self.config.get("接取谷地券", False)
         enable_wuling = True
@@ -170,13 +223,15 @@ class DeliveryTask(BaseEfTask):
                             "易损" in row["elems"][2].name
                             and "不易损" not in row["elems"][2].name
                         ):
-                            self.click(
-                                row["elems"][-1],
-                                after_sleep=2,
-                                down_time=0.1,
-                                move_back=True,
-                            )
-                            return True
+                            x,y,to_x,to_y=row["box"]
+                            if self.find_feature(feature_name="7_31w_wuling",box=self.box_of_screen(x/self.width,y/self.height,to_x/self.width,to_y/self.height),threshold=0.9):
+                                self.click(
+                                    row["elems"][-1],
+                                    after_sleep=2,
+                                    down_time=0.1,
+                                    move_back=True,
+                                )
+                                return True
                     # elif ticket_type == "ticket_valley" and enable_valley:
                     #     if "极易损" in row["elems"][2].name:
                     #         self.click(
@@ -197,6 +252,7 @@ class DeliveryTask(BaseEfTask):
                     self.click(last_refresh_box, move_back=True)
                     self._last_refresh_ts = time.time()
                     self.sleep(3.0)  # 等待刷新内容加载
+                    break
                 else:
                     self.log_info("警告: 尚未定位到刷新按钮位置，无法刷新，重试...")
                     time.sleep(1.0)
@@ -246,7 +302,7 @@ class DeliveryTask(BaseEfTask):
         ):
             return False
 
-        self.back()
+        self.back(after_sleep=2)
 
         result = self.find_feature(feature_name="transfer_point",box=self.box_of_screen(0.01,0.01,0.99,0.99), threshold=0.8)
         if not result:
@@ -265,6 +321,17 @@ class DeliveryTask(BaseEfTask):
                 self.send_key("tab" , after_sleep=1)
             self.send_key("f", after_sleep=2)
             self.zip_line_list_go([int(i) for i in self.config.get('通向送货点的滑索分叉序列').split(",")])#需要在配置里指定出发点的滑索距离,这里默认是36m的滑索
+            if self.wait_ocr(match="登上滑索架", box="bottom_right", time_out=2, log=True):
+                self.send_key("v",after_sleep=1)
+                self.send_key("f", after_sleep=2)
+                self.align_ocr_or_find_target_to_center(
+                    "secondary_objective_direction_dot",
+                    threshold=0.7,
+                    only_x=True,
+                    ocr=False,
+                    max_time=40,
+                )
+                self.click(key="right")
             for i in range(40):
                 self.sleep(2)
                 self.send_key("v")
@@ -317,7 +384,7 @@ class DeliveryTask(BaseEfTask):
             if self.wait_ocr(
                 match=end_pattern, box="bottom_right", time_out=2, log=True
             ):
-                self.send_key("f")
+                self.send_key("f",after_sleep=2)
                 self.skip_dialog()
                 self.wait_click_ocr(match="确认",settle_time=2,after_sleep=2)
                 break
@@ -346,6 +413,7 @@ class DeliveryTask(BaseEfTask):
                 for pattern in ends_list_pattern_dict:
                     m = pattern.search(result.name)
                     if m:
+                        end_pattern=pattern
                         self.on_zip_line_start(ends_list_pattern_dict[pattern])
                         break
             self.to_end_and_submit(end_pattern)
@@ -355,10 +423,28 @@ class DeliveryTask(BaseEfTask):
                     raise Exception("提交后未检测到奖励界面，提交失败")
                 result= self.find_one(feature_name="reward_ok",box="bottom")
                 if result:
-                    self.click(result)
+                    self.click(result,after_sleep=2)
                     break
                 self.sleep(1)
                 count+=1
             if self.config.get("仅送货"):
                 break
-
+    def run2(self):
+        # self.find_feature(feature_name="7_31w_wuling",box=self.box_of_screen(0, 0, 1920, 1080),threshold=0.9)
+        self.send_key("f", after_sleep=2)
+        self.skip_dialog()
+        self.wait_click_ocr(match="确认", settle_time=2, after_sleep=2)
+        # count=0
+        # for i in range(20):
+        #     self.sleep(1)
+        #     if self.find_feature(
+        #         feature_name="secondary_objective_direction_dot",
+        #         box=self.box_of_screen(
+        #             (1920 - 1550) / 1920,
+        #             150 / 1080,
+        #             1550 / 1920,
+        #             (1080 - 150) / 1080,
+        #         ),
+        #     ):
+        #         count+=1
+        # self.log_info(f"检测到约{count}次secondary_objective_direction_dot，正在执行送货流程")
