@@ -3,6 +3,9 @@
 assist_friend
 b
 c
+chat_icon
+chat_icon_2
+chat_icon_dark
 check_in_close
 claim_gift
 close
@@ -28,6 +31,8 @@ price_up
 q
 reward_ok
 secondary_objective_direction_dot
+secondary_objective_direction_dot_light
+secondary_objective_direction_dot_light_two
 skill_1
 skill_2
 skill_3

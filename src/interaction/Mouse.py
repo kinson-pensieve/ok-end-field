@@ -59,7 +59,7 @@ def active_and_send_mouse_delta(
 
 
 # ===== control =====
-def move_to_target_once(hwnd, ocr_obj, screen_center_func):
+def move_to_target_once(hwnd, ocr_obj, screen_center_func,max_step=100,min_step=20,slow_radius=200):
     if ocr_obj is None:
         return
 
@@ -70,10 +70,11 @@ def move_to_target_once(hwnd, ocr_obj, screen_center_func):
 
     center_pos = screen_center_func()
 
-    dx, dy = calc_direction_step(center_pos, target_center)
+    dx, dy = calc_direction_step(center_pos, target_center,max_step= max_step,min_step= min_step,slow_radius= slow_radius)
 
     if dx != 0 or dy != 0:
         active_and_send_mouse_delta(hwnd, dx, dy)
+    return dx, dy
 
 
 def align_loop(

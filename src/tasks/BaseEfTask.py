@@ -20,8 +20,8 @@ class BaseEfTask(BaseTask):
     def move_keys(self, keys, duration):
         move_keys(self.hwnd.hwnd, keys, duration)
 
-    def move_to_target_once(self,hwnd, ocr_obj):
-        move_to_target_once(hwnd, ocr_obj, self.screen_center)
+    def move_to_target_once(self, hwnd, ocr_obj, max_step=100, min_step=20, slow_radius=200):
+        return move_to_target_once(hwnd, ocr_obj, self.screen_center,max_step=max_step,min_step=min_step,slow_radius=slow_radius)
 
     # def center_camera(self):
     #     self.click(0.5, 0.5, down_time=0.2, key="middle")
@@ -37,7 +37,7 @@ class BaseEfTask(BaseTask):
 
     def align_ocr_or_find_target_to_center(
         self,
-        ocr_match_or_feature_name,
+        ocr_match_or_feature_name_list,
         only_x=False,
         only_y=False,
         box=None,
@@ -46,6 +46,11 @@ class BaseEfTask(BaseTask):
         ocr=True,
         raise_if_fail=True,
         is_num=False,
+        need_scroll=False,
+        max_step=100,
+        min_step=20,
+        slow_radius=200,
+        tolerance=TOLERANCE,
     ):
         """
         Aligns a target detected by OCR or image feature to the center of the screen.
@@ -76,21 +81,36 @@ class BaseEfTask(BaseTask):
             )
         last_target = None
         last_target_fail_count = 0
+        success = False
+        random_move_count = 0
+        move_count = 0
+        scroll_bool= False
+        sum_dx=0
+        sum_dy=0
         for i in range(max_time):
             if ocr:
                 # 使用OCR模式识别目标，设置超时时间为2秒，并启用日志记录
                 result = self.wait_ocr(
-                    match=ocr_match_or_feature_name, box=box, time_out=2, log=True
+                    match=ocr_match_or_feature_name_list, box=box, time_out=2, log=True
                 )
             else:
                 self.sleep(2)
                 # 使用图像特征识别模式查找目标
-                result = self.find_feature(
-                    feature_name=ocr_match_or_feature_name,
-                    threshold=threshold,
-                    box=feature_box,
-                )
+                if isinstance(ocr_match_or_feature_name_list, str):
+                    ocr_match_or_feature_name_list = [ocr_match_or_feature_name_list]
+                result=None
+                for feature_name in ocr_match_or_feature_name_list:
+                    result = self.find_feature(
+                        feature_name=feature_name,
+                        threshold=threshold,
+                        box=feature_box,
+                    )
+                    if result:
+                        break
             if result:
+                success = True
+                random_move_count = 0
+                move_count = 0
                 # OCR 成功
                 if isinstance(result, list):
                     result = result[0]
@@ -114,32 +134,49 @@ class BaseEfTask(BaseTask):
                 dy = target_center[1] - screen_center_pos[1]
 
                 # 如果目标在容忍范围内
-                if abs(dx) <= TOLERANCE and abs(dy) <= TOLERANCE:
+                if abs(dx) <= tolerance and abs(dy) <= tolerance:
                     return True
                 else:
-                    self.move_to_target_once(self.hwnd.hwnd, result)
+                    dx, dy = self.move_to_target_once(self.hwnd.hwnd, result,max_step=max_step,min_step=min_step,slow_radius=slow_radius)
+                    sum_dx += dx
+                    sum_dy += dy
 
             else:
                 # 每次 OCR 失败，直接随机移动
                 max_offset = 60  # 最大随机偏移
-                if last_target and last_target_fail_count < 3:
-                    decay = 0.8**last_target_fail_count
+                if last_target:
+                    decay = 0.9 ** last_target_fail_count
                     # 计算目标中心到屏幕中心的偏移
-                    center_x = last_target.x + last_target.width // 2
-                    center_y = last_target.y + last_target.height // 2
+
                     screen_center_x, screen_center_y = self.screen_center()
-                    offset_x = int((screen_center_x - center_x) * decay)
-                    offset_y = int((screen_center_y - center_y) * decay)
+                    offset_x = int((screen_center_x - last_target.x) * decay)
+                    offset_y = int((screen_center_y - last_target.y) * decay)
+                    offset_width = int(last_target.width / 2 * decay)
+                    offset_height = int(last_target.height / 2 * decay)
                     # 直接修改 last_target 坐标
-                    last_target.x += offset_x
-                    last_target.y += offset_y
-                    self.move_to_target_once(self.hwnd.hwnd, last_target)
+                    last_target.x = screen_center_x - offset_x
+                    last_target.y = screen_center_y - offset_y
+                    last_target.width = offset_width
+                    last_target.height = offset_height
+                    dx, dy = self.move_to_target_once(self.hwnd.hwnd, last_target)
+                    sum_dx += dx
+                    sum_dy += dy
                     last_target_fail_count += 1
+                    random_move_count = 0
+                    move_count += 1
+                    if move_count >= 10:
+                        last_target = None
+                        move_count = 0
                 else:
+                    if not success:
+                        max_offset = self.width // 4
                     last_target = None
                     last_target_fail_count = 0
-                    dx = random.randint(-max_offset // 2, max_offset)
-                    dy = random.randint(-max_offset // 2, max_offset)
+                    dx = random.randint(-max_offset, max_offset)
+                    if not success:
+                        dy = 0
+                    else:
+                        dy = random.randint(-max_offset, max_offset)
 
                     # 移动鼠标
                     active_and_send_mouse_delta(
@@ -149,9 +186,22 @@ class BaseEfTask(BaseTask):
                         activate=True,
                         delay=0.1,
                     )
+                    sum_dx += dx
+                    sum_dy += dy
+                    move_count = 0
+                    random_move_count += 1
+                    if random_move_count >= 10:
+                        success = False
+                        random_move_count = 0
 
                 # OCR 成功后不需要处理，下一次失败仍然随机
-
+            if not scroll_bool and need_scroll:
+                scroll_bool=True
+                cx = int(self.width * 0.5)
+                cy = int(self.height * 0.5)
+                for _ in range(6):
+                    self.scroll(cx, cy, 8)
+                    self.sleep(0.2)
         if raise_if_fail:
             raise Exception("对中失败")
         else:
@@ -160,23 +210,23 @@ class BaseEfTask(BaseTask):
     def to_model_area(self, area, model):
         self.send_key("y", after_sleep=2)
         if not self.wait_click_ocr(
-            match="更换", box=screen_position.LEFT.value, time_out=2, after_sleep=2
+                match="更换", box=screen_position.LEFT.value, time_out=2, after_sleep=2
         ):
             return
         if not self.wait_click_ocr(
-            match=re.compile(area),
-            box=self.box_of_screen(
-                648 / 1920, 196 / 1080, 648 / 1920 + 628 / 1920, 196 / 1080 + 192 / 1080
-            ),
-            time_out=2,
-            after_sleep=2,
+                match=re.compile(area),
+                box=self.box_of_screen(
+                    648 / 1920, 196 / 1080, 648 / 1920 + 628 / 1920, 196 / 1080 + 192 / 1080
+                ),
+                time_out=2,
+                after_sleep=2,
         ):
             return
         if not self.wait_click_ocr(
-            match="确认",
-            box=screen_position.BOTTOM_RIGHT.value,
-            time_out=2,
-            after_sleep=2,
+                match="确认",
+                box=screen_position.BOTTOM_RIGHT.value,
+                time_out=2,
+                after_sleep=2,
         ):
             return
         box = self.wait_ocr(
@@ -231,7 +281,7 @@ class BaseEfTask(BaseTask):
     def ensure_main(self, esc=True, time_out=30):
         self.info_set("current task", f"wait main esc={esc}")
         if not self.wait_until(
-            lambda: self.is_main(esc=esc), time_out=time_out, raise_if_not_found=False
+                lambda: self.is_main(esc=esc), time_out=time_out, raise_if_not_found=False
         ):
             raise Exception("Please start in game world and in team!")
         self.info_set("current task", f"in main esc={esc}")
@@ -274,20 +324,20 @@ class BaseEfTask(BaseTask):
                 self.click(after_sleep=1)
                 return False
             elif close := (
-                self.find_one(
-                    "reward_ok",
-                    horizontal_variance=0.1,
-                    vertical_variance=0.1,
-                )
-                or self.find_one(
-                    "one_click_claim", horizontal_variance=0.1, vertical_variance=0.1
-                )
-                or self.find_one(
-                    "check_in_close",
-                    horizontal_variance=0.1,
-                    vertical_variance=0.1,
-                    threshold=0.75,
-                )
+                    self.find_one(
+                        "reward_ok",
+                        horizontal_variance=0.1,
+                        vertical_variance=0.1,
+                    )
+                    or self.find_one(
+                "one_click_claim", horizontal_variance=0.1, vertical_variance=0.1
+            )
+                    or self.find_one(
+                "check_in_close",
+                horizontal_variance=0.1,
+                vertical_variance=0.1,
+                threshold=0.75,
+            )
             ):
                 self.click(close, after_sleep=1)
                 return False
