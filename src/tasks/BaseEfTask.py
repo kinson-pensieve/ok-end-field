@@ -1,11 +1,12 @@
 import random
 import time
-
+import re
 from ok import BaseTask
 
 from src.essence.essence_recognizer import EssenceInfo, read_essence_info
 from src.interaction.Key import move_keys
 from src.interaction.Mouse import active_and_send_mouse_delta, move_to_target_once
+from src.interaction.ScreenPosition import ScreenPosition as screen_position
 
 TOLERANCE = 50
 
@@ -155,6 +156,37 @@ class BaseEfTask(BaseTask):
             raise Exception("对中失败")
         else:
             return False
+
+    def to_model_area(self, area, model):
+        self.send_key("y", after_sleep=2)
+        if not self.wait_click_ocr(
+            match="更换", box=screen_position.LEFT.value, time_out=2, after_sleep=2
+        ):
+            return
+        if not self.wait_click_ocr(
+            match=re.compile(area),
+            box=self.box_of_screen(
+                648 / 1920, 196 / 1080, 648 / 1920 + 628 / 1920, 196 / 1080 + 192 / 1080
+            ),
+            time_out=2,
+            after_sleep=2,
+        ):
+            return
+        if not self.wait_click_ocr(
+            match="确认",
+            box=screen_position.BOTTOM_RIGHT.value,
+            time_out=2,
+            after_sleep=2,
+        ):
+            return
+        box = self.wait_ocr(
+            match=re.compile(f"{model}"), box=screen_position.RIGHT.value, time_out=5
+        )
+        if box:
+            self.click(box[0], move_back=True, after_sleep=0.5)
+        else:
+            self.log_error(f"未找到‘{model}’按钮，任务中止。")
+            return
 
     def skip_dialog(self, end_list=None, end_box=None):
         start_time = time.time()

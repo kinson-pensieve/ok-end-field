@@ -192,14 +192,7 @@ class DeliveryTask(BaseEfTask):
 
     def other_run(self):
         self.log_info("前置操作：按Y，点击‘仓储节点’，点击‘运送委托列表’")
-        self.send_key("y", down_time=0.05, after_sleep=0.5)
-        storage_box = self.wait_ocr(match="仓储节点", time_out=5)
-        if storage_box:
-            self.click(storage_box[0], move_back=True, after_sleep=0.5)
-        else:
-            self.log_error("未找到‘仓储节点’按钮，任务中止。")
-            return
-
+        self.to_model_area("武陵", "仓储节点")
         delivery_box = self.wait_ocr(match="运送委托列表", time_out=5)
         if delivery_box:
             self.click(delivery_box[0], move_back=True, after_sleep=0.5)
