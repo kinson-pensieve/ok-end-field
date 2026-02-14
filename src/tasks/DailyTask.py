@@ -25,10 +25,10 @@ class DailyTask(BaseEfTask):
         self.default_config.update(
             {
                 "送礼": True,
-                "造装备": True,
-                "日常奖励": True,
                 "据点兑换": True,
                 "转交运送委托": True,
+                "造装备": True,
+                "日常奖励": True,
             }
         )
         self.all_name_pattern = [re.compile(i) for i in all_list]
@@ -51,10 +51,10 @@ class DailyTask(BaseEfTask):
             self.log_info(f"当前为调试模式，重复执行 {repeat_times} 次")
         tasks = [
             ("送礼", self.give_gift_to_liaison),
-            ("造装备", self.make_weapon),
-            ("日常奖励", self.claim_daily_rewards),
             ("据点兑换", self.exchange_outpost_goods),
             ("转交运送委托", self.delivery_send_others),
+            ("造装备", self.make_weapon),
+            ("日常奖励", self.claim_daily_rewards),
         ]
         if self.debug:
             tasks = tasks * repeat_times
@@ -140,8 +140,7 @@ class DailyTask(BaseEfTask):
                     ("填充至满", screen_position.TOP_RIGHT),
                     ("下一步", screen_position.BOTTOM_RIGHT),
                     ("开始运送", screen_position.BOTTOM_RIGHT, 12),
-                    ("获得调度券", screen_position.BOTTOM_RIGHT, 12),
-                    (["工业", "探索"], screen_position.TOP_LEFT, 5),
+                    ("获得调度券", screen_position.BOTTOM_RIGHT, 12)
                 ]
 
                 for step in steps:
@@ -149,11 +148,15 @@ class DailyTask(BaseEfTask):
                     box = step[1].value
                     timeout = step[2] if len(step) > 2 else 5
                     res = self.wait_ocr(match=match, box=box, time_out=timeout)
+                    if isinstance(res, list) and len(res) > 0:
+                        self.log_info(f"找到步骤 {match}，继续下一步")
+                        self.click(res[0], after_sleep=2)
+
                     if not res:
                         self.log_info(f"步骤 {match} 未找到，跳过本次活动", notify=True)
-                        self.ensure_main()
+                        
                         break
-
+                self.ensure_main()
                 # 操作后快捷键
                 self.send_key("v", after_sleep=1)
                 self.send_key("j", after_sleep=1)
