@@ -73,6 +73,7 @@ shiboken6==6.9.1
     #   pyside6-essentials
 typing-extensions==4.14.1
     # via ok-script
+pyautogui==0.9.54
 urllib3==2.5.0
     # via requests
 #adbutils==2.11.0
