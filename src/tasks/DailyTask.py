@@ -27,6 +27,7 @@ class DailyTask(BaseEfTask):
                 "送礼": True,
                 "据点兑换": True,
                 "转交运送委托": True,
+                "转交委托奖励领取": True,
                 "造装备": True,
                 "日常奖励": True,
             }
@@ -53,6 +54,7 @@ class DailyTask(BaseEfTask):
             ("送礼", self.give_gift_to_liaison),
             ("据点兑换", self.exchange_outpost_goods),
             ("转交运送委托", self.delivery_send_others),
+            ("转交委托奖励领取", self.claim_delivery_rewards),
             ("造装备", self.make_weapon),
             ("日常奖励", self.claim_daily_rewards),
         ]
@@ -79,7 +81,43 @@ class DailyTask(BaseEfTask):
             self.log_info("日常完成!", notify=True)
         if self.debug and all_fail_tasks:
             self.log_info(f"所有重复测试的失败任务: {all_fail_tasks}", notify=True)
+    def claim_delivery_rewards(self):
+        self.info_set("current_task", "claim_delivery_rewards")
+        self.log_info("开始领取转交委托奖励", notify=True)
 
+        area=areas_list[0]
+        self.to_model_area(area, "仓储节点")
+
+        if not self.wait_click_ocr(
+            match=re.compile("我转交的委托"),
+            box=screen_position.TOP_LEFT.value,
+            time_out=5,
+            after_sleep=2,
+        ):
+            self.log_info(f"'未找到我转交的委托'节点，返回主界面", notify=True)
+            self.ensure_main()
+
+        results = self.wait_ocr(
+            match=re.compile("一键领取"),
+            box=screen_position.BOTTOM_RIGHT.value,
+            time_out=5,
+        )
+
+        if not results:
+            self.log_info(f"当前没有可领取的转交委托奖励，返回主界面", notify=True)
+            self.ensure_main()
+
+        if results:
+            self.click(results, after_sleep=2)
+            if not self.wait_pop_up():
+                self.log_info("未找到 '确认' 按钮，可能未成功领取奖励", notify=True)
+                self.ensure_main()
+            self.sleep(2)
+
+        self.log_info(f"转交委托奖励领取完成，返回主界面")
+        self.ensure_main()
+
+        self.log_info("转交委托奖励领取任务完成", notify=True)
     def delivery_send_others(self):
         self.info_set("current_task", "delivery_send_others")
 
@@ -154,7 +192,7 @@ class DailyTask(BaseEfTask):
 
                     if not res:
                         self.log_info(f"步骤 {match} 未找到，跳过本次活动", notify=True)
-                        
+
                         break
                 self.ensure_main()
                 # 操作后快捷键
@@ -360,9 +398,8 @@ class DailyTask(BaseEfTask):
             self.log_info("未找到制作按钮，任务失败", notify=True)
             return False
         self.log_info("找到制作按钮并点击")
-
-        self.wait_pop_up()
         self.log_info("等待弹窗完成，造装备任务准备完成")
+        self.wait_pop_up()
 
         return True
 

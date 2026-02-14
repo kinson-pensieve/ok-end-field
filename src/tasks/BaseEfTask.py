@@ -1,6 +1,7 @@
 import random
 import time
 import re
+import pyautogui
 from ok import BaseTask
 
 from src.essence.essence_recognizer import EssenceInfo, read_essence_info
@@ -197,10 +198,11 @@ class BaseEfTask(BaseTask):
                 # OCR 成功后不需要处理，下一次失败仍然随机
             if not scroll_bool and need_scroll:
                 scroll_bool=True
-                cx = int(self.width * 0.5)
-                cy = int(self.height * 0.5)
+                # cx = int(self.width * 0.5)
+                # cy = int(self.height * 0.5)
                 for _ in range(6):
-                    self.scroll(cx, cy, 8)
+                    # self.scroll(cx, cy, 8)
+                    pyautogui.scroll(40)
                     self.sleep(0.2)
         if raise_if_fail:
             raise Exception("对中失败")
@@ -278,12 +280,13 @@ class BaseEfTask(BaseTask):
     def find_f(self):
         return self.find_one("pick_f", vertical_variance=0.05)
 
-    def ensure_main(self, esc=True, time_out=30):
+    def ensure_main(self, esc=True, time_out=30,after_sleep=2):
         self.info_set("current task", f"wait main esc={esc}")
         if not self.wait_until(
                 lambda: self.is_main(esc=esc), time_out=time_out, raise_if_not_found=False
         ):
             raise Exception("Please start in game world and in team!")
+        self.sleep(after_sleep)
         self.info_set("current task", f"in main esc={esc}")
 
     def in_world(self):
@@ -301,17 +304,17 @@ class BaseEfTask(BaseTask):
         if esc:
             self.back(after_sleep=1.5)
 
-    def wait_pop_up(self):
+    def wait_pop_up(self,after_sleep=0):
         count = 0
         while True:
             if count > 30:
-                raise Exception("提交后未检测到奖励界面，提交失败")
+                return False
             result = self.find_one(
                 feature_name="reward_ok", box="bottom", threshold=0.8
             )
             if result:
-                self.click(result)
-                break
+                self.click(result, after_sleep=after_sleep)
+                return True
             self.sleep(1)
             count += 1
 

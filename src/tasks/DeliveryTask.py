@@ -190,6 +190,7 @@ class DeliveryTask(BaseEfTask):
         return None
 
     def other_run(self):
+        self.ensure_main()
         self.log_info("前置操作：按Y，点击‘仓储节点’，点击‘运送委托列表’")
         self.to_model_area("武陵", "仓储节点")
         delivery_box = self.wait_ocr(match="运送委托列表", time_out=5)
@@ -286,8 +287,7 @@ class DeliveryTask(BaseEfTask):
         self.zip_line_list_go(zip_line_list)
 
     def task_to_transfer_point(self):
-        if not self.wait_ocr(match=["工业", "探索"], box="top_left", time_out=10, log=True):
-            raise Exception("未在主页面")
+        self.ensure_main()
         self.send_key("j", after_sleep=2)
 
         result = self.find_feature(
@@ -337,10 +337,10 @@ class DeliveryTask(BaseEfTask):
                 self.align_ocr_or_find_target_to_center(
                     ocr_match_or_feature_name_list=secondary_objective_direction_dot,
                     threshold=0.7,
-                    only_x=True,
                     ocr=False,
                     max_time=40,
-                    need_scroll=True
+                    need_scroll=True,
+                    raise_if_fail=False
                 )
                 self.click(key="right")
             for i in range(40):
@@ -367,21 +367,18 @@ class DeliveryTask(BaseEfTask):
         return False
 
     def to_end_and_submit(self, end_pattern):
-        if not self.wait_ocr(
-                match=["工业", "探索"], box="top_left", time_out=10, log=True
-        ):
-            raise Exception("未在主页面")
-        self.send_key("v")
-        self.send_key("f")
-        self.align_ocr_or_find_target_to_center(
-            ocr_match_or_feature_name_list=secondary_objective_direction_dot,
-            threshold=0.6,
-            ocr=False,
-            only_x=True,
-            raise_if_fail=False,
-            need_scroll=True
-        )
-        self.click(key="right")
+        self.ensure_main()
+        if self.wait_ocr(match="登上滑索架", box="bottom_right", time_out=30, log=True):
+            self.send_key("v")
+            self.send_key("f")
+            self.align_ocr_or_find_target_to_center(
+                ocr_match_or_feature_name_list=secondary_objective_direction_dot,
+                threshold=0.6,
+                ocr=False,
+                raise_if_fail=False,
+                need_scroll=True
+            )
+            self.click(key="right")
         for i in range(40):
             self.sleep(2)
             self.send_key("v")
@@ -401,8 +398,10 @@ class DeliveryTask(BaseEfTask):
                     match=end_pattern, box="bottom_right", time_out=2, log=True
             ):
                 self.send_key("f", after_sleep=2)
-                self.skip_dialog()
-                self.wait_click_ocr(match="确认", settle_time=2, after_sleep=2)
+                if not self.find_feature(feature_name="reward_ok"):
+                    self.skip_dialog()
+                    self.wait_click_ocr(match="确认", settle_time=2, after_sleep=2)
+                self.wait_pop_up(after_sleep=2)
                 break
 
     # def run(self):
@@ -479,16 +478,6 @@ class DeliveryTask(BaseEfTask):
                             self.on_zip_line_start(ends_list_pattern_dict[pattern])
                             break
                 self.to_end_and_submit(end_pattern)
-                count = 0
-                while True:
-                    if count > 30:
-                        raise Exception("提交后未检测到奖励界面，提交失败")
-                    result = self.find_one(feature_name="reward_ok", box="bottom")
-                    if result:
-                        self.click(result, after_sleep=2)
-                        break
-                    self.sleep(1)
-                    count += 1
                 if self.config.get("仅送货"):
                     break
         elif self.config.get("选择测试对象") == "完整循环测试":
