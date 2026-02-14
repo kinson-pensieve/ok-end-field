@@ -113,8 +113,8 @@ class DailyTask(BaseEfTask):
             self.wait_pop_up()
         self.ensure_main()
         self.back(after_sleep=2)
-        left_exchange_time = 4
-        left_help_time = 3
+        left_exchange_time = 5
+        left_help_time = 5
         is_first_time = True
         exchange_help_box=self.box_of_screen(0.1,561/861,0.9,0.9)
         while True:
@@ -282,7 +282,7 @@ class DailyTask(BaseEfTask):
 
                 for step in steps:
                     match = step[0]
-                    box = step[1].value
+                    box = step[1]
                     timeout = step[2] if len(step) > 2 else 5
                     res = self.wait_ocr(match=match, box=box, time_out=timeout)
                     if isinstance(res, list) and len(res) > 0:
