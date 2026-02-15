@@ -21,6 +21,8 @@ essence_ui_marker
 essence_unlocked
 friend_chat_icon
 logout
+market_dispatch_terminal
+market_dispatch_terminal_out
 monthly_card
 one_click_claim
 one_task_to_map
