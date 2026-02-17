@@ -587,7 +587,7 @@ class DailyTask(BaseEfTask):
     def transfer_to_home_point(self):
         """通过地图界面传送到帝江号指定点"""
         self.log_info("开始传送到帝江号" )
-        self.send_key("m")
+        self.send_key("m",after_sleep=2)
         self.log_info("打开地图界面 (按下 M)")
 
         # 1. 确认是否打开地图并找到目标区域
