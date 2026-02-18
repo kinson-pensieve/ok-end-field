@@ -24,6 +24,7 @@ class DailyTask(BaseEfTask):
         self.icon = FluentIcon.SYNC
         self.default_config.update(
             {
+                "送礼任务最多尝试次数": 2,
                 "送礼": True,
                 "据点兑换": True,
                 "转交运送委托": True,
@@ -62,7 +63,7 @@ class DailyTask(BaseEfTask):
         else:
             self.ensure_main()
         tasks = [  # 确保在主界面
-            ("送礼", self.give_gift_to_liaison),
+            ("送礼", self.give_gift_main),
             ("据点兑换", self.exchange_outpost_goods),
             ("转交运送委托", self.delivery_send_others),
             ("转交委托奖励领取", self.claim_delivery_rewards),
@@ -182,8 +183,7 @@ class DailyTask(BaseEfTask):
                 if not result:
                     scroll_count += 1
                     self.scroll_relative(0.5, 0.5, -4)
-                    if not self.wait_ui_stable(refresh_interval=0.5):
-                        raise Exception("界面不稳定，可能未成功滚动")
+                    self.wait_ui_stable(refresh_interval=0.5)
 
             self.click(result, after_sleep=2)
             self.wait_click_ocr(match=re.compile("确定"), box=sP.bottom_right, time_out=5, after_sleep=2)
@@ -750,7 +750,7 @@ class DailyTask(BaseEfTask):
             self.sleep(0.5)
             if time.time() - start_time > 60:
                 self.log_info("长时间未找到联络台，任务超时")
-                raise Exception("长时间未找到联络台")
+                return LiaisonResult.FAIL
 
         self.log_info("成功到达干员联络台")
         return LiaisonResult.SUCCESS
@@ -781,17 +781,19 @@ class DailyTask(BaseEfTask):
                 self.log_info("未找到确认联络按钮，任务失败")
                 return False
             self.log_info("点击确认联络按钮")
-
+            while self.ocr(match=re.compile("干员联络"), box=sP.top_left):
+                self.next_frame()
+                self.sleep(0.1)
             find_flag = self.align_ocr_or_find_target_to_center(
                 ocr_match_or_feature_name_list=[re.compile("工作"), re.compile("休息")],
                 raise_if_fail=False,
                 only_x=True,
                 max_time=14,
                 max_step=150,
-                min_step=50,
-                slow_radius=20,
+                min_step=20,
+                slow_radius=100,
                 tolerance=100,
-                once_time=0.1,
+                once_time=0.1
             )
             if find_flag:
                 self.log_info("界面对齐完成")
@@ -823,7 +825,7 @@ class DailyTask(BaseEfTask):
 
             if time.time() - start_time > 30:
                 self.log_info("长时间未找到干员，任务超时")
-                raise Exception("长时间未找到干员")
+                return False
         return False
 
     def collect_and_give_gifts(self):
@@ -876,15 +878,16 @@ class DailyTask(BaseEfTask):
                     break
 
         # 开始赠送流程
-        self.wait_click_ocr(
+        if not self.wait_click_ocr(
             match=re.compile("赠送"),
             box=sP.bottom_right,
             time_out=5,
             after_sleep=2,
-        )
+        ):
+            return False
         self.click(144 / 1920, 855 / 1080, after_sleep=2)
         self.log_info("点击赠送礼物位置")
-
+        self.log_info("本次成功")
         if self.wait_click_ocr(
                 match=re.compile("确认赠送"),
                 box=sP.bottom_right,
@@ -917,13 +920,13 @@ class DailyTask(BaseEfTask):
         return False
 
     def give_gift_to_liaison(self):
-        self.log_info("开始送礼任务")
-
         self.log_info("传送至帝江号指定点")
         if not self.transfer_to_home_point():
             self.log_info("传送失败，无法开始送礼任务")
             return False
-
+        while self.ocr(match="舰桥", box=sP.left):
+            self.next_frame()
+            self.sleep(0.5)
         self.log_info("前往中央环厅")
         if not self.go_main_hall():
             self.log_info("未到达中央环厅，送礼任务中断")
@@ -947,4 +950,23 @@ class DailyTask(BaseEfTask):
 
         else:
             self.log_info("前往联络站失败")
-            raise Exception("前往联络站失败")
+            return False
+
+    def give_gift_main(self):
+        self.info_set("current_task", "give_gift")
+        self.log_info("开始执行送礼任务")
+
+        max_retry = self.config.get("送礼任务最多尝试次数", 1)
+
+        for i in range(max_retry):
+            self.log_info(f"送礼任务 - 第 {i + 1}/{max_retry} 次尝试")
+
+            success = self.give_gift_to_liaison()
+            if success:
+                self.log_info(f"第 {i + 1} 次送礼任务成功")
+                return True
+
+            self.log_info(f"第 {i + 1} 次送礼任务失败")
+
+        self.log_info("送礼任务最终失败")
+        return False

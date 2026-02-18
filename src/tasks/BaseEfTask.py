@@ -198,7 +198,7 @@ class BaseEfTask(BaseTask):
             max_step=100,
             min_step=20,
             slow_radius=200,
-            once_time=1,
+            once_time=0.5,
             tolerance=TOLERANCE,
             ocr_frame_processor_list=None
     ):
