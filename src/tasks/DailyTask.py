@@ -375,10 +375,10 @@ class DailyTask(BaseEfTask):
         num_str = self.wait_ocr(
             match=re.compile(r"\d+"),
             box=self.box_of_screen(
-                x=1224 / 1920,
-                y=235 / 1080,
-                width=327,
-                height=121,
+                1224 / 1920,
+                235 / 1080,
+                1551 / 1920,
+                356 / 1080,
             ),
             time_out=5,
         )
@@ -928,6 +928,7 @@ class DailyTask(BaseEfTask):
         while self.ocr(match="舰桥", box=sP.left):
             self.next_frame()
             self.sleep(0.5)
+        self.sleep(10)
         self.log_info("前往中央环厅")
         if not self.go_main_hall():
             self.log_info("未到达中央环厅，送礼任务中断")
