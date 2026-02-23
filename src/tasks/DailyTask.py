@@ -342,11 +342,11 @@ class DailyTask(BaseEfTask):
                     for i in range(2):
                         self.next_frame()
                         if i==0:
-                            res = self.wait_ocr(match=match, box=box, time_out=timeout)
+                            res = self.wait_ocr(match=re.compile(match), box=box, time_out=timeout,log=True)
                         else:
-                            res =self.ocr(match=match, box=box,frame_processor=self.make_hsv_isolator(hR.DARK_GRAY_TEXT))
+                            res =self.ocr(match=re.compile(match), box=box,frame_processor=self.make_hsv_isolator(hR.DARK_GRAY_TEXT), log=True)
                             if not res:
-                                res = self.ocr(match=match, box=box, frame_processor=self.make_hsv_isolator(hR.WHITE))
+                                res = self.ocr(match=re.compile(match), box=box, frame_processor=self.make_hsv_isolator(hR.WHITE), log=True)
                         if res:
                             self.log_info(f"找到步骤 {match}，继续下一步")
                             self.click(res[0], after_sleep=2)
