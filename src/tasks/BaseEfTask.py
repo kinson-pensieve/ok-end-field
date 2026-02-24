@@ -1,13 +1,12 @@
 import random
 import re
 import time
-from functools import partial
-
 import cv2
 import imagehash
 import numpy as np
 import pyautogui
 
+from functools import partial
 from typing import List
 from PIL import Image
 from ok import BaseTask, Box

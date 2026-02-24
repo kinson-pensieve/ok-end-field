@@ -482,12 +482,12 @@ class DeliveryTask(BaseEfTask):
     #         zip_line_list = [int(i) for i in zip_line_list_str.split(",")]
     #         self.zip_line_list_go(zip_line_list)
     def run(self):
-        if not self._logged_in:
-            self.ensure_main(time_out=240)
-        else:
-            self.ensure_main()
         if self.config.get("选择测试对象") == "无":
             for _ in range(3):
+                if not self._logged_in:
+                    self.ensure_main(time_out=240)
+                else:
+                    self.ensure_main()
                 if self.config.get("仅接取"):
                     self.other_run()
                     break
