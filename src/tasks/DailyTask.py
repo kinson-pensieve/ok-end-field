@@ -349,6 +349,7 @@ class DailyTask(BaseEfTask):
                                 res = self.ocr(match=re.compile(match), box=box, frame_processor=self.make_hsv_isolator(hR.WHITE), log=True)
                         if res:
                             self.log_info(f"找到步骤 {match}，继续下一步")
+                            self.sleep(1)
                             self.click(res[0], after_sleep=2)
                             break
 

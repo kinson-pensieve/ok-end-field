@@ -488,6 +488,8 @@ class DeliveryTask(BaseEfTask):
                     self.ensure_main(time_out=240)
                 else:
                     self.ensure_main()
+                self.back(after_sleep=2)
+                self.ensure_main()
                 if self.config.get("仅接取"):
                     self.other_run()
                     break
