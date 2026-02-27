@@ -9,6 +9,7 @@ tesseract
 models
 fonts
 data2
+items_process
 # Byte-compiled / optimized / DLL files
 .idea/
 data_export

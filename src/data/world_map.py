@@ -52,3 +52,4 @@ exchange_goods_dict = {
         "武侠电影货组"
     ]
 }
+item_to_warehouse_dict = {"蓝铁矿": "矿物", "高容谷地电池":"产物","源矿": "矿物"}

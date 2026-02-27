@@ -3,6 +3,7 @@
 7_31w_wuling_dark
 assist_friend
 b
+bluesteel_ore
 c
 can_exchange_info_icon
 can_help_icon
@@ -12,6 +13,8 @@ chat_icon_dark
 check_in_close
 claim_gift
 close
+consumables_icon
+cultivation_materials_icon
 e
 esc
 essence_locked
@@ -21,10 +24,14 @@ essence_quality_gold_3
 essence_ui_marker
 essence_unlocked
 friend_chat_icon
+gathering_materials_icon
+high_capacity_valley_battery
+industrial_equipment_icon
 logout
 market_dispatch_terminal
 market_dispatch_terminal_out
 market_good_icon
+minerals_icon
 monthly_card
 one_click_claim
 one_task_to_map
@@ -32,9 +39,11 @@ operator_liaison_station
 operator_liaison_station_out_map
 pick_f
 pick_recycle
+plants_icon
 plus_button
 price_down
 price_up
+products_icon
 q
 reward_ok
 secondary_objective_direction_dot
@@ -48,6 +57,7 @@ skill_e
 skip_dialog_cancel
 skip_dialog_confirm
 skip_dialog_esc
+source_ore
 switch_q
 ticket_valley
 ticket_wuling

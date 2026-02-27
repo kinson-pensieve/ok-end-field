@@ -61,3 +61,6 @@ class FeatureList(str, Enum):
     ult_3 = "ult_3"
     ult_4 = "ult_4"
     visit_icon = "visit_icon"
+    @classmethod
+    def values(cls):
+        return [item.value for item in cls]
