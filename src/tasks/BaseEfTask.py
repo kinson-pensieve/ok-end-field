@@ -463,6 +463,18 @@ class BaseEfTask(BaseTask):
     def find_f(self):
         return self.find_one("pick_f", vertical_variance=0.05)
 
+    def in_friend_boat(self):
+        return self.wait_ocr(match=re.compile("离开"), box=self.box.top_left)
+
+    def ensure_in_friend_boat(self):
+        start_time = time.time()
+        while True:
+            if time.time() - start_time > 30:
+                self.log_info("进入好友帝江号超时")
+                return False
+            if self.in_friend_boat():
+                return True
+
     def ensure_main(self, esc=True, time_out=30, after_sleep=2):
         self.info_set("current task", f"wait main esc={esc}")
         if not self.wait_until(

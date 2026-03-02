@@ -32,6 +32,8 @@ class FeatureList(str, Enum):
     market_dispatch_terminal = 'market_dispatch_terminal'
     market_dispatch_terminal_out = 'market_dispatch_terminal_out'
     market_good_icon = 'market_good_icon'
+    market_minus_button = 'market_minus_button'
+    market_plus_button = 'market_plus_button'
     minerals_icon = 'minerals_icon'
     monthly_card = 'monthly_card'
     one_click_claim = 'one_click_claim'
