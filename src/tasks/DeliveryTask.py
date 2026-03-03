@@ -100,8 +100,10 @@ class DeliveryTask(BaseEfTask):
             ratio: [[x1, y1, x2, y2] for (x1, x2) in x_ranges]
             for ratio, (y1, y2) in screen_scale_y1_y2.items()
         }
-
-        area = screen_scale_areas[self.width / self.height]
+        ratio = self.width / self.height
+        area = screen_scale_areas.get(ratio)
+        if area is None:
+            raise ValueError(f"不支持的屏幕比例: {ratio}")
         # === 区域定义 ===
         left_box = self.box_of_screen(area[0][0], area[0][1], area[0][2], area[0][3])
         right_box = self.box_of_screen(area[1][0], area[1][1], area[1][2], area[1][3])

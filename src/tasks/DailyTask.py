@@ -3,14 +3,10 @@ import time
 from enum import Enum
 from dataclasses import dataclass
 from typing import List, Optional
-
 from qfluentwidgets import FluentIcon
-
 from ok import Box
-
 from src.tasks.BaseEfTask import BaseEfTask
 from src.interaction.ScreenPosition import ScreenPosition
-
 from src.data.characters import all_list
 from src.data.world_map import (
     areas_list,
@@ -22,7 +18,6 @@ from src.data.world_map_utils import (
     get_area_by_outpost_name,
     get_goods_by_outpost_name,
 )
-
 from src.data.FeatureList import FeatureList as fL
 from src.image.hsv_config import HSVRange as hR
 
@@ -1232,15 +1227,16 @@ class DailyTask(BaseEfTask):
                 self.log_info("未找到货物")
                 continue
             self.click(result, after_sleep=2)
-            good_infos, market_text_y = self.get_goods_piece()
+            good_infos,_= self.get_goods_piece()
             buy_price = self.config.get(f"{area}买入价", 0)
             sell_price = self.config.get(f"{area}卖出价", 0)
-            if not (buy_price and sell_price and market_text_y):
+            if not (buy_price and sell_price):
                 self.log_info("未找到买入价或卖出价")
                 continue
             buy_good, sell_goods, can_buy = self.azalyze_goods_piece(
                 good_infos, buy_price, sell_price
             )
+            puls_minus_box = self.box_of_screen(0.36, 0.6630, 0.592, 0.8019)
             if buy_good:
                 if not can_buy:
                     if self.wait_ocr(
@@ -1250,9 +1246,9 @@ class DailyTask(BaseEfTask):
                     ):
                         can_buy = True
                 if can_buy:
-                    self.click(buy_good.name_box, after_sleep=1)
-                    plus_button = self.find_feature(fL.market_plus_button)
-                    minus_button = self.find_feature(fL.market_minus_button)
+                    self.click(buy_good.name_box, after_sleep=2)
+                    plus_button = self.find_feature(fL.market_plus_button,box=puls_minus_box)
+                    minus_button = self.find_feature(fL.market_minus_button,box=puls_minus_box)
                     if plus_button:
                         self.click(plus_button, down_time=12)
                         self.wait_click_ocr(
@@ -1269,9 +1265,10 @@ class DailyTask(BaseEfTask):
                             time_out=1,
                         ):
                             self.back(after_sleep=0.5)
-            change_y = False
             for sell_good in sell_goods:
-                self.click(sell_good.name_box, after_sleep=1)
+                if not (self.wait_click_ocr(match=re.compile(sell_good.name_box.name[-3:]),after_sleep=2) or self.wait_click_ocr(match=re.compile(sell_good.good_name[:3]),after_sleep=2)):
+                    self.log_info("未找到卖出货物，无法出售")
+                    continue
                 self.wait_click_ocr(
                     match=re.compile("查看好友价格"),
                     box=self.box.bottom_right,
@@ -1290,23 +1287,12 @@ class DailyTask(BaseEfTask):
                     self.log_info("未进入好友船")
                     return False
                 self.to_friend_exchange()
-                if not change_y:
-                    market_text = self.wait_ocr(
-                        match=re.compile("市场"), box=self.box.left
-                    )
-                    if market_text:
-                        market_text_after_y = market_text[0].y
-                        for i in range(len(sell_goods)):
-                            sell_goods[i].name_box.y += (
-                                market_text_after_y - market_text_y
-                            )
-                        change_y = True
                 self.wait_click_ocr(match=re.compile(area), box=self.box.top, after_sleep=2)
                 if not (self.wait_click_ocr(match=re.compile(sell_good.name_box.name[-3:]),after_sleep=2) or self.wait_click_ocr(match=re.compile(sell_good.good_name[:3]),after_sleep=2)):
                     self.log_info("未找到卖出货物，无法出售")
                     continue
-                plus_button = self.find_feature(fL.market_plus_button)
-                minus_button = self.find_feature(fL.market_minus_button)
+                plus_button = self.find_feature(fL.market_plus_button,box=puls_minus_box)
+                minus_button = self.find_feature(fL.market_minus_button,box=puls_minus_box)
                 if plus_button:
                     self.click(plus_button, down_time=12)
                     self.wait_click_ocr(
