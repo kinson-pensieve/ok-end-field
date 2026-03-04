@@ -12,8 +12,6 @@ from qfluentwidgets import (
 
 from ok import Config
 from ok.gui.widget.CustomTab import CustomTab
-from src.tasks.TaskAccessMixin import TaskAccessMixin
-from src.scheduler import TaskSchedulerHelper
 
 
 class TaskWorker(QThread):
