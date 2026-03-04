@@ -122,7 +122,6 @@ config = {
         ["src.tasks.DeliveryTask", "DeliveryTask"],
         ["src.tasks.EssenceScanTask", "EssenceScanTask"],
         ["src.tasks.Test", "Test"],
-        # ["src.tasks.BuySellTask", "BuySellTask"],
         ["ok.task.DiagnosisTask", "DiagnosisTask"],
     ],
     "trigger_tasks": [  # 不断执行的触发式任务
@@ -130,5 +129,8 @@ config = {
         ["src.tasks.AutoSkipDialogTask", "AutoSkipDialogTask"],
         ["src.tasks.AutoPickTask", "AutoPickTask"],
         ["src.tasks.AutoLoginTask", "AutoLoginTask"],
+    ],
+    "custom_tabs": [  # 自定义侧边栏页面
+        ["src.ui.MyTab", "TaskSchedulerTab"],
     ],
 }

@@ -4,7 +4,6 @@ from qfluentwidgets import FluentIcon
 
 from src.data.world_map import item_to_warehouse_dict
 from src.data.zh_en import ITEM_WAREHOUSE_CATEGORY_EN_BY_ZH,ITEM_TRANSLATION_DICT
-from src.interaction.ScreenPosition import ScreenPosition as sR
 from src.tasks.BaseEfTask import BaseEfTask
 
 _LOCATIONS = {
@@ -109,7 +108,7 @@ class WarehouseTransferTask(BaseEfTask):
         for _ in range(50):
             self.next_frame()
             hits = self.ocr(
-                box=sR.bottom_right,
+                box=self.box.bottom_right,
                 match=re.compile(r"已连接"),
             )
             if hits:
