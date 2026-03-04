@@ -183,11 +183,16 @@ class VersionManager:
             
             cmd = ['git', 'tag', '-a', tag, '-m', message]
             
-            subprocess.run(cmd, check=True)
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            if result.returncode != 0:
+                error_msg = result.stderr.strip() if result.stderr else "未知错误"
+                print(f"✗ 创建标签失败: {error_msg}")
+                return False
+            
             print(f"✓ 成功创建标签: {tag}")
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"✗ 创建标签失败: {e}")
+        except Exception as e:
+            print(f"✗ 创建标签异常: {e}")
             return False
     
     def push_tag(self, tag: str) -> bool:
@@ -200,11 +205,16 @@ class VersionManager:
             是否成功
         """
         try:
-            subprocess.run(['git', 'push', 'origin', tag], check=True)
+            result = subprocess.run(['git', 'push', 'origin', tag], capture_output=True, text=True)
+            if result.returncode != 0:
+                error_msg = result.stderr.strip() if result.stderr else "未知错误"
+                print(f"✗ 推送标签失败: {error_msg}")
+                return False
+            
             print(f"✓ 成功推送标签到远程: {tag}")
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"✗ 推送标签失败: {e}")
+        except Exception as e:
+            print(f"✗ 推送标签异常: {e}")
             return False
     
     def run(self, dry_run: bool = False) -> bool:

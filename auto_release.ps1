@@ -270,11 +270,6 @@ if (-not (New-GitTag $nextTag)) {
     exit 1
 }
 
-# 7. 创建标签
-if (-not (New-GitTag $nextTag)) {
-    exit 1
-}
-
 # 8. 推送标签
 if (-not (Push-GitTag $nextTag)) {
     Write-Host "⚠ 标签已创建但推送失败，可手动执行：" -ForegroundColor Yellow
