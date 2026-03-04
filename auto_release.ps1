@@ -141,16 +141,37 @@ function Test-GitStatus {
         Write-Host "⚠ 警告：工作区有未提交的更改" -ForegroundColor Yellow
         Write-Host $status
         $response = Read-Host "是否继续？(y/N)"
-        return $response -eq 'y'
+        return $response -ieq 'y'
     }
     return $true
+}
+
+function Get-LatestCommitMessage {
+    """获取最新commit的提交信息"""
+    try {
+        $message = git log -1 --pretty=%B 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "⚠ 获取commit信息失败，使用默认注释" -ForegroundColor Yellow
+            return "Release"
+        }
+        return $message.Trim()
+    }
+    catch {
+        Write-Host "⚠ 获取commit信息异常，使用默认注释" -ForegroundColor Yellow
+        return "Release"
+    }
 }
 
 function New-GitTag {
     param(
         [string]$tag,
-        [string]$message = "Release $tag"
+        [string]$message = ""
     )
+    
+    # 如果没有提供message，获取最新commit的信息
+    if ([string]::IsNullOrWhiteSpace($message)) {
+        $message = Get-LatestCommitMessage
+    }
     
     try {
         git tag -a $tag -m $message 2>&1 | Out-Null
@@ -223,17 +244,38 @@ if (-not (Test-GitStatus)) {
 # 5. 确认操作
 Write-Host "即将创建并推送标签: $nextTag" -ForegroundColor Yellow
 $response = Read-Host "确认继续？(Y/n)"
-if ($response -eq 'n') {
+if ($response -ieq 'n') {
     Write-Host "✗ 操作已取消" -ForegroundColor Red
     exit 1
 }
 
-# 6. 创建标签
+# 6. 先推送最新commit
+Write-Host ""
+Write-Host "⟳ 正在推送最新commit到远程..." -ForegroundColor Cyan
+try {
+    git push 2>&1 | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "✗ 推送commit失败" -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "✓ 成功推送最新commit" -ForegroundColor Green
+}
+catch {
+    Write-Host "✗ 推送commit异常: $_" -ForegroundColor Red
+    exit 1
+}
+
+# 7. 创建标签
 if (-not (New-GitTag $nextTag)) {
     exit 1
 }
 
-# 7. 推送标签
+# 7. 创建标签
+if (-not (New-GitTag $nextTag)) {
+    exit 1
+}
+
+# 8. 推送标签
 if (-not (Push-GitTag $nextTag)) {
     Write-Host "⚠ 标签已创建但推送失败，可手动执行：" -ForegroundColor Yellow
     Write-Host "   git push origin $nextTag"

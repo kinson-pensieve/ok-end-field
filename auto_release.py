@@ -47,16 +47,16 @@ class VersionManager:
             return []
     
     def parse_version(self, tag: str) -> Optional[Tuple[int, int, int]]:
-        """解析版本号
+        """解析版本号（大小写不敏感）
         
         Args:
-            tag: 标签名称，如 "v1.2.3"
+            tag: 标签名称，如 "v1.2.3" 或 "V1.2.3"
         
         Returns:
             (major, minor, patch) 或 None（如果解析失败）
         """
-        # 匹配 vx.x.x 格式
-        match = re.match(r'^v(\d+)\.(\d+)\.(\d+)$', tag)
+        # 大小写不敏感的匹配
+        match = re.match(r'^v(\d+)\.(\d+)\.(\d+)$', tag, re.IGNORECASE)
         if match:
             major, minor, patch = map(int, match.groups())
             # 验证版本号是否在有效范围内
@@ -140,29 +140,48 @@ class VersionManager:
             if result.stdout.strip():
                 print("⚠ 警告：工作区有未提交的更改")
                 print(result.stdout)
-                response = input("是否继续？(y/N): ")
-                return response.lower() == 'y'
+                response = input("是否继续？(y/N): ").strip().lower()
+                return response == 'y'
             return True
         except subprocess.CalledProcessError as e:
             print(f"✗ 检查 git 状态失败: {e}")
             return False
+    
+    def get_latest_commit_message(self) -> str:
+        """获取最新commit的提交信息
+        
+        Returns:
+            str: 最新commit的提交信息，如果失败返回 "Release"
+        """
+        try:
+            result = subprocess.run(
+                ['git', 'log', '-1', '--pretty=%B'],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            message = result.stdout.strip()
+            return message if message else "Release"
+        except Exception as e:
+            self.logger.warning(f"获取commit信息失败: {e}，使用默认注释")
+            return "Release"
     
     def create_tag(self, tag: str, message: str = None) -> bool:
         """创建 git tag
         
         Args:
             tag: 标签名称
-            message: 标签描述（可选）
+            message: 标签描述（可选，如果为空则使用最新commit信息）
         
         Returns:
             是否成功
         """
         try:
-            cmd = ['git', 'tag', '-a', tag]
-            if message:
-                cmd.extend(['-m', message])
-            else:
-                cmd.extend(['-m', f'Release {tag}'])
+            # 如果没有提供message，获取最新commit的信息
+            if not message:
+                message = self.get_latest_commit_message()
+            
+            cmd = ['git', 'tag', '-a', tag, '-m', message]
             
             subprocess.run(cmd, check=True)
             print(f"✓ 成功创建标签: {tag}")
@@ -237,16 +256,29 @@ class VersionManager:
         
         # 5. 确认操作
         print(f"即将创建并推送标签: {next_tag}")
-        response = input("确认继续？(Y/n): ")
-        if response.lower() == 'n':
+        response = input("确认继续？(Y/n): ").strip().lower()
+        if response == 'n':
             print("✗ 操作已取消")
             return False
         
-        # 6. 创建标签
+        # 6. 先推送最新commit
+        print()
+        print("⟳ 正在推送最新commit到远程...")
+        try:
+            result = subprocess.run(['git', 'push'], capture_output=True, text=True, check=True)
+            print("✓ 成功推送最新commit")
+        except subprocess.CalledProcessError as e:
+            print(f"✗ 推送commit失败: {e.stderr if e.stderr else '未知错误'}")
+            return False
+        except Exception as e:
+            print(f"✗ 推送commit异常: {e}")
+            return False
+        
+        # 7. 创建标签
         if not self.create_tag(next_tag):
             return False
         
-        # 7. 推送标签
+        # 8. 推送标签
         if not self.push_tag(next_tag):
             print("⚠ 标签已创建但推送失败，可手动执行：")
             print(f"   git push origin {next_tag}")
