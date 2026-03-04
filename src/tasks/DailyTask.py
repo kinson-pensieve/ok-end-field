@@ -212,11 +212,14 @@ class DailyTask(BaseEfTask):
         is_first_time = True
         exchange_help_box = self.box_of_screen(0.1, 561 / 861, 0.9, 0.9)  # 交流/助力按钮主要出现区域
         exchange_not_found = False
+        count=0
         while True:
+            if count>=10:
+                self.log_info("循环过多次仍未找到交流或助力对象，可能出现异常，结束拜访")
+                return False
             if is_first_time:
                 self.wait_click_ocr(match=re.compile("好友"), box=self.box.right, time_out=5, after_sleep=2)
             else:
-                self.send_key("f", after_sleep=2)
                 if left_exchange_time <= 0 and left_help_time <= 0:
                     self.wait_click_ocr(match=re.compile("结束拜访"), box=self.box.bottom_right, time_out=5, after_sleep=2)
                     self.log_info("交流和助力次数已完成，结束拜访")
@@ -301,8 +304,10 @@ class DailyTask(BaseEfTask):
                                     self.wait_pop_up(after_sleep=2)
                                 left_help_time -= 1
                                 help_time += 1
-            self.back(after_sleep=2)
+            while not self.wait_click_ocr(match=re.compile("选择拜访"), box=self.box.top_left, time_out=1):
+                self.back(after_sleep=2)
             is_first_time = False
+            count += 1
 
     def claim_delivery_rewards(self):
         """领取“我转交的委托”奖励。"""
