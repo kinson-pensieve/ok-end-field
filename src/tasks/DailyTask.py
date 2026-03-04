@@ -1482,7 +1482,7 @@ class DailyTask(BaseEfTask):
             self.wait_click_ocr(match=re.compile("确认"), time_out=4, box=self.box.bottom,after_sleep=2)
             if self.wait_click_ocr(match=re.compile("收集"), time_out=4, box=self.box.right,after_sleep=2):
                 self.logger.info("点击收集线索")
-                self.wait_click_ocr(match=re.compile("领取"), time_out=4, box=self.box.right,after_sleep=2)
+                self.wait_click_ocr(match="领取", time_out=4, box=self.box.bottom_right,after_sleep=2)
                 self.back(after_sleep=1)
 
             if self.wait_click_ocr(match=re.compile("接收"), time_out=4, box=self.box.right,after_sleep=2):
