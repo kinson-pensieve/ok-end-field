@@ -131,6 +131,6 @@ config = {
         ["src.tasks.AutoLoginTask", "AutoLoginTask"],
     ],
     "custom_tabs": [  # 自定义侧边栏页面
-        ["src.ui.MyTab", "TaskSchedulerTab"],
+        ["src.ui.TaskSchedulerTab", "TaskSchedulerTab"],  # 任务计划管理
     ],
 }

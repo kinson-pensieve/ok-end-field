@@ -13,7 +13,6 @@
     success, msg = helper.create_scheduled_task(...)
 """
 
-from src.scheduler.task_helper import TaskSchedulerHelper
 
 __all__ = ['TaskSchedulerHelper']
 

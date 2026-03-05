@@ -160,7 +160,7 @@ class DailyTask(BaseEfTask):
 
     def execute_task(self, key, func):
         """统一执行单个子任务。
-
+ 
         Args:
             key: 任务配置键（字符串时会检查是否启用）
             func: 任务执行函数

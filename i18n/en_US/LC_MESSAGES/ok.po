@@ -379,3 +379,216 @@ msgstr "Amethyst Ore"
 
 msgid "item_xiranite_powder"
 msgstr "Xiranite"
+
+msgid "Task Schedule"
+msgstr "Task Schedule"
+
+msgid "Task Name"
+msgstr "Task Name"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Trigger Type"
+msgstr "Trigger Type"
+
+msgid "Next Run"
+msgstr "Next Run"
+
+msgid "Enabled"
+msgstr "Enabled"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Modify"
+msgstr "Modify"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Create Schedule Task"
+msgstr "Create Schedule Task"
+
+msgid "Select Task"
+msgstr "Select Task"
+
+msgid "No tasks available"
+msgstr "No tasks available"
+
+msgid "Hour"
+msgstr "Hour"
+
+msgid "Minute"
+msgstr "Minute"
+
+msgid "24h"
+msgstr "24h"
+
+msgid "Timeout"
+msgstr "Timeout"
+
+msgid "hours (0 = unlimited)"
+msgstr "hours (0 = unlimited)"
+
+msgid "Auto exit after task done (-e)"
+msgstr "Auto exit after task done (-e)"
+
+msgid "Startup Options"
+msgstr "Startup Options"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Modify Schedule Task"
+msgstr "Modify Schedule Task"
+
+msgid "Task Index (-t)"
+msgstr "Task Index (-t)"
+
+msgid "Start Time"
+msgstr "Start Time"
+
+msgid "Refresh"
+msgstr "Refresh"
+
+msgid "Create Task"
+msgstr "Create Task"
+
+msgid "Schedule Tasks"
+msgstr "Schedule Tasks"
+
+msgid "Task deleted successfully"
+msgstr "Task deleted successfully"
+
+msgid "Failed to delete task"
+msgstr "Failed to delete task"
+
+msgid "Task enabled"
+msgstr "Task enabled"
+
+msgid "Task disabled"
+msgstr "Task disabled"
+
+msgid "Failed to toggle task"
+msgstr "Failed to toggle task"
+
+msgid "Success"
+msgstr "Success"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Tasks refreshed"
+msgstr "Tasks refreshed"
+
+msgid "Refresh failed"
+msgstr "Refresh failed"
+
+msgid "Task not found in cache"
+msgstr "Task not found in cache"
+
+msgid "Failed to open modify dialog"
+msgstr "Failed to open modify dialog"
+
+msgid "Task modified successfully"
+msgstr "Task modified successfully"
+
+msgid "Failed to modify task"
+msgstr "Failed to modify task"
+
+msgid "Failed to modify task: cannot delete old task"
+msgstr "Failed to modify task: cannot delete old task"
+
+msgid "Task created successfully"
+msgstr "Task created successfully"
+
+msgid "Failed to create task"
+msgstr "Failed to create task"
+
+msgid "Delete Task"
+msgstr "Delete Task"
+
+msgid "Are you sure you want to delete task"
+msgstr "Are you sure you want to delete task"
+
+msgid "日常任务"
+msgstr "Daily Tasks"
+
+msgid "一键收菜"
+msgstr "One-click Farming"
+
+msgid "运送委托接取"
+msgstr "Auto Accept Delivery Orders"
+
+msgid "自动抢单"
+msgstr "Auto Accept Orders"
+
+msgid "仓库物品转移"
+msgstr "Warehouse Item Transfer"
+
+msgid "从发货仓库取出指定物品，切到收货仓库后一键存放 （目前只支持中文版）"
+msgstr "Transfer specified items from warehouse to another warehouse (Chinese only)"
+
+msgid "自动送货"
+msgstr "Auto Delivery"
+
+msgid "仅武陵7.31w送货,教程视频 BV1LLc7zFEF9"
+msgstr "Only supports Wuling 7.31w delivery, tutorial video BV1LLc7zFEF9"
+
+msgid "毕业基质识别"
+msgstr "Weapon Essence Recognition"
+
+msgid "遍历武器基质列表，匹配 weapon_data.csv 并处理毕业基质上锁"
+msgstr "Traverse weapon essence list, match weapon_data.csv and handle essence locking"
+
+msgid "测试"
+msgstr "Test"
+
+msgid "自动跳过剧情"
+msgstr "Auto Skip Dialog"
+
+msgid "自动拾取"
+msgstr "Auto Pick"
+
+msgid "大世界自动拾取"
+msgstr "Auto pick in open world"
+
+msgid "自动登录"
+msgstr "Auto Login"
+
+msgid "自动登录领月卡"
+msgstr "Auto login to claim monthly card"
+
+msgid "自动战斗"
+msgstr "Auto Combat"
+
+msgid "自动战斗(进入战斗后自动战斗直到结束)"
+msgstr "Auto combat (auto combat until battle ends)"
+
+msgid "Daily"
+msgstr "Daily"
+
+msgid "Weekly"
+msgstr "Weekly"
+
+msgid "Monthly"
+msgstr "Monthly"
+
+msgid "Once"
+msgstr "Once"
+
+msgid "Ready"
+msgstr "Ready"
+
+msgid "Running"
+msgstr "Running"
+
+msgid "Disabled"
+msgstr "Disabled"
+
+msgid "Unknown"
+msgstr "Unknown"

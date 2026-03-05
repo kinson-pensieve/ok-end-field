@@ -335,3 +335,240 @@ msgstr "紫晶矿"
 
 msgid "item_xiranite_powder"
 msgstr "息壤"
+
+msgid "Task Schedule"
+msgstr "计划任务"
+
+msgid "Task Name"
+msgstr "任务名称"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Trigger Type"
+msgstr "触发类型"
+
+msgid "Next Run"
+msgstr "下次运行"
+
+msgid "Enabled"
+msgstr "启用"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "Modify"
+msgstr "修改"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Create Schedule Task"
+msgstr "创建计划任务"
+
+msgid "Select Task"
+msgstr "选择任务"
+
+msgid "No tasks available"
+msgstr "没有可用任务"
+
+msgid "Hour"
+msgstr "小时"
+
+msgid "Minute"
+msgstr "分钟"
+
+msgid "24h"
+msgstr "24小时"
+
+msgid "Timeout"
+msgstr "超时"
+
+msgid "hours (0 = unlimited)"
+msgstr "小时 (0 = 无限制)"
+
+msgid "Auto exit after task done (-e)"
+msgstr "任务完成后自动退出 (-e)"
+
+msgid "Startup Options"
+msgstr "启动选项"
+
+msgid "Create"
+msgstr "创建"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Modify Schedule Task"
+msgstr "修改计划任务"
+
+msgid "Task Index (-t)"
+msgstr "任务索引 (-t)"
+
+msgid "Start Time"
+msgstr "开始时间"
+
+msgid "Refresh"
+msgstr "刷新"
+
+msgid "Create Task"
+msgstr "创建任务"
+
+msgid "Schedule Tasks"
+msgstr "计划任务"
+
+msgid "Task deleted successfully"
+msgstr "任务删除成功"
+
+msgid "Failed to delete task"
+msgstr "任务删除失败"
+
+msgid "Task enabled"
+msgstr "任务已启用"
+
+msgid "Task disabled"
+msgstr "任务已禁用"
+
+msgid "Failed to toggle task"
+msgstr "切换任务状态失败"
+
+msgid "Success"
+msgstr "成功"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Tasks refreshed"
+msgstr "任务已刷新"
+
+msgid "Refresh failed"
+msgstr "刷新失败"
+
+msgid "Task not found in cache"
+msgstr "任务不在缓存中"
+
+msgid "Failed to open modify dialog"
+msgstr "打开修改对话框失败"
+
+msgid "Task modified successfully"
+msgstr "任务修改成功"
+
+msgid "Failed to modify task"
+msgstr "任务修改失败"
+
+msgid "Failed to modify task: cannot delete old task"
+msgstr "任务修改失败：无法删除旧任务"
+
+msgid "Task created successfully"
+msgstr "任务创建成功"
+
+msgid "Failed to create task"
+msgstr "任务创建失败"
+
+msgid "Delete Task"
+msgstr "删除任务"
+
+msgid "Are you sure you want to delete task"
+msgstr "确定要删除任务"
+
+msgid "日常任务"
+msgstr "日常任务"
+
+msgid "一键收菜"
+msgstr "一键收菜"
+
+msgid "运送委托接取"
+msgstr "运送委托接取"
+
+msgid "自动抢单"
+msgstr "自动抢单"
+
+msgid "仓库物品转移"
+msgstr "仓库物品转移"
+
+msgid "从发货仓库取出指定物品，切到收货仓库后一键存放 （目前只支持中文版）"
+msgstr "从发货仓库取出指定物品，切到收货仓库后一键存放 （目前只支持中文版）"
+
+msgid "自动送货"
+msgstr "自动送货"
+
+msgid "仅武陵7.31w送货,教程视频 BV1LLc7zFEF9"
+msgstr "仅武陵7.31w送货,教程视频 BV1LLc7zFEF9"
+
+msgid "毕业基质识别"
+msgstr "毕业基质识别"
+
+msgid "遍历武器基质列表，匹配 weapon_data.csv 并处理毕业基质上锁"
+msgstr "遍历武器基质列表，匹配 weapon_data.csv 并处理毕业基质上锁"
+
+msgid "测试"
+msgstr "测试"
+
+msgid "自动跳过剧情"
+msgstr "自动跳过剧情"
+
+msgid "自动拾取"
+msgstr "自动拾取"
+
+msgid "大世界自动拾取"
+msgstr "大世界自动拾取"
+
+msgid "自动登录"
+msgstr "自动登录"
+
+msgid "自动登录领月卡"
+msgstr "自动登录领月卡"
+
+msgid "自动战斗"
+msgstr "自动战斗"
+
+msgid "自动战斗(进入战斗后自动战斗直到结束)"
+msgstr "自动战斗(进入战斗后自动战斗直到结束)"
+
+msgid "Daily"
+msgstr "每天"
+
+msgid "Weekly"
+msgstr "每周"
+
+msgid "Monthly"
+msgstr "每月"
+
+msgid "Once"
+msgstr "一次"
+
+msgid "Ready"
+msgstr "就绪"
+
+msgid "Running"
+msgstr "运行中"
+
+msgid "Disabled"
+msgstr "已禁用"
+
+msgid "Unknown"
+msgstr "未知"
+
+msgid "Daily"
+msgstr "每天"
+
+msgid "Weekly"
+msgstr "每周"
+
+msgid "Monthly"
+msgstr "每月"
+
+msgid "Once"
+msgstr "一次"
+
+msgid "Ready"
+msgstr "就绪"
+
+msgid "Running"
+msgstr "运行中"
+
+msgid "Disabled"
+msgstr "已禁用"
+
+msgid "Unknown"
+msgstr "未知"
