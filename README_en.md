@@ -56,163 +56,44 @@ According to the official fair-operation statement for End Field:
 * **[Quark Drive](https://pan.quark.cn/s/a1052cec4d13)**: China cloud drive; free but requires account registration and the client.
 
 ## ✨ Features
-<img width="1200" height="2805" src="https://github.com/user-attachments/assets/505044a5-7e9a-449f-98a1-de7502b4a1d9" />
-<img width="1200" height="2505" src="https://github.com/user-attachments/assets/543d375a-e8d3-4c09-a310-800b872f42fa" />
 
-### 🥬 Daily Task Bundle
-One-click daily workflow with modular switches and independent config.
+<img width="3200" height="2053" src="https://github.com/user-attachments/assets/880024c6-37f9-403d-9c07-c9320ae41173" />
+<img width="3200" height="2053" src="https://github.com/user-attachments/assets/1423fce6-ba09-49cb-b409-90cbbb750ff3" />
+<img width="3200" height="2053" src="https://github.com/user-attachments/assets/67da3017-d6e4-4f46-af77-f406b3d35b92" />
 
-- Gift giving (with max retry count)
-- Outpost exchange
-- Delivery handover
-- Delivery reward claim
-- Weapon crafting
-- Daily reward claim
-- Credit collection
-- Friend support strategy (optionally prioritize cultivation room)
-
----
-
-### 🚚 Auto Delivery
-Auto accept-and-deliver pipeline for Wuling 73.1k commissions.
-
-- Auto recognizes zipline paths and sends goods to targets
-- Supports accept-only / deliver-only modes
-- Optional zoom via scroll for better alignment success
-- Built-in branch test and full-cycle test
-- Customizable route config
-- Tutorial video included
-
----
-
-### 🧾 Delivery Commission Pickup
-Auto scans and picks high-value dispatch commissions.
-
-- Separate toggles for Valley ticket / Wuling ticket
-- Configurable min/max reward range
-- Simultaneous ticket-type + reward recognition
-- Auto refresh when conditions are not met
-
----
-
-### 📦 Warehouse Transfer
-Cross-warehouse batch transfer for selected items.
-
-- Take items from source warehouse
-- Switch to target warehouse and one-click store
-- Supports safety reserve strategy (config-ready)
-- Dropdown selection for warehouse and item
-- OCR + template-based recognition
-
----
-
-### 🔍 Graduation Essence Scanner
-Traverses weapon essence grid, matches graduation affixes, and locks automatically.
-
-- Auto lock qualified essence
-- Optional unlock for non-qualified essence
-- Data-driven matching via `assets/weapon_data.csv`
-- Grid traversal + page scrolling scan
-
----
-
-### 🛒 Auto Pickup
-World interaction auto-pick task.
-
-- Detects interactable targets and picks automatically
-- Built-in whitelist (gatherables/insects/plants, etc.)
-- Blacklist filter to avoid mis-operations
-- Supports background mode
-
----
-
-### ⚔ Auto Combat
-Automatically runs combat skill loop until battle ends.
-
-- Custom skill sequence (e.g., `123`)
-- Trigger threshold for skill points
-- Full-skill cycle release logic
-- Optional background battle-end notification
-- Auto combat-state recognition
-
----
-
-### 🔐 Auto Login
-Auto detects logged-out state and performs login flow.
-
-- Periodic trigger check
-- Automatic login handling
-- Supports monthly-card claim scenarios
-
----
-
-### ⏭ Auto Skip Dialog
-Auto detects dialog/cutscene UI and skips.
-
-- Detects skip button
-- Sends `ESC`
-- Clicks confirm automatically
-- Repeats until dialog is fully closed
-
----
-
-### 🗓 Task Scheduler (Windows Task Scheduler)
-Create and manage timed tasks directly in UI, no manual `schtasks` command needed.
-
-- Supports daily / weekly / monthly triggers
-- Supports timeout and auto-exit settings
-- Supports task sync, enable, disable, delete
-- Auto-generates launch args (e.g., `-t N -e`)
-- Uses local cache to reduce repeated system reads
-
----
-
-## 📋 Capability Overview (by task type)
+## Feature Overview (by task type)
 
 ### One-time tasks (manual click to run)
 
-- Daily Task
-- Delivery Commission Pickup
-- Auto Delivery
-- Warehouse Transfer
-- Graduation Essence Scanner
+- Daily Task (gift giving, outpost exchange, delivery handover, delivery reward claim, weapon crafting, credit collection, clue collection, market trading, daily rewards, etc.)
+- Delivery Commission Pickup (filter by ticket type + reward range, smart scrolling, retry mechanism)
+- Auto Delivery (Wuling 7.31w commission, zipline number recognition navigation)
+- Warehouse Transfer (cross-warehouse batch transfer, min reserve quantity support)
+- Graduation Essence Scanner (traverse weapon essence list, recognize graduation affixes by `assets/weapon_data.csv` and lock)
 
-### Trigger tasks (background loop)
+### Trigger tasks (background loop detection)
 
-- Auto Combat
-- Auto Pickup
-- Auto Login
-- Auto Skip Dialog
+- Auto Combat (skill point threshold triggers skill sequence)
+- Auto Pickup (whitelist pickup + blacklist filter)
+- Auto Login (auto handle logged-out state)
+- Auto Skip Dialog (recognize "skip/confirm" flow)
 
-### Recognition & interaction stack
+### Scheduled tasks (Windows Task Scheduler management)
+- You can select suitable tasks to add to the schedule, Windows will launch them automatically
 
-- OCR: `onnxocr` (OpenVINO optional)
-- Visual matching: COCO template matching
-- Color detection: HSV range isolation + feature detection
-- Input method: keyboard/mouse simulation (no memory injection)
 
----
-
-## ⚙️ Runtime Requirements & Recommendations
+## Runtime Requirements & Recommendations
 
 - OS: Windows
-- Game resolution: 16:9 recommended, minimum 1280×720
+- Game resolution: 16:9 recommended (1920×1080 optimal), minimum 1280×720
 - Language: some features currently support Simplified Chinese only
 - Privilege: run as Administrator recommended (required for source mode)
 - Path: prefer pure-English install/runtime path
+- Frame rate: stable 60 FPS recommended for combat and navigation tasks
 
 ---
 
-## 🗂️ Project Structure Overview
 
-- `src/tasks/`: core task implementations (one-time + trigger)
-- `src/ui/`: custom UI tabs (including task scheduler)
-- `src/scheduler/`: Windows task-scheduler helper modules
-- `src/essence/`: essence recognition and requirement matching
-- `src/data/`: map/character/item and language mapping data
-- `assets/`: templates, OCR assets, weapon data CSV
-- `configs/`: task defaults, UI options, scheduler caches
-- `tests/`: unit and functional tests
 
 
 ## 🔧 Troubleshooting
