@@ -133,19 +133,30 @@ class DailyTask(BaseEfTask):
         ]
         all_fail_tasks = []
         if self.debug:
-            tasks = tasks * repeat_times
-        failed_tasks = []
-        for key, func in tasks:
-            if not self.execute_task(key, func):
-                failed_tasks.append(key)
-        if failed_tasks:
-            if self.debug:
-                all_fail_tasks.append(failed_tasks)
-            self.log_info(f"以下任务未完成或失败: {failed_tasks}", notify=True)
+            for repeat_idx in range(repeat_times):
+                self.log_info(f"开始第 {repeat_idx + 1}/{repeat_times} 轮任务执行")
+                failed_tasks = []
+                for key, func in tasks:
+                    if not self.execute_task(key, func):
+                        failed_tasks.append(key)
+                if failed_tasks:
+                    all_fail_tasks.append((repeat_idx + 1, failed_tasks))
+                    self.log_info(f"第 {repeat_idx + 1} 轮 | 失败任务: {failed_tasks}", notify=True)
+                else:
+                    self.log_info(f"第 {repeat_idx + 1} 轮 | 日常完成!", notify=True)
+            if all_fail_tasks:
+                self.log_info(f"重复测试完成，失败统计: {all_fail_tasks}", notify=True)
+            else:
+                self.log_info("所有重复测试均成功完成!", notify=True)
         else:
-            self.log_info("日常完成!", notify=True)
-        if self.debug and all_fail_tasks:
-            self.log_info(f"所有重复测试的失败任务: {all_fail_tasks}", notify=True)
+            failed_tasks = []
+            for key, func in tasks:
+                if not self.execute_task(key, func):
+                    failed_tasks.append(key)
+            if failed_tasks:
+                self.log_info(f"以下任务未完成或失败: {failed_tasks}", notify=True)
+            else:
+                self.log_info("日常完成!", notify=True)
 
     def execute_task(self, key, func):
         """统一执行单个子任务。
@@ -304,7 +315,11 @@ class DailyTask(BaseEfTask):
                                     self.wait_pop_up(after_sleep=2)
                                 left_help_time -= 1
                                 help_time += 1
+            select_visit_deadline = time.time() + 30
             while not self.wait_click_ocr(match=re.compile("选择拜访"), box=self.box.top_left, time_out=1):
+                if time.time() > select_visit_deadline:
+                    self.log_info("等待 '选择拜访' 超时，结束本轮好友流程")
+                    return False
                 self.back(after_sleep=2)
             is_first_time = False
             count += 1
@@ -874,9 +889,14 @@ class DailyTask(BaseEfTask):
                 self.log_info("未找到确认联络按钮，任务失败")
                 return False
             self.log_info("点击确认联络按钮")
+            wait_disappear_count = 0
             while self.ocr(match=re.compile("干员联络"), box=self.box.top_left):
+                wait_disappear_count += 1
+                if wait_disappear_count >= 200:
+                    self.log_info("等待 '干员联络' 文案消失次数超限，任务失败")
+                    return False
                 self.next_frame()
-                self.sleep(0.1)
+                self.sleep(0.2)
             find_flag = self.align_ocr_or_find_target_to_center(
                 ocr_match_or_feature_name_list=[re.compile("工作"), re.compile("休息")],
                 raise_if_fail=False,
@@ -1018,7 +1038,12 @@ class DailyTask(BaseEfTask):
         if not self.transfer_to_home_point():
             self.log_info("传送失败，无法开始送礼任务")
             return False
+        wait_bridge_disappear_count = 0
         while self.ocr(match="舰桥", box=self.box.left):
+            wait_bridge_disappear_count += 1
+            if wait_bridge_disappear_count >= 120:
+                self.log_info("等待 '舰桥' 文案消失次数超限，送礼任务中断")
+                return False
             self.next_frame()
             self.sleep(0.5)
         self.sleep(10)
@@ -1146,9 +1171,13 @@ class DailyTask(BaseEfTask):
                     "stock_quantity": stock_quantity,
                 }
             )
+            back_to_area_deadline = time.time() + 20
             while not self.wait_ocr(
                 match=re.compile("地区建设"), box=self.box.top_left, time_out=1
             ):
+                if time.time() > back_to_area_deadline:
+                    self.log_info("等待返回 '地区建设' 界面超时，结束当前市场采集")
+                    return sum_good_info, market_text_y
                 self.back(after_sleep=0.5)
 
         return sum_good_info, market_text_y
@@ -1228,9 +1257,13 @@ class DailyTask(BaseEfTask):
         )
 
         # ========= 推荐出售 =========
-        sell_goods = [
-            good for good in processed_goods if good.friend_price > sell_price
-        ]
+        try:
+            sell_goods = [
+                good for good in processed_goods if good.friend_price > sell_price
+            ]
+        except TypeError:
+            self.log_error("好友价格数据异常，无法进行出售分析")
+            sell_goods = []
 
         if sell_goods:
             self.log_info("===== 推荐出售列表 =====")
@@ -1315,6 +1348,18 @@ class DailyTask(BaseEfTask):
                     ):
                         can_buy = True
                 if can_buy:
+                    back_to_area_deadline = time.time() + 20
+                    while not self.wait_ocr(
+                        match=re.compile("地区建设"),
+                        box=self.box.top_left,
+                        time_out=1,
+                    ):
+                        if time.time() > back_to_area_deadline:
+                            self.log_info(
+                                "等待返回 '地区建设' 界面超时，结束买卖货任务"
+                            )
+                            return False
+                        self.back(after_sleep=0.5)
                     self.click(buy_good.name_box, after_sleep=2)
                     plus_button = self.find_feature(fL.market_plus_button,box=puls_minus_box)
                     self.find_feature(fL.market_minus_button, box=puls_minus_box)
@@ -1336,17 +1381,20 @@ class DailyTask(BaseEfTask):
                                 break
                     else:
                         self.log_info("未找到加号按钮，无法购买")
-                        while not self.wait_ocr(
-                            match=re.compile("地区建设"),
-                            box=self.box.top_left,
-                            time_out=1,
-                        ):
-                            self.back(after_sleep=0.5)
+
             for sell_good in sell_goods:
                 if sell_good.stock_quantity <= 0:
                     self.log_info(f"跳过出售 {sell_good.good_name}，存货数量<=0")
                     continue
                 # 名称可能存在 OCR 误差：优先尝试末尾 3 字，再尝试前 3 字进行容错匹配
+                back_to_area_deadline = time.time() + 20
+                while not self.wait_ocr(
+                    match=re.compile("地区建设"), box=self.box.top_left, time_out=1
+                ):
+                    if time.time() > back_to_area_deadline:
+                        self.log_info("等待返回 '地区建设' 界面超时，结束买卖货任务")
+                        return False
+                    self.back(after_sleep=0.5)
                 if not (self.wait_click_ocr(match=re.compile(sell_good.name_box.name[-3:]),after_sleep=2) or self.wait_click_ocr(match=re.compile(sell_good.good_name[:3]),after_sleep=2)):
                     self.log_info("未找到卖出货物，无法出售")
                     continue
@@ -1356,15 +1404,25 @@ class DailyTask(BaseEfTask):
                     after_sleep=2,
                 )
                 self.wait_ui_stable(refresh_interval=1)
-                c_y = (
-                    sell_good.friend_name_box.y + sell_good.friend_name_box.height // 2
-                )
-                c_x = sell_good.friend_name_box.x - int((808 - 737) / 1920 * self.width)
+                try:
+                    c_y = (
+                        sell_good.friend_name_box.y + sell_good.friend_name_box.height // 2
+                    )
+                    c_x = sell_good.friend_name_box.x - int((808 - 737) / 1920 * self.width)
+                except AttributeError:
+                    self.log_info("未找到好友价格，无法出售")
+                    continue
                 self.click(c_x, c_y, after_sleep=1)
+                go_friend_deadline = time.time() + 20
                 while not self.wait_click_ocr(
                         match=re.compile("前往"), box=self.box.center, after_sleep=2
                     ):
+                    if time.time() > go_friend_deadline:
+                        self.log_info("等待 '前往' 按钮超时，跳过该货物出售")
+                        break
                     self.click(c_x, c_y, after_sleep=1)
+                if time.time() > go_friend_deadline:
+                    continue
                 if not self.ensure_in_friend_boat():
                     self.log_info("未进入好友船")
                     return False
@@ -1386,10 +1444,7 @@ class DailyTask(BaseEfTask):
                     self.wait_pop_up(after_sleep=2)
                 else:
                     self.log_info("未找到加号按钮，无法出售")
-                    while not self.wait_ocr(
-                        match=re.compile("地区建设"), box=self.box.top_left, time_out=1
-                    ):
-                        self.back(after_sleep=0.5)
+
         return True
 
     def navigate_until_target(
@@ -1491,10 +1546,14 @@ class DailyTask(BaseEfTask):
                 self.logger.info("点击收集线索")
                 self.wait_click_ocr(match="领取", time_out=4, box=self.box.bottom_right,after_sleep=2)
                 self.back(after_sleep=1)
+            else:
+                self.logger.info("未找到收集线索按钮")
 
             if self.wait_click_ocr(match=re.compile("接收"), time_out=4, box=self.box.right,after_sleep=2):
                 self.wait_click_ocr(match=re.compile("全部接收"), time_out=4, box=self.box.right,after_sleep=2)
                 self.back(after_sleep=2)
+            else:
+                self.logger.info("未找到接收按钮")
             results = []
 
             search_box = self.box_of_screen(
@@ -1519,3 +1578,8 @@ class DailyTask(BaseEfTask):
                     self.back(after_sleep=2)
             if self.wait_click_ocr(match=re.compile("开展交流"), time_out=4, box=self.box.bottom,after_sleep=1):
                 self.wait_pop_up()
+            self.log_info("收集线索任务完成")
+            return True
+        else:
+            self.logger.info("未找到会客室，无法收集线索")
+            return False
