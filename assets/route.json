@@ -1,0 +1,3232 @@
+[
+  {
+    "id": "4c4001ca",
+    "name": "军械库",
+    "type": "采集物",
+    "area": "谷地通道",
+    "teleport": "通道入口",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 66
+          },
+          {
+            "distance": 108,
+            "angle_x": -20
+          },
+          {
+            "distance": 53
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -90,
+            "key": "w",
+            "duration": 0.8,
+            "after_sleep": 10
+          },
+          {
+            "key": "f",
+            "duration": 0.2
+          },
+          {
+            "key": "d",
+            "duration": 0.4,
+            "after_sleep": 10
+          },
+          {
+            "key": "f",
+            "duration": 0.2
+          },
+          {
+            "key": "d",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 1,
+            "after_sleep": 10
+          },
+          {
+            "key": "f",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 0.53,
+            "after_sleep": 10
+          },
+          {
+            "key": "f",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 0.38,
+            "after_sleep": 10
+          },
+          {
+            "key": "f",
+            "duration": 0.2
+          },
+          {
+            "key": "a",
+            "duration": 0.18,
+            "after_sleep": 10
+          },
+          {
+            "key": "f",
+            "duration": 0.2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "82e20bb1",
+    "name": "废弃小径",
+    "type": "资源回收站",
+    "area": "谷地通道",
+    "teleport": "通道入口",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 66
+          },
+          {
+            "distance": 68
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.5
+          },
+          {
+            "key": "a",
+            "duration": 0.4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2aaff547",
+    "name": "岩丘通道北",
+    "type": "采集物",
+    "area": "枢纽区",
+    "teleport": "岩丘通道",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 73
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 2.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 2
+          },
+          {
+            "key": "a",
+            "duration": 0.4
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "88382479",
+    "name": "岩丘通道",
+    "type": "采集物",
+    "area": "枢纽区",
+    "teleport": "岩丘通道",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 73,
+            "angle_x": 100.0,
+            "angle_y": -80.0
+          },
+          {
+            "distance": 72,
+            "angle_x": 110.0,
+            "angle_y": 110.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.8
+          },
+          {
+            "key": "f",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 1.1
+          },
+          {
+            "key": "f",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 2.0
+          },
+          {
+            "key": "f",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "485b26f0",
+    "name": "岩丘通道",
+    "type": "矿物",
+    "area": "枢纽区",
+    "teleport": "岩丘通道",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 73,
+            "angle_x": 100.0,
+            "angle_y": -80.0
+          },
+          {
+            "distance": 72,
+            "angle_x": 110.0,
+            "angle_y": 110.0
+          },
+          {
+            "distance": 55,
+            "angle_x": 40.0,
+            "angle_y": -15.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "angle_x": -130.0,
+            "angle_y": 0.0,
+            "key": "w",
+            "duration": 1.5,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "angle_x": 90.0,
+            "angle_y": 0.0,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "w",
+            "duration": 1.3,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2ccb4aac",
+    "name": "桥头工事南",
+    "type": "采集物",
+    "area": "枢纽区",
+    "teleport": "枢纽基地电站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 110,
+            "angle_x": -130.0
+          },
+          {
+            "distance": 87,
+            "angle_x": -20.0,
+            "angle_y": -10.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 0.9
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 1.0,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "d",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5942e5a6",
+    "name": "枢纽基地电站",
+    "type": "资源回收站",
+    "area": "枢纽区",
+    "teleport": "枢纽基地电站",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 3.7
+          },
+          {
+            "key": "w",
+            "duration": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "679d7f4e",
+    "name": "源石副产物中心",
+    "type": "矿物",
+    "area": "枢纽区",
+    "teleport": "源石副产物中心",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.9
+          },
+          {
+            "key": "a",
+            "duration": 1.4
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 72,
+            "angle_x": 150.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "angle_x": 90.0,
+            "angle_y": 0.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "w",
+            "duration": 0.3
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "50506eae",
+    "name": "源石副产物中心",
+    "type": "资源回收站",
+    "area": "枢纽区",
+    "teleport": "源石副产物中心",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.9
+          },
+          {
+            "key": "a",
+            "duration": 1.4
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 64,
+            "angle_x": 60.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218fbc09",
+    "name": "边缘林地",
+    "type": "矿物",
+    "area": "枢纽区",
+    "teleport": "枢纽基地电站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 61,
+            "angle_x": 50.0
+          },
+          {
+            "distance": 109,
+            "angle_x": 40.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 110.0,
+            "angle_y": 0.0,
+            "key": "w",
+            "duration": 1.0,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "w",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "a",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "w",
+            "duration": 2.0,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "e0459384",
+    "name": "枢纽基地电站南",
+    "type": "采集物",
+    "area": "枢纽区",
+    "teleport": "枢纽基地电站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 61
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "d",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "d",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 0.4,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "s",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 1.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 0.4,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.6,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 2,
+            "after_sleep": 1.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fe740145",
+    "name": "旧供水设施南",
+    "type": "采集物",
+    "area": "枢纽区",
+    "teleport": "枢纽基地电站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 69,
+            "angle_x": 120.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 1.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.3,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 1.3
+          },
+          {
+            "key": "a",
+            "duration": 0.2
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ada3fd4a",
+    "name": "南部草甸",
+    "type": "采集物",
+    "area": "枢纽区",
+    "teleport": "南部草甸",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 28,
+            "angle_x": 180.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.3
+          },
+          {
+            "key": "a",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 3,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 2,
+            "after_sleep": 1.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c3673b68",
+    "name": "枢纽基地区",
+    "type": "资源回收站",
+    "area": "枢纽区",
+    "teleport": "枢纽基地区",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 108
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "3471a9e3",
+    "name": "工人休息站",
+    "type": "资源回收站",
+    "area": "阿伯莉采石场",
+    "teleport": "存料区",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1
+          },
+          {
+            "key": "d",
+            "duration": 1.7
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 108,
+            "angle_y": -10.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -90.0,
+            "angle_y": 0.0,
+            "key": "w",
+            "duration": 3.0
+          },
+          {
+            "key": "a",
+            "duration": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "975a7eee",
+    "name": "采石场入口",
+    "type": "采集物",
+    "area": "阿伯莉采石场",
+    "teleport": "存料区",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1
+          },
+          {
+            "key": "d",
+            "duration": 1.7
+          },
+          {
+            "angle_x": -160.33
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 107,
+            "angle_x": 180.0
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 2.5
+          },
+          {
+            "key": "w",
+            "duration": 0.3
+          },
+          {
+            "key": "space",
+            "duration": 0.5,
+            "count": 2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "space",
+            "duration": 0.5,
+            "count": 3,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "space",
+            "duration": 0.5,
+            "count": 2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "space",
+            "duration": 0.5,
+            "count": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f210830d",
+    "name": "废料堆放区北",
+    "type": "采集物",
+    "area": "阿伯莉采石场",
+    "teleport": "存料区",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1
+          },
+          {
+            "key": "d",
+            "duration": 1.7
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 90,
+            "angle_x": 90.0
+          },
+          {
+            "distance": 91
+          },
+          {
+            "distance": 62
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 1.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 3,
+            "after_sleep": 1.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f76fd3ba",
+    "name": "废料堆放区南",
+    "type": "采集物",
+    "area": "阿伯莉采石场",
+    "teleport": "存料区",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1
+          },
+          {
+            "key": "d",
+            "duration": 1.7
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 90
+          },
+          {
+            "distance": 88
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 1.5
+          },
+          {
+            "key": "w",
+            "duration": 0.8
+          },
+          {
+            "key": "d",
+            "duration": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 1.5
+          },
+          {
+            "key": "d",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5,
+            "count": 2,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.5,
+            "after_sleep": 1.0
+          },
+          {
+            "key": "f",
+            "duration": 0.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f5403573",
+    "name": "存料处采集物",
+    "type": "矿物",
+    "area": "阿伯莉采石场",
+    "teleport": "存料区",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1
+          },
+          {
+            "key": "d",
+            "duration": 1.7
+          },
+          {
+            "angle_x": 50.63
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 51
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 2.0
+          },
+          {
+            "key": "s",
+            "duration": 0.3,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "s",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "s",
+            "duration": 0.2,
+            "after_sleep": 1.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5870b4cc",
+    "name": "总控中心回收站",
+    "type": "资源回收站",
+    "area": "源石研究园",
+    "teleport": "五号公路",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 47
+          },
+          {
+            "distance": 68
+          },
+          {
+            "distance": 109
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.7
+          },
+          {
+            "key": "w",
+            "duration": 0.08
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5c517e49",
+    "name": "转运枢纽仓储节点",
+    "type": "仓储节点",
+    "area": "源石研究园",
+    "teleport": "五号公路",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 47
+          },
+          {
+            "distance": 69
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.6
+          },
+          {
+            "key": "d",
+            "duration": 1.2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "d4a99d90",
+    "name": "沉降地带",
+    "type": "采集物",
+    "area": "源石研究园",
+    "teleport": "五号公路",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 47
+          },
+          {
+            "distance": 92
+          },
+          {
+            "distance": 101
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.82
+          },
+          {
+            "key": "a",
+            "duration": 0.54
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dad27ecd",
+    "name": "样本中心",
+    "type": "采集物",
+    "area": "源石研究园",
+    "teleport": "醇化合物工厂",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 25.32
+          },
+          {
+            "key": "d",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 4.3
+          },
+          {
+            "angle_x": 84.38
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 89
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -168.77
+          },
+          {
+            "key": "w",
+            "duration": 2
+          },
+          {
+            "key": "d",
+            "duration": 0.99
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "873cb3ea",
+    "name": "样本中心",
+    "type": "资源回收站",
+    "area": "源石研究园",
+    "teleport": "醇化合物工厂",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 25.32
+          },
+          {
+            "key": "d",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 4.3
+          },
+          {
+            "angle_x": 151.89
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 75
+          },
+          {
+            "distance": 36
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 0.3
+          },
+          {
+            "key": "s",
+            "duration": 0.38
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a17be269",
+    "name": "醇化合物工厂",
+    "type": "矿物",
+    "area": "源石研究园",
+    "teleport": "醇化合物工厂",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 25.32
+          },
+          {
+            "key": "d",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 4.18
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 69
+          },
+          {
+            "distance": 37
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.38
+          },
+          {
+            "key": "w",
+            "duration": 0.43
+          },
+          {
+            "key": "w",
+            "duration": 0.28
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1e5961f6",
+    "name": "醇化合物工厂",
+    "type": "采集物",
+    "area": "源石研究园",
+    "teleport": "醇化合物工厂",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 25.32
+          },
+          {
+            "key": "d",
+            "duration": 0.2
+          },
+          {
+            "key": "w",
+            "duration": 4.3
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 69
+          },
+          {
+            "distance": 37
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.38
+          },
+          {
+            "key": "w",
+            "duration": 0.43
+          },
+          {
+            "key": "w",
+            "duration": 0.28
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2a2d2020",
+    "name": "研究所",
+    "type": "采集物",
+    "area": "源石研究园",
+    "teleport": "崖边山道",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 65
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "418dd81f",
+    "name": "崖边山道",
+    "type": "采集物",
+    "area": "源石研究园",
+    "teleport": "崖边山道",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "type": "click",
+            "button": "right"
+          },
+          {
+            "key": "s",
+            "duration": 0.16
+          },
+          {
+            "key": "s",
+            "duration": 0.23
+          },
+          {
+            "key": [
+              "a",
+              "s"
+            ],
+            "duration": 0.11
+          },
+          {
+            "key": "a",
+            "duration": 0.09
+          },
+          {
+            "key": "w",
+            "duration": 0.12
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 65
+          },
+          {
+            "distance": 99
+          },
+          {
+            "distance": 77
+          },
+          {
+            "distance": 32
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.63
+          },
+          {
+            "angle_x": -0.42
+          },
+          {
+            "key": "w",
+            "duration": 4.04
+          },
+          {
+            "angle_x": 0.08,
+            "angle_y": -0.08
+          },
+          {
+            "angle_x": -0.08
+          },
+          {
+            "angle_x": 0.17,
+            "angle_y": 0.08
+          },
+          {
+            "key": "w",
+            "duration": 1.55
+          },
+          {
+            "key": [
+              "space",
+              "w"
+            ],
+            "duration": 0.74
+          },
+          {
+            "key": "w",
+            "duration": 0.26
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "3630dd10",
+    "name": "崖边山道",
+    "type": "矿物",
+    "area": "源石研究园",
+    "teleport": "崖边山道",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "type": "click",
+            "button": "right"
+          },
+          {
+            "key": "s",
+            "duration": 0.16
+          },
+          {
+            "key": "s",
+            "duration": 0.23
+          },
+          {
+            "key": [
+              "a",
+              "s"
+            ],
+            "duration": 0.11
+          },
+          {
+            "key": "a",
+            "duration": 0.09
+          },
+          {
+            "key": "w",
+            "duration": 0.12
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 65
+          },
+          {
+            "distance": 99
+          },
+          {
+            "distance": 77
+          },
+          {
+            "distance": 32
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.63
+          },
+          {
+            "angle_x": -0.42
+          },
+          {
+            "key": "w",
+            "duration": 4.04
+          },
+          {
+            "angle_x": 0.08,
+            "angle_y": -0.08
+          },
+          {
+            "angle_x": -0.08
+          },
+          {
+            "angle_x": 0.17,
+            "angle_y": 0.08
+          },
+          {
+            "key": "w",
+            "duration": 1.55
+          },
+          {
+            "key": [
+              "space",
+              "w"
+            ],
+            "duration": 0.74
+          },
+          {
+            "key": "w",
+            "duration": 0.26
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "e5d0f59c",
+    "name": "",
+    "type": "采集物",
+    "area": "源石研究园",
+    "teleport": "崖边山道",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 65
+          },
+          {
+            "distance": 99
+          },
+          {
+            "distance": 77
+          },
+          {
+            "distance": 32
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.63
+          },
+          {
+            "angle_x": -42.19
+          },
+          {
+            "key": "w",
+            "duration": 4.04
+          },
+          {
+            "angle_x": 0.08,
+            "angle_y": -0.08
+          },
+          {
+            "angle_x": -0.08
+          },
+          {
+            "angle_x": 0.17,
+            "angle_y": 0.08
+          },
+          {
+            "key": "w",
+            "duration": 1.55
+          },
+          {
+            "key": [
+              "space",
+              "w"
+            ],
+            "duration": 0.74
+          },
+          {
+            "key": "w",
+            "duration": 0.26
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eafca052",
+    "name": "",
+    "type": "矿物",
+    "area": "源石研究园",
+    "teleport": "崖边山道",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "type": "click",
+            "button": "right"
+          },
+          {
+            "key": "s",
+            "duration": 0.16
+          },
+          {
+            "key": "s",
+            "duration": 0.23
+          },
+          {
+            "key": [
+              "a",
+              "s"
+            ],
+            "duration": 0.11
+          },
+          {
+            "key": "a",
+            "duration": 0.09
+          },
+          {
+            "key": "w",
+            "duration": 0.12
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 65
+          },
+          {
+            "distance": 99
+          },
+          {
+            "distance": 77
+          },
+          {
+            "distance": 32
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.63
+          },
+          {
+            "angle_x": -0.42
+          },
+          {
+            "key": "w",
+            "duration": 4.04
+          },
+          {
+            "angle_x": 0.08,
+            "angle_y": -0.08
+          },
+          {
+            "angle_x": -0.08
+          },
+          {
+            "angle_x": 0.17,
+            "angle_y": 0.08
+          },
+          {
+            "key": "w",
+            "duration": 1.55
+          },
+          {
+            "key": [
+              "space",
+              "w"
+            ],
+            "duration": 0.74
+          },
+          {
+            "key": "w",
+            "duration": 0.26
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "9ed38b0b",
+    "name": "矿区缆车站仓储节点",
+    "type": "仓储节点",
+    "area": "矿脉源区",
+    "teleport": "矿区缆车站",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -0.17,
+            "angle_y": 0.08
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 47
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 1.1
+          },
+          {
+            "key": "s",
+            "duration": 0.47
+          },
+          {
+            "key": "d",
+            "duration": 0.67
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "585222b3",
+    "name": "运输区矿物",
+    "type": "矿物",
+    "area": "矿脉源区",
+    "teleport": "矿区缆车站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 40
+          },
+          {
+            "distance": 96
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.91
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f3fe83ff",
+    "name": "运输区采集物",
+    "type": "采集物",
+    "area": "矿脉源区",
+    "teleport": "矿区缆车站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 51
+          },
+          {
+            "distance": 63
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.14
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b93de553",
+    "name": "气候监测站矿物",
+    "type": "矿物",
+    "area": "矿脉源区",
+    "teleport": "矿区缆车站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 40
+          },
+          {
+            "distance": 110
+          },
+          {
+            "distance": 66
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "8da257ae",
+    "name": "气候监测站采集物",
+    "type": "采集物",
+    "area": "矿脉源区",
+    "teleport": "矿区医疗站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 95
+          },
+          {
+            "distance": 99
+          },
+          {
+            "distance": 66
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -0.08,
+            "angle_y": 0.08
+          },
+          {
+            "key": "w",
+            "duration": 2.26
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "243b90ac",
+    "name": "蚀崖观测站采集物",
+    "type": "采集物",
+    "area": "矿脉源区",
+    "teleport": "矿区医疗站",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 0.25
+          },
+          {
+            "angle_x": -0.08,
+            "angle_y": -0.08
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 95
+          },
+          {
+            "distance": 90
+          },
+          {
+            "distance": 71
+          },
+          {
+            "distance": 79
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 0.08
+          },
+          {
+            "key": "w",
+            "duration": 0.53
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "94fed65d",
+    "name": "临时堆放区北",
+    "type": "资源回收站",
+    "area": "矿脉源区",
+    "teleport": "矿区医疗站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 95
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1.66
+          },
+          {
+            "key": "a",
+            "duration": 0.99
+          },
+          {
+            "key": "a",
+            "duration": 0.52
+          },
+          {
+            "key": "s",
+            "duration": 0.67
+          },
+          {
+            "key": "d",
+            "duration": 0.54
+          },
+          {
+            "key": "a",
+            "duration": 0.11
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cb36515e",
+    "name": "临时堆放区东",
+    "type": "资源回收站",
+    "area": "矿脉源区",
+    "teleport": "矿区医疗站",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "type": "click",
+            "button": "right"
+          },
+          {
+            "key": "s",
+            "duration": 0.28
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 95
+          },
+          {
+            "distance": 90
+          },
+          {
+            "distance": 69
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.26
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5c7dc95c",
+    "name": "矿区营地矿物",
+    "type": "矿物",
+    "area": "矿脉源区",
+    "teleport": "矿区医疗站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 86
+          },
+          {
+            "distance": 75
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.94
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "8a495c90",
+    "name": "裂地者营地西",
+    "type": "采集物",
+    "area": "矿脉源区",
+    "teleport": "矿区医疗站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 83
+          },
+          {
+            "distance": 92
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -0.34,
+            "angle_y": -0.25
+          },
+          {
+            "angle_x": -0.68,
+            "angle_y": 0.25
+          },
+          {
+            "angle_x": 0.93,
+            "angle_y": -0.42
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "df30b81b",
+    "name": "临时堆放区采集物",
+    "type": "采集物",
+    "area": "矿脉源区",
+    "teleport": "矿区医疗站",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 95
+          },
+          {
+            "distance": 90
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.28
+          },
+          {
+            "key": "d",
+            "duration": 2.14
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "84d8948e",
+    "name": "供能高地仓储节点",
+    "type": "仓储节点",
+    "area": "供能高地",
+    "teleport": "高地主路",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -0.34,
+            "angle_y": 0.25
+          },
+          {
+            "angle_x": 0.34,
+            "angle_y": -0.51
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 54
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 1.76
+          },
+          {
+            "key": "s",
+            "duration": 0.51
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2f1bb508",
+    "name": "旧宿舍区采集物",
+    "type": "采集物",
+    "area": "供能高地",
+    "teleport": "高地主路",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 54
+          },
+          {
+            "distance": 92
+          },
+          {
+            "distance": 109
+          },
+          {
+            "distance": 33
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.79
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "008ae256",
+    "name": "联盟停车场资源回收站",
+    "type": "资源回收站",
+    "area": "供能高地",
+    "teleport": "高地主路",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 54
+          },
+          {
+            "distance": 92
+          },
+          {
+            "distance": 110
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 2.78
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "feabb3b3",
+    "name": "联盟停车场采集物",
+    "type": "采集物",
+    "area": "供能高地",
+    "teleport": "高地主路",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 54
+          },
+          {
+            "distance": 92
+          },
+          {
+            "distance": 110
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 2.78
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5b2abd34",
+    "name": "碾骨战营矿物",
+    "type": "矿物",
+    "area": "供能高地",
+    "teleport": "高地主路",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 92
+          },
+          {
+            "distance": 43
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -0.25,
+            "angle_y": 0.08
+          },
+          {
+            "key": "w",
+            "duration": 4.88
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b36f009b",
+    "name": "疏散区资源回收站",
+    "type": "资源回收站",
+    "area": "供能高地",
+    "teleport": "超域试验场",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 0.56
+          },
+          {
+            "key": "w",
+            "duration": 2.28
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 5
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 0.65
+          },
+          {
+            "key": "s",
+            "duration": 0.19
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "32a8318d",
+    "name": "超域试验场采集物",
+    "type": "采集物",
+    "area": "供能高地",
+    "teleport": "超域试验场",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -0.08
+          },
+          {
+            "key": "d",
+            "duration": 0.63
+          },
+          {
+            "key": "w",
+            "duration": 2.32
+          },
+          {
+            "key": "a",
+            "duration": 0.08
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 90
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 0.52
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "78b9bd8d",
+    "name": "沉山道矿物",
+    "type": "矿物",
+    "area": "武陵城",
+    "teleport": "界石坪",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.19
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 109
+          },
+          {
+            "distance": 109
+          },
+          {
+            "distance": 108
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 1.75
+          },
+          {
+            "key": [
+              "d",
+              "space"
+            ],
+            "duration": 0.15
+          },
+          {
+            "key": "d",
+            "duration": 0.98
+          },
+          {
+            "key": [
+              "d",
+              "s"
+            ],
+            "duration": 0.54
+          },
+          {
+            "key": "d",
+            "duration": 0.55
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "874b8770",
+    "name": "沉山道采集物",
+    "type": "采集物",
+    "area": "武陵城",
+    "teleport": "界石坪",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.11
+          },
+          {
+            "key": "w",
+            "duration": 0.54
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 109
+          },
+          {
+            "distance": 109
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 4.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "4ddfadc1",
+    "name": "天师府学院资源回收站",
+    "type": "资源回收站",
+    "area": "武陵城",
+    "teleport": "界石坪",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 110
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.11
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c2ad7b75",
+    "name": "三窟岗采集物",
+    "type": "采集物",
+    "area": "武陵城",
+    "teleport": "孤喉泽",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 93
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 2.06
+          },
+          {
+            "key": "s",
+            "duration": 0.62
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b4203ce6",
+    "name": "孤喉泽采集物",
+    "type": "采集物",
+    "area": "武陵城",
+    "teleport": "孤喉泽",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 77
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.14
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "50ba9d99",
+    "name": "孤喉泽矿物",
+    "type": "矿物",
+    "area": "武陵城",
+    "teleport": "孤喉泽",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 110
+          },
+          {
+            "distance": 50
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 4.2
+          },
+          {
+            "key": "w",
+            "duration": 0.19
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "806c0f8c",
+    "name": "武陵城仓储节点",
+    "type": "仓储节点",
+    "area": "武陵城",
+    "teleport": "天井院",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 0.8
+          },
+          {
+            "key": "d",
+            "duration": 0.4
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 89
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 2.7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ebf0d20d",
+    "name": "天井院",
+    "type": "采集物",
+    "area": "武陵城",
+    "teleport": "天井院",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 0.14
+          },
+          {
+            "key": "s",
+            "duration": 0.3
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 109
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1.49
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2314f0dd",
+    "name": "天师桩采集物",
+    "type": "采集物",
+    "area": "武陵城",
+    "teleport": "待修缮区",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 68
+          },
+          {
+            "distance": 99
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 2.63
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "4d3dfba8",
+    "name": "踩道采集物",
+    "type": "采集物",
+    "area": "景玉谷",
+    "teleport": "踩道",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 7
+          },
+          {
+            "distance": 40
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": -0.08
+          },
+          {
+            "angle_x": 0.08,
+            "angle_y": 0.17
+          },
+          {
+            "angle_x": -0.08,
+            "angle_y": -0.25
+          },
+          {
+            "angle_x": 0.0,
+            "angle_y": 0.08
+          },
+          {
+            "angle_x": 0.08,
+            "angle_y": -0.17
+          },
+          {
+            "key": "w",
+            "duration": 1.46
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "9d3bb488",
+    "name": "生态实验站",
+    "type": "资源回收站",
+    "area": "景玉谷",
+    "teleport": "踩道",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "type": "click",
+            "button": "right"
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 5611
+          },
+          {
+            "distance": 40
+          },
+          {
+            "distance": 80
+          },
+          {
+            "distance": 31
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 0.29
+          },
+          {
+            "key": "w",
+            "duration": 0.09
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dab25978",
+    "name": "生态实验站采集物",
+    "type": "采集物",
+    "area": "景玉谷",
+    "teleport": "踩道",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 56
+          },
+          {
+            "distance": 40
+          },
+          {
+            "distance": 80
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.41
+          },
+          {
+            "key": [
+              "a",
+              "s"
+            ],
+            "duration": 0.09
+          },
+          {
+            "key": "s",
+            "duration": 1.31
+          },
+          {
+            "key": "a",
+            "duration": 0.61
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b5e85988",
+    "name": "聚宝窟矿物",
+    "type": "矿物",
+    "area": "景玉谷",
+    "teleport": "踩道",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 56
+          },
+          {
+            "distance": 40
+          },
+          {
+            "distance": 80
+          },
+          {
+            "distance": 110
+          },
+          {
+            "distance": 97
+          },
+          {
+            "distance": 67
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 2.27
+          },
+          {
+            "key": "w",
+            "duration": 2.92
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "4d8c2682",
+    "name": "天王坪资源回收站",
+    "type": "资源回收站",
+    "area": "景玉谷",
+    "teleport": "天王坪南",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 2.74
+          },
+          {
+            "key": "d",
+            "duration": 0.65
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "7dde6b23",
+    "name": "迷踪渡采集物",
+    "type": "采集物",
+    "area": "景玉谷",
+    "teleport": "天王坪东",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "type": "click",
+            "button": "right"
+          },
+          {
+            "type": "click",
+            "button": "right"
+          },
+          {
+            "key": "s",
+            "duration": 0.08
+          },
+          {
+            "key": "f",
+            "duration": 0.1
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 57
+          },
+          {
+            "distance": 62
+          },
+          {
+            "distance": 106
+          },
+          {
+            "distance": 93
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 3.62
+          },
+          {
+            "key": "d",
+            "duration": 1.51
+          },
+          {
+            "key": "s",
+            "duration": 1.77
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "70bd9e15",
+    "name": "摘菱屿矿物",
+    "type": "矿物",
+    "area": "景玉谷",
+    "teleport": "天王坪东",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 57
+          },
+          {
+            "distance": 62
+          },
+          {
+            "distance": 106
+          },
+          {
+            "distance": 93
+          },
+          {
+            "distance": 103
+          },
+          {
+            "distance": 60
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 0.65
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "53e103cf",
+    "name": "摘菱屿资源回收站",
+    "type": "资源回收站",
+    "area": "景玉谷",
+    "teleport": "天王坪东",
+    "steps": [
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 57
+          },
+          {
+            "distance": 62
+          },
+          {
+            "distance": 106
+          },
+          {
+            "distance": 93
+          },
+          {
+            "distance": 10
+          },
+          {
+            "distance": 60
+          },
+          {
+            "distance": 57
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 0.74
+          },
+          {
+            "key": "s",
+            "duration": 0.38
+          },
+          {
+            "key": "d",
+            "duration": 0.1
+          },
+          {
+            "key": "w",
+            "duration": 0.29
+          },
+          {
+            "key": "d",
+            "duration": 0.12
+          }
+        ]
+      }
+    ]
+  }
+]
