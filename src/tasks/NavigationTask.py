@@ -37,7 +37,7 @@ class NavigationTask(BaseNavTask):
             "type": "drop_down",
             "options": ["关闭", "开启"],
         }
-        self.config_description["单步调试"] = "开启后每步暂停，按F10继续下一步"
+        self.config_description["单步调试"] = "开启后每步暂停，按F11继续下一步"
 
         self.config_type["路线编辑器"] = {
             "type": "custom_widget",

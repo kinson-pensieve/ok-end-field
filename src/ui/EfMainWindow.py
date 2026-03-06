@@ -39,10 +39,6 @@ class EfMainWindow(MSFluentWindow):
         self.config = config
         self.shown = False
 
-        # 设置自定义快捷键默认值
-        start_key = config.get('start_key', 'F10')
-        basic_options.default_config['Start/Stop'] = start_key
-
         communicate.restart_admin.connect(self.restart_admin)
         if config.get('show_update_copyright'):
             communicate.copyright.connect(self.show_update_copyright)
