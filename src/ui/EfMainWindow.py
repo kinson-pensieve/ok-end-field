@@ -54,6 +54,11 @@ class EfMainWindow(MSFluentWindow):
         self.addSubInterface(self.home_tab, self.home_tab.icon, self.home_tab.name)
         self.first_task_tab = self.home_tab
 
+        # 计划任务
+        from src.ui.TaskSchedulerTab import TaskSchedulerTab
+        self.scheduler_tab = TaskSchedulerTab()
+        self.addSubInterface(self.scheduler_tab, FluentIcon.CALENDAR, self.tr('计划任务'))
+
         if debug:
             from ok.gui.debug.DebugTab import DebugTab
             debug_tab = DebugTab(config, exit_event)
