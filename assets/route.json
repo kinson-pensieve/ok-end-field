@@ -1107,9 +1107,6 @@
           {
             "key": "d",
             "duration": 1.7
-          },
-          {
-            "angle_x": 50.63
           }
         ]
       },
@@ -1117,7 +1114,8 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 51
+            "distance": 51,
+            "angle_x": 70.0
           }
         ]
       },
@@ -1130,8 +1128,7 @@
           },
           {
             "key": "s",
-            "duration": 0.3,
-            "after_sleep": 1.0
+            "duration": 0.3
           },
           {
             "button": "left",
@@ -1139,8 +1136,7 @@
           },
           {
             "key": "s",
-            "duration": 0.2,
-            "after_sleep": 1.0
+            "duration": 0.2
           },
           {
             "button": "left",
@@ -1148,8 +1144,7 @@
           },
           {
             "key": "s",
-            "duration": 0.2,
-            "after_sleep": 1.0
+            "duration": 0.2
           },
           {
             "button": "left",
@@ -1170,13 +1165,18 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 47
+            "distance": 47,
+            "angle_x": 130.0,
+            "angle_y": -50.0
           },
           {
-            "distance": 68
+            "distance": 72,
+            "angle_x": -100.0,
+            "angle_y": 50.0
           },
           {
-            "distance": 109
+            "distance": 108,
+            "angle_x": -60.0
           }
         ]
       },
@@ -1206,7 +1206,9 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 47
+            "distance": 47,
+            "angle_x": 130.0,
+            "angle_y": -50.0
           },
           {
             "distance": 69
@@ -1239,7 +1241,9 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 47
+            "distance": 47,
+            "angle_x": 130.0,
+            "angle_y": -50.0
           },
           {
             "distance": 92
@@ -1254,11 +1258,35 @@
         "actions": [
           {
             "key": "a",
-            "duration": 0.82
+            "duration": 1.7
+          },
+          {
+            "key": "f",
+            "duration": 0.2
           },
           {
             "key": "a",
-            "duration": 0.54
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.6
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "s",
+            "duration": 0.7
+          },
+          {
+            "key": "f",
+            "duration": 0.3
           }
         ]
       }
@@ -1302,15 +1330,29 @@
         "type": "walk",
         "actions": [
           {
-            "angle_x": -168.77
+            "angle_x": -165.0,
+            "angle_y": 0.0
           },
           {
             "key": "w",
-            "duration": 2
+            "duration": 2.6
           },
           {
             "key": "d",
-            "duration": 0.99
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.6
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
           }
         ]
       }
@@ -1407,68 +1449,27 @@
         "actions": [
           {
             "key": "a",
-            "duration": 0.38
-          },
-          {
-            "key": "w",
-            "duration": 0.43
-          },
-          {
-            "key": "w",
-            "duration": 0.28
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "1e5961f6",
-    "name": "醇化合物工厂",
-    "type": "采集物",
-    "area": "源石研究园",
-    "teleport": "醇化合物工厂",
-    "steps": [
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "angle_x": 25.32
-          },
-          {
-            "key": "d",
             "duration": 0.2
           },
           {
-            "key": "w",
-            "duration": 4.3
-          }
-        ]
-      },
-      {
-        "type": "zipline",
-        "nodes": [
-          {
-            "distance": 69
-          },
-          {
-            "distance": 37
-          }
-        ]
-      },
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "key": "a",
-            "duration": 0.38
+            "button": "left"
           },
           {
             "key": "w",
-            "duration": 0.43
+            "duration": 0.2,
+            "after_sleep": 5.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
           },
           {
             "key": "w",
-            "duration": 0.28
+            "duration": 0.2
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
           }
         ]
       }
