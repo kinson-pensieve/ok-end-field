@@ -106,8 +106,8 @@ class RouteEditorWidget(QWidget):
         ui_layout.setContentsMargins(0, 0, 0, 0)
         ui_layout.setSpacing(8)
 
-        # QGroupBox 标题样式（白色加粗，深色背景下可见）
-        group_style = "QGroupBox { color: white; font-weight: bold; }"
+        # QGroupBox 标题样式（加粗，颜色跟随主题）
+        group_style = "QGroupBox { font-weight: bold; }"
 
         # 基本信息
         info_group = QGroupBox("基本信息")
