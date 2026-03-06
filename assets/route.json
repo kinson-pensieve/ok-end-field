@@ -1478,7 +1478,7 @@
   {
     "id": "2a2d2020",
     "name": "研究所",
-    "type": "采集物",
+    "type": "矿物",
     "area": "源石研究园",
     "teleport": "崖边山道",
     "steps": [
@@ -1486,65 +1486,9 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 65
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "418dd81f",
-    "name": "崖边山道",
-    "type": "采集物",
-    "area": "源石研究园",
-    "teleport": "崖边山道",
-    "steps": [
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "type": "click",
-            "button": "right"
-          },
-          {
-            "key": "s",
-            "duration": 0.16
-          },
-          {
-            "key": "s",
-            "duration": 0.23
-          },
-          {
-            "key": [
-              "a",
-              "s"
-            ],
-            "duration": 0.11
-          },
-          {
-            "key": "a",
-            "duration": 0.09
-          },
-          {
-            "key": "w",
-            "duration": 0.12
-          }
-        ]
-      },
-      {
-        "type": "zipline",
-        "nodes": [
-          {
-            "distance": 65
-          },
-          {
-            "distance": 99
-          },
-          {
-            "distance": 77
-          },
-          {
-            "distance": 32
+            "distance": 65,
+            "angle_x": 180.0,
+            "angle_y": -90.0
           }
         ]
       },
@@ -1553,40 +1497,23 @@
         "actions": [
           {
             "key": "w",
-            "duration": 1.63
+            "duration": 0.3
           },
           {
-            "angle_x": -0.42
+            "button": "left",
+            "after_sleep": 3.0
           },
           {
-            "key": "w",
-            "duration": 4.04
-          },
-          {
-            "angle_x": 0.08,
-            "angle_y": -0.08
-          },
-          {
-            "angle_x": -0.08
-          },
-          {
-            "angle_x": 0.17,
-            "angle_y": 0.08
+            "button": "left",
+            "after_sleep": 3.0
           },
           {
             "key": "w",
-            "duration": 1.55
+            "duration": 0.3
           },
           {
-            "key": [
-              "space",
-              "w"
-            ],
-            "duration": 0.74
-          },
-          {
-            "key": "w",
-            "duration": 0.26
+            "button": "left",
+            "after_sleep": 5.0
           }
         ]
       }
@@ -1600,51 +1527,27 @@
     "teleport": "崖边山道",
     "steps": [
       {
-        "type": "walk",
-        "actions": [
-          {
-            "type": "click",
-            "button": "right"
-          },
-          {
-            "key": "s",
-            "duration": 0.16
-          },
-          {
-            "key": "s",
-            "duration": 0.23
-          },
-          {
-            "key": [
-              "a",
-              "s"
-            ],
-            "duration": 0.11
-          },
-          {
-            "key": "a",
-            "duration": 0.09
-          },
-          {
-            "key": "w",
-            "duration": 0.12
-          }
-        ]
-      },
-      {
         "type": "zipline",
         "nodes": [
           {
-            "distance": 65
+            "distance": 65,
+            "angle_x": -150.0,
+            "angle_y": -90.0
           },
           {
-            "distance": 99
+            "distance": 99,
+            "angle_x": -150.0,
+            "angle_y": 90.0
           },
           {
-            "distance": 77
+            "distance": 67,
+            "angle_x": 50.0,
+            "angle_y": -30.0
           },
           {
-            "distance": 32
+            "distance": 91,
+            "angle_x": 150.0,
+            "angle_y": 11.0
           }
         ]
       },
@@ -1652,41 +1555,60 @@
         "type": "walk",
         "actions": [
           {
+            "angle_x": -40.0,
+            "angle_y": 0.0,
             "key": "w",
-            "duration": 1.63
+            "duration": 1.7
           },
           {
-            "angle_x": -0.42
+            "key": "shift",
+            "duration": 0.3
           },
           {
-            "key": "w",
-            "duration": 4.04
-          },
-          {
-            "angle_x": 0.08,
-            "angle_y": -0.08
-          },
-          {
-            "angle_x": -0.08
-          },
-          {
-            "angle_x": 0.17,
-            "angle_y": 0.08
+            "key": "space",
+            "duration": 0.1
           },
           {
             "key": "w",
-            "duration": 1.55
+            "duration": 0.6
           },
           {
-            "key": [
-              "space",
-              "w"
-            ],
-            "duration": 0.74
+            "key": "f",
+            "duration": 0.3
           },
           {
             "key": "w",
-            "duration": 0.26
+            "duration": 0.3
+          },
+          {
+            "key": "d",
+            "duration": 0.4
+          },
+          {
+            "key": "w",
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.8
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
+          },
+          {
+            "key": "d",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
           }
         ]
       }
