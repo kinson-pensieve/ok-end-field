@@ -9,6 +9,7 @@ from qfluentwidgets import MSFluentWindow, FluentIcon, NavigationItemPosition, M
 from ok.gui.Communicate import communicate
 from ok.gui.util.Alert import alert_error
 from ok.gui.widget.StartLoadingDialog import StartLoadingDialog
+from ok.util.clazz import init_class_by_name
 from ok.util.GlobalConfig import basic_options
 from ok.util.config import Config
 from ok.util.logger import Logger
@@ -50,10 +51,12 @@ class EfMainWindow(MSFluentWindow):
         self.addSubInterface(self.home_tab, self.home_tab.icon, self.home_tab.name)
         self.first_task_tab = self.home_tab
 
-        # 计划任务
-        from src.ui.TaskSchedulerTab import TaskSchedulerTab
-        self.scheduler_tab = TaskSchedulerTab()
-        self.addSubInterface(self.scheduler_tab, FluentIcon.CALENDAR, self.tr('计划任务'))
+        # 动态加载 custom_tabs
+        if custom_tabs := config.get('custom_tabs'):
+            for tab in custom_tabs:
+                tab_obj = init_class_by_name(tab[0], tab[1])
+                tab_obj.executor = executor
+                self.addSubInterface(tab_obj, tab_obj.icon, tab_obj.name)
 
         if debug:
             from ok.gui.debug.DebugTab import DebugTab
