@@ -11,6 +11,7 @@ from qfluentwidgets import (
     PushButton, PrimaryPushButton, FluentIcon,
     LineEdit, ComboBox, SpinBox, DoubleSpinBox,
     TextEdit, BodyLabel, StrongBodyLabel, CaptionLabel, CheckBox,
+    isDarkTheme, qconfig,
 )
 
 from ok.gui.Communicate import communicate
@@ -106,12 +107,14 @@ class RouteEditorWidget(QWidget):
         ui_layout.setContentsMargins(0, 0, 0, 0)
         ui_layout.setSpacing(8)
 
-        # QGroupBox 标题样式（白色加粗，深色背景下可见）
-        group_style = "QGroupBox { color: white; font-weight: bold; }"
+        # QGroupBox 标题样式（加粗，颜色跟随主题）
+        self._group_boxes = []
+        group_style = self._group_box_style()
 
         # 基本信息
         info_group = QGroupBox("基本信息")
         info_group.setStyleSheet(group_style)
+        self._group_boxes.append(info_group)
         info_form = QFormLayout(info_group)
         info_form.setSpacing(6)
 
@@ -153,6 +156,7 @@ class RouteEditorWidget(QWidget):
         # 步骤列表
         steps_group = QGroupBox("步骤")
         steps_group.setStyleSheet(group_style)
+        self._group_boxes.append(steps_group)
         steps_layout = QVBoxLayout(steps_group)
         steps_layout.setSpacing(4)
 
@@ -185,6 +189,7 @@ class RouteEditorWidget(QWidget):
         # 步骤详情（动作/节点列表）
         self._detail_group = QGroupBox("详情")
         self._detail_group.setStyleSheet(group_style)
+        self._group_boxes.append(self._detail_group)
         detail_layout = QVBoxLayout(self._detail_group)
         detail_layout.setSpacing(4)
 
@@ -272,6 +277,18 @@ class RouteEditorWidget(QWidget):
 
         # 默认 UI 模式
         self._stack.setCurrentIndex(0)
+
+        # 监听主题切换
+        qconfig.themeChangedFinished.connect(self._on_theme_changed)
+
+    def _group_box_style(self):
+        color = "white" if isDarkTheme() else "black"
+        return f"QGroupBox {{ color: {color}; font-weight: bold; }}"
+
+    def _on_theme_changed(self):
+        style = self._group_box_style()
+        for gb in self._group_boxes:
+            gb.setStyleSheet(style)
 
     # ── 动作编辑表单 ──
 
