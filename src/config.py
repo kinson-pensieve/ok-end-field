@@ -1,10 +1,25 @@
+import importlib
 import os
 
 import numpy as np
+import ok as _ok
 from ok import ConfigOption
 from src.interaction.EfInteraction import EfInteraction
 
 version = "dev"
+
+# 让框架支持 config['main_window'] 自定义主窗口类
+_original_do_show_main = _ok.App.do_show_main
+
+
+def _patched_do_show_main(self):
+    if mw := self.config.get('main_window'):
+        module = importlib.import_module(mw[0])
+        _ok.MainWindow = getattr(module, mw[1])
+    _original_do_show_main(self)
+
+
+_ok.App.do_show_main = _patched_do_show_main
 
 
 # 不需要修改version, Github Action打包会自动修改
