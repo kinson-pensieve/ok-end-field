@@ -314,18 +314,10 @@ class ConfigPanel(QScrollArea):
         if task.config and task.config.has_user_config():
             for key, value in task.config.items():
                 if not key.startswith('_'):
-                    the_type = task.config_type.get(key) if task.config_type else None
-                    if the_type and the_type.get('type') == 'custom_widget':
-                        factory = the_type.get('widget_factory')
-                        if factory:
-                            item_widget = factory()
-                        else:
-                            continue
-                    else:
-                        item_widget = config_widget(
-                            task.config_type, task.config_description,
-                            task.config, key, value, task
-                        )
+                    item_widget = config_widget(
+                        task.config_type, task.config_description,
+                        task.config, key, value, task
+                    )
                     for child in item_widget.findChildren(QLabel):
                         child.setWordWrap(True)
                     item_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
