@@ -1107,9 +1107,6 @@
           {
             "key": "d",
             "duration": 1.7
-          },
-          {
-            "angle_x": 50.63
           }
         ]
       },
@@ -1117,7 +1114,8 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 51
+            "distance": 51,
+            "angle_x": 70.0
           }
         ]
       },
@@ -1130,8 +1128,7 @@
           },
           {
             "key": "s",
-            "duration": 0.3,
-            "after_sleep": 1.0
+            "duration": 0.3
           },
           {
             "button": "left",
@@ -1139,8 +1136,7 @@
           },
           {
             "key": "s",
-            "duration": 0.2,
-            "after_sleep": 1.0
+            "duration": 0.2
           },
           {
             "button": "left",
@@ -1148,8 +1144,7 @@
           },
           {
             "key": "s",
-            "duration": 0.2,
-            "after_sleep": 1.0
+            "duration": 0.2
           },
           {
             "button": "left",
@@ -1170,13 +1165,18 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 47
+            "distance": 47,
+            "angle_x": 130.0,
+            "angle_y": -50.0
           },
           {
-            "distance": 68
+            "distance": 72,
+            "angle_x": -100.0,
+            "angle_y": 50.0
           },
           {
-            "distance": 109
+            "distance": 108,
+            "angle_x": -60.0
           }
         ]
       },
@@ -1206,7 +1206,9 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 47
+            "distance": 47,
+            "angle_x": 130.0,
+            "angle_y": -50.0
           },
           {
             "distance": 69
@@ -1239,7 +1241,9 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 47
+            "distance": 47,
+            "angle_x": 130.0,
+            "angle_y": -50.0
           },
           {
             "distance": 92
@@ -1254,11 +1258,35 @@
         "actions": [
           {
             "key": "a",
-            "duration": 0.82
+            "duration": 1.7
+          },
+          {
+            "key": "f",
+            "duration": 0.2
           },
           {
             "key": "a",
-            "duration": 0.54
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.6
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "s",
+            "duration": 0.7
+          },
+          {
+            "key": "f",
+            "duration": 0.3
           }
         ]
       }
@@ -1302,15 +1330,29 @@
         "type": "walk",
         "actions": [
           {
-            "angle_x": -168.77
+            "angle_x": -165.0,
+            "angle_y": 0.0
           },
           {
             "key": "w",
-            "duration": 2
+            "duration": 2.6
           },
           {
             "key": "d",
-            "duration": 0.99
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.6
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
           }
         ]
       }
@@ -1407,68 +1449,27 @@
         "actions": [
           {
             "key": "a",
-            "duration": 0.38
-          },
-          {
-            "key": "w",
-            "duration": 0.43
-          },
-          {
-            "key": "w",
-            "duration": 0.28
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "1e5961f6",
-    "name": "醇化合物工厂",
-    "type": "采集物",
-    "area": "源石研究园",
-    "teleport": "醇化合物工厂",
-    "steps": [
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "angle_x": 25.32
-          },
-          {
-            "key": "d",
             "duration": 0.2
           },
           {
-            "key": "w",
-            "duration": 4.3
-          }
-        ]
-      },
-      {
-        "type": "zipline",
-        "nodes": [
-          {
-            "distance": 69
-          },
-          {
-            "distance": 37
-          }
-        ]
-      },
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "key": "a",
-            "duration": 0.38
+            "button": "left"
           },
           {
             "key": "w",
-            "duration": 0.43
+            "duration": 0.2,
+            "after_sleep": 5.0
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
           },
           {
             "key": "w",
-            "duration": 0.28
+            "duration": 0.2
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
           }
         ]
       }
@@ -1477,7 +1478,7 @@
   {
     "id": "2a2d2020",
     "name": "研究所",
-    "type": "采集物",
+    "type": "矿物",
     "area": "源石研究园",
     "teleport": "崖边山道",
     "steps": [
@@ -1485,65 +1486,9 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 65
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "418dd81f",
-    "name": "崖边山道",
-    "type": "采集物",
-    "area": "源石研究园",
-    "teleport": "崖边山道",
-    "steps": [
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "type": "click",
-            "button": "right"
-          },
-          {
-            "key": "s",
-            "duration": 0.16
-          },
-          {
-            "key": "s",
-            "duration": 0.23
-          },
-          {
-            "key": [
-              "a",
-              "s"
-            ],
-            "duration": 0.11
-          },
-          {
-            "key": "a",
-            "duration": 0.09
-          },
-          {
-            "key": "w",
-            "duration": 0.12
-          }
-        ]
-      },
-      {
-        "type": "zipline",
-        "nodes": [
-          {
-            "distance": 65
-          },
-          {
-            "distance": 99
-          },
-          {
-            "distance": 77
-          },
-          {
-            "distance": 32
+            "distance": 65,
+            "angle_x": 180.0,
+            "angle_y": -90.0
           }
         ]
       },
@@ -1552,40 +1497,23 @@
         "actions": [
           {
             "key": "w",
-            "duration": 1.63
+            "duration": 0.3
           },
           {
-            "angle_x": -0.42
+            "button": "left",
+            "after_sleep": 3.0
           },
           {
-            "key": "w",
-            "duration": 4.04
-          },
-          {
-            "angle_x": 0.08,
-            "angle_y": -0.08
-          },
-          {
-            "angle_x": -0.08
-          },
-          {
-            "angle_x": 0.17,
-            "angle_y": 0.08
+            "button": "left",
+            "after_sleep": 3.0
           },
           {
             "key": "w",
-            "duration": 1.55
+            "duration": 0.3
           },
           {
-            "key": [
-              "space",
-              "w"
-            ],
-            "duration": 0.74
-          },
-          {
-            "key": "w",
-            "duration": 0.26
+            "button": "left",
+            "after_sleep": 5.0
           }
         ]
       }
@@ -1599,51 +1527,27 @@
     "teleport": "崖边山道",
     "steps": [
       {
-        "type": "walk",
-        "actions": [
-          {
-            "type": "click",
-            "button": "right"
-          },
-          {
-            "key": "s",
-            "duration": 0.16
-          },
-          {
-            "key": "s",
-            "duration": 0.23
-          },
-          {
-            "key": [
-              "a",
-              "s"
-            ],
-            "duration": 0.11
-          },
-          {
-            "key": "a",
-            "duration": 0.09
-          },
-          {
-            "key": "w",
-            "duration": 0.12
-          }
-        ]
-      },
-      {
         "type": "zipline",
         "nodes": [
           {
-            "distance": 65
+            "distance": 65,
+            "angle_x": -150.0,
+            "angle_y": -90.0
           },
           {
-            "distance": 99
+            "distance": 99,
+            "angle_x": -150.0,
+            "angle_y": 90.0
           },
           {
-            "distance": 77
+            "distance": 67,
+            "angle_x": 50.0,
+            "angle_y": -30.0
           },
           {
-            "distance": 32
+            "distance": 91,
+            "angle_x": 150.0,
+            "angle_y": 11.0
           }
         ]
       },
@@ -1651,209 +1555,60 @@
         "type": "walk",
         "actions": [
           {
+            "angle_x": -40.0,
+            "angle_y": 0.0,
             "key": "w",
-            "duration": 1.63
+            "duration": 1.7
           },
           {
-            "angle_x": -0.42
+            "key": "shift",
+            "duration": 0.3
           },
           {
-            "key": "w",
-            "duration": 4.04
-          },
-          {
-            "angle_x": 0.08,
-            "angle_y": -0.08
-          },
-          {
-            "angle_x": -0.08
-          },
-          {
-            "angle_x": 0.17,
-            "angle_y": 0.08
+            "key": "space",
+            "duration": 0.1
           },
           {
             "key": "w",
-            "duration": 1.55
+            "duration": 0.6
           },
           {
-            "key": [
-              "space",
-              "w"
-            ],
-            "duration": 0.74
+            "key": "f",
+            "duration": 0.3
           },
           {
             "key": "w",
-            "duration": 0.26
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "e5d0f59c",
-    "name": "",
-    "type": "采集物",
-    "area": "源石研究园",
-    "teleport": "崖边山道",
-    "steps": [
-      {
-        "type": "zipline",
-        "nodes": [
-          {
-            "distance": 65
+            "duration": 0.3
           },
           {
-            "distance": 99
-          },
-          {
-            "distance": 77
-          },
-          {
-            "distance": 32
-          }
-        ]
-      },
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "key": "w",
-            "duration": 1.63
-          },
-          {
-            "angle_x": -42.19
+            "key": "d",
+            "duration": 0.4
           },
           {
             "key": "w",
-            "duration": 4.04
+            "duration": 0.3
           },
           {
-            "angle_x": 0.08,
-            "angle_y": -0.08
-          },
-          {
-            "angle_x": -0.08
-          },
-          {
-            "angle_x": 0.17,
-            "angle_y": 0.08
+            "key": "f",
+            "duration": 0.3
           },
           {
             "key": "w",
-            "duration": 1.55
+            "duration": 0.8
           },
           {
-            "key": [
-              "space",
-              "w"
-            ],
-            "duration": 0.74
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
           },
           {
-            "key": "w",
-            "duration": 0.26
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "eafca052",
-    "name": "",
-    "type": "矿物",
-    "area": "源石研究园",
-    "teleport": "崖边山道",
-    "steps": [
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "type": "click",
-            "button": "right"
+            "key": "d",
+            "duration": 0.5
           },
           {
-            "key": "s",
-            "duration": 0.16
-          },
-          {
-            "key": "s",
-            "duration": 0.23
-          },
-          {
-            "key": [
-              "a",
-              "s"
-            ],
-            "duration": 0.11
-          },
-          {
-            "key": "a",
-            "duration": 0.09
-          },
-          {
-            "key": "w",
-            "duration": 0.12
-          }
-        ]
-      },
-      {
-        "type": "zipline",
-        "nodes": [
-          {
-            "distance": 65
-          },
-          {
-            "distance": 99
-          },
-          {
-            "distance": 77
-          },
-          {
-            "distance": 32
-          }
-        ]
-      },
-      {
-        "type": "walk",
-        "actions": [
-          {
-            "key": "w",
-            "duration": 1.63
-          },
-          {
-            "angle_x": -0.42
-          },
-          {
-            "key": "w",
-            "duration": 4.04
-          },
-          {
-            "angle_x": 0.08,
-            "angle_y": -0.08
-          },
-          {
-            "angle_x": -0.08
-          },
-          {
-            "angle_x": 0.17,
-            "angle_y": 0.08
-          },
-          {
-            "key": "w",
-            "duration": 1.55
-          },
-          {
-            "key": [
-              "space",
-              "w"
-            ],
-            "duration": 0.74
-          },
-          {
-            "key": "w",
-            "duration": 0.26
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
           }
         ]
       }
@@ -1925,7 +1680,30 @@
         "actions": [
           {
             "key": "a",
-            "duration": 0.91
+            "duration": 1.0
+          },
+          {
+            "key": "w",
+            "duration": 0.1,
+            "button": "left",
+            "after_sleep": 3.0
+          },
+          {
+            "key": "w",
+            "duration": 0.1,
+            "button": "left",
+            "after_sleep": 3.0
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "button": "left"
           }
         ]
       }
@@ -1942,7 +1720,9 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 51
+            "distance": 51,
+            "angle_x": 180.0,
+            "angle_y": 40.0
           },
           {
             "distance": 63
@@ -1954,7 +1734,47 @@
         "actions": [
           {
             "key": "w",
-            "duration": 1.14
+            "duration": 0.8
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.3
           }
         ]
       }
@@ -1978,6 +1798,61 @@
           },
           {
             "distance": 66
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 180.0,
+            "angle_y": 0.0,
+            "after_sleep": 0.5
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "w",
+            "duration": 0.8
+          },
+          {
+            "key": "a",
+            "duration": 0.3
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "d",
+            "duration": 1.5
+          },
+          {
+            "key": "w",
+            "duration": 2.0
+          },
+          {
+            "button": "left"
+          },
+          {
+            "button": "left"
+          },
+          {
+            "key": "d",
+            "duration": 2.5
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "button": "left"
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
           }
         ]
       }
@@ -2042,16 +1917,20 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 95
+            "distance": 95,
+            "angle_x": -90.0
           },
           {
-            "distance": 90
+            "distance": 90,
+            "angle_x": -90.0
           },
           {
             "distance": 71
           },
           {
-            "distance": 79
+            "distance": 79,
+            "angle_x": 60.0,
+            "angle_y": 60.0
           }
         ]
       },
@@ -2059,11 +1938,33 @@
         "type": "walk",
         "actions": [
           {
-            "angle_x": 0.08
+            "key": "a",
+            "duration": 0.3
           },
           {
             "key": "w",
-            "duration": 0.53
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
+          },
+          {
+            "key": "w",
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3
+          },
+          {
+            "key": "w",
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3
           }
         ]
       }
@@ -2080,7 +1981,8 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 95
+            "distance": 95,
+            "angle_x": 180.0
           }
         ]
       },
@@ -2123,26 +2025,16 @@
     "teleport": "矿区医疗站",
     "steps": [
       {
-        "type": "walk",
-        "actions": [
-          {
-            "type": "click",
-            "button": "right"
-          },
-          {
-            "key": "s",
-            "duration": 0.28
-          }
-        ]
-      },
-      {
         "type": "zipline",
         "nodes": [
           {
-            "distance": 95
+            "distance": 95,
+            "angle_x": -180.0
           },
           {
-            "distance": 90
+            "distance": 90,
+            "angle_x": -180.0,
+            "angle_y": -90.0
           },
           {
             "distance": 69
@@ -2183,7 +2075,40 @@
         "actions": [
           {
             "key": "w",
-            "duration": 1.94
+            "duration": 2.0
+          },
+          {
+            "key": "a",
+            "duration": 0.1
+          },
+          {
+            "button": "left"
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "a",
+            "duration": 1.5
+          },
+          {
+            "button": "left"
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
+          },
+          {
+            "key": "w",
+            "duration": 1.0
+          },
+          {
+            "button": "left"
+          },
+          {
+            "button": "left",
+            "after_sleep": 5.0
           }
         ]
       }
@@ -2203,7 +2128,9 @@
             "distance": 83
           },
           {
-            "distance": 92
+            "distance": 92,
+            "angle_x": -50.0,
+            "angle_y": -50.0
           }
         ]
       },
@@ -2211,16 +2138,37 @@
         "type": "walk",
         "actions": [
           {
-            "angle_x": -0.34,
-            "angle_y": -0.25
+            "angle_x": -180.0,
+            "angle_y": 0.0,
+            "key": "d",
+            "duration": 1.0
           },
           {
-            "angle_x": -0.68,
-            "angle_y": 0.25
+            "key": "w",
+            "duration": 2.0
           },
           {
-            "angle_x": 0.93,
-            "angle_y": -0.42
+            "key": "f",
+            "duration": 0.3,
+            "after_sleep": 0.5
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "after_sleep": 0.5
+          },
+          {
+            "key": "a",
+            "duration": 1.0,
+            "after_sleep": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.3
           }
         ]
       }
@@ -2237,10 +2185,12 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 95
+            "distance": 95,
+            "angle_x": -90.0
           },
           {
-            "distance": 90
+            "distance": 90,
+            "angle_x": -90.0
           }
         ]
       },
@@ -2248,12 +2198,41 @@
         "type": "walk",
         "actions": [
           {
+            "angle_x": 90.0,
+            "angle_y": 0.0,
             "key": "w",
             "duration": 0.28
           },
           {
             "key": "d",
-            "duration": 2.14
+            "duration": 2.0
+          },
+          {
+            "key": "s",
+            "duration": 2.0
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
+          },
+          {
+            "key": "d",
+            "duration": 0.5
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "count": 3
+          },
+          {
+            "key": "s",
+            "duration": 0.3
+          },
+          {
+            "key": "f",
+            "duration": 0.3,
+            "count": 2
           }
         ]
       }
