@@ -276,7 +276,7 @@ class DailyTask(BaseEfTask):
                 if not result:
                     scroll_count += 1
                     self.scroll_relative(0.5, 0.5, -4)
-                    self.wait_ui_stable(refresh_interval=0.5)
+                    self.wait_ui_stable(refresh_interval=1)
 
             self.click(result, after_sleep=2)
             self.wait_click_ocr(match=re.compile("确定"), box=self.box.bottom_right, time_out=5, after_sleep=2)
@@ -1135,11 +1135,16 @@ class DailyTask(BaseEfTask):
             stock_quantity = ocr_stock_quantity()
             good_piece = self.ocr(
                 match=re.compile(r"^\d+$"),
-                box=self.box_of_screen(
-                    1527 / 1920, 367 / 1080, 1600 / 1920, 400 / 1080
-                ),
+                box=self.box_of_screen(1527 / 1920, 324 / 1080, 1600 / 1920, 400 / 1080),
+                frame_processor=self.make_hsv_isolator(hR.DARK_GRAY_TEXT),
                 log=True,
             )
+            if not good_piece:
+                good_piece = self.ocr(
+                    match=re.compile(r"^\d+$"),
+                    box=self.box_of_screen(1527 / 1920, 324 / 1080, 1600 / 1920, 400 / 1080),
+                    log=True,
+                )
             self.wait_click_ocr(
                 match=re.compile("查看好友价格"),
                 box=self.box.bottom_right,
