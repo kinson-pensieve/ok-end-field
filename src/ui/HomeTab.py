@@ -5,7 +5,8 @@ from PySide6.QtWidgets import (QFrame, QVBoxLayout, QHBoxLayout, QWidget,
                                QSplitter, QScrollArea, QSizePolicy, QLabel,
                                QLayout, QLayoutItem, QTableWidgetItem)
 from qfluentwidgets import (FluentIcon, SwitchButton, BodyLabel, IconWidget,
-                            SubtitleLabel, StrongBodyLabel, CaptionLabel, PushButton, qconfig)
+                            SubtitleLabel, StrongBodyLabel, CaptionLabel, PushButton, qconfig,
+                            NavigationItemPosition)
 
 from ok import og
 from ok.gui.Communicate import communicate
@@ -313,18 +314,10 @@ class ConfigPanel(QScrollArea):
         if task.config and task.config.has_user_config():
             for key, value in task.config.items():
                 if not key.startswith('_'):
-                    the_type = task.config_type.get(key) if task.config_type else None
-                    if the_type and the_type.get('type') == 'custom_widget':
-                        factory = the_type.get('widget_factory')
-                        if factory:
-                            item_widget = factory()
-                        else:
-                            continue
-                    else:
-                        item_widget = config_widget(
-                            task.config_type, task.config_description,
-                            task.config, key, value, task
-                        )
+                    item_widget = config_widget(
+                        task.config_type, task.config_description,
+                        task.config, key, value, task
+                    )
                     for child in item_widget.findChildren(QLabel):
                         child.setWordWrap(True)
                     item_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
@@ -387,6 +380,14 @@ class HomeTab(CustomTab):
     @property
     def name(self):
         return "首页"
+
+    @property
+    def add_after_default_tabs(self):
+        return False
+
+    @property
+    def position(self):
+        return NavigationItemPosition.TOP
 
     def showEvent(self, event):
         super().showEvent(event)
