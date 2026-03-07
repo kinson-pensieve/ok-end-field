@@ -1,25 +1,15 @@
-import importlib
 import os
 
 import numpy as np
 import ok as _ok
 from ok import ConfigOption
 from src.interaction.EfInteraction import EfInteraction
+from src.ui.EfMainWindow import EfMainWindow as _EfMainWindow
 
 version = "dev"
 
-# 让框架支持 config['main_window'] 自定义主窗口类
-_original_do_show_main = _ok.App.do_show_main
-
-
-def _patched_do_show_main(self):
-    if mw := self.config.get('main_window'):
-        module = importlib.import_module(mw[0])
-        _ok.MainWindow = getattr(module, mw[1])
-    _original_do_show_main(self)
-
-
-_ok.App.do_show_main = _patched_do_show_main
+# 替换框架的 MainWindow 为自定义的 EfMainWindow
+_ok.MainWindow = _EfMainWindow
 
 
 # 不需要修改version, Github Action打包会自动修改
@@ -130,7 +120,6 @@ config = {
         "src.globals",
         "Globals",
     ],  # 可选. 全局单例对象, 可以存放加载的模型, 使用og.my_app调用
-    "main_window": ["src.ui.EfMainWindow", "EfMainWindow"],
     "onetime_tasks": [  # 用户点击触发的任务
         ["src.tasks.DailyTask", "DailyTask"],
         ["src.tasks.TakeDeliveryTask", "TakeDeliveryTask"],
