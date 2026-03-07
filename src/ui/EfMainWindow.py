@@ -56,7 +56,7 @@ class EfMainWindow(MSFluentWindow):
             for tab in custom_tabs:
                 tab_obj = init_class_by_name(tab[0], tab[1])
                 tab_obj.executor = executor
-                self.addSubInterface(tab_obj, tab_obj.icon, tab_obj.name)
+                self.addSubInterface(tab_obj, tab_obj.icon, tab_obj.name, position=tab_obj.position)
 
         if debug:
             from ok.gui.debug.DebugTab import DebugTab

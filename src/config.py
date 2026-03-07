@@ -115,7 +115,7 @@ config = {
         "src.globals",
         "Globals",
     ],  # 可选. 全局单例对象, 可以存放加载的模型, 使用og.my_app调用
-    "main_window": ["src.ui.EfMainWindow", "EfMainWindow"],
+    # "main_window": ["src.ui.EfMainWindow", "EfMainWindow"],  # 注释掉后使用框架默认 MainWindow
     "onetime_tasks": [  # 用户点击触发的任务
         ["src.tasks.DailyTask", "DailyTask"],
         ["src.tasks.TakeDeliveryTask", "TakeDeliveryTask"],
@@ -134,6 +134,7 @@ config = {
         ["src.tasks.AutoLoginTask", "AutoLoginTask"],
     ],
     "custom_tabs": [  # 自定义侧边栏页面
+        ["src.ui.HomeTab", "HomeTab"],  # 首页（排在默认Tab之前）
         ["src.ui.TaskSchedulerTab", "TaskSchedulerTab"],  # 任务计划管理
     ],
 }

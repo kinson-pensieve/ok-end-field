@@ -17,7 +17,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QL
 from qfluentwidgets import PushButton, SwitchButton, FluentIcon, InfoBar, InfoBarPosition, TableWidget, MessageBoxBase, SubtitleLabel, ComboBox, SpinBox, CheckBox
 
 from ok import Logger, og
-from ok.gui.widget.Tab import Tab
+from ok.gui.widget.CustomTab import CustomTab
 from src.scheduler.windows_schedule import WindowsScheduleManager, ScheduleTaskInfo, TriggerType
 from src.config import config as main_config
 logger = Logger.get_logger(__name__)
@@ -549,7 +549,7 @@ class ModifyScheduleTaskDialog(MessageBoxBase):
         )
 
 
-class TaskSchedulerTab(Tab):
+class TaskSchedulerTab(CustomTab):
     """
     计划任务管理标签页
     

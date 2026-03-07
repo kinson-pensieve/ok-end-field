@@ -5,7 +5,8 @@ from PySide6.QtWidgets import (QFrame, QVBoxLayout, QHBoxLayout, QWidget,
                                QSplitter, QScrollArea, QSizePolicy, QLabel,
                                QLayout, QLayoutItem, QTableWidgetItem)
 from qfluentwidgets import (FluentIcon, SwitchButton, BodyLabel, IconWidget,
-                            SubtitleLabel, StrongBodyLabel, CaptionLabel, PushButton, qconfig)
+                            SubtitleLabel, StrongBodyLabel, CaptionLabel, PushButton, qconfig,
+                            NavigationItemPosition)
 
 from ok import og
 from ok.gui.Communicate import communicate
@@ -387,6 +388,14 @@ class HomeTab(CustomTab):
     @property
     def name(self):
         return "首页"
+
+    @property
+    def add_after_default_tabs(self):
+        return False
+
+    @property
+    def position(self):
+        return NavigationItemPosition.TOP
 
     def showEvent(self, event):
         super().showEvent(event)
