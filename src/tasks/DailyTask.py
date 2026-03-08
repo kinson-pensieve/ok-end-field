@@ -178,8 +178,8 @@ class DailyTask(BaseEfTask):
                 return True
 
         self.log_info(f"开始任务: {key}")
-        result = func()
         self.ensure_main()
+        result = func()
 
         if result is False:
             self.log_info(f"任务 {key} 执行失败", notify=True)
