@@ -1,5 +1,6 @@
 import re
 import time
+import random
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Optional
@@ -9,6 +10,7 @@ from qfluentwidgets import FluentIcon
 
 from src.data.FeatureList import FeatureList as fL
 from src.data.characters import all_list
+from src.data.characters_utils import get_contact_list_with_feature_list
 from src.data.world_map import (
     areas_list,
     outpost_dict,
@@ -67,12 +69,14 @@ class DailyTask(BaseEfTask):
         self.name = "日常任务"
         self.description = "一键收菜"
         self.icon = FluentIcon.SYNC
+        self.can_contact_dict = get_contact_list_with_feature_list()
         buy_sell = dict()
         for area in areas_list:
             buy_sell[f"{area}买入价"] = 900
             buy_sell[f"{area}卖出价"] = 4500
             buy_sell[area] = True
         self.default_config.update(buy_sell)
+        self.default_config.update({"优先送礼对象": list(self.can_contact_dict.keys())[0]})
         self.default_config.update(
             {
                 "送礼任务最多尝试次数": 2,
@@ -88,6 +92,7 @@ class DailyTask(BaseEfTask):
                 "日常奖励": True,
             }
         )
+        self.config_type["优先送礼对象"] = {"type": "drop_down", "options": list(self.can_contact_dict.keys())}
         self.config_description.update(
             {
                 "尝试仅收培育室":'前置是启用收信用'
@@ -761,24 +766,24 @@ class DailyTask(BaseEfTask):
         if not self.wait_ocr(
                 match="舰桥", box=self.box.left, time_out=60, log=True
         ):
-            self.log_info("传送超时，未到达舰桥")
-            return False
+            pass
 
         self.log_info("传送完成，已到达帝江号舰桥")
         return True
 
     def navigate_to_main_hall(self) -> bool:
         self.log_info("开始前往中央环厅")
-        for attempt in range(1, 13):
-            self.log_info(f"第 {attempt}/12 次尝试移动前进")
+        max_attempts = 2
+        for attempt in range(1, max_attempts + 1):
+            self.log_info(f"第 {attempt}/{max_attempts} 次尝试移动前进")
             self.move_keys("w", duration=1)
             if self.wait_ocr(
                     match="中央环厅", box=self.box.left, log=True
             ):
                 self.log_info("已到达中央环厅")
                 return True
-        self.log_info("前往中央环厅失败，未找到目标")
-        return False
+        self.log_info("前往中央环厅可能失败，尝试后续操作")
+        return True
     def start_tracking_and_align_target(self,target_feature_in_map,target_feature_out_map):
         """在地图中开启追踪并在地图外完成朝向对齐。
 
@@ -865,21 +870,65 @@ class DailyTask(BaseEfTask):
     def perform_operator_liaison(self):
         """执行干员联络（会客/培养/制造）并尝试完成一次交互。"""
         self.log_info("开始执行干员联络任务")
-
         # 尝试打开信任度界面并确认联络
+        target_name = self.config.get("优先送礼对象")
+        target_feature_name = self.can_contact_dict[target_name]
+        search_char_box=self.box_of_screen(795/1920, 248/1080, 1687/1920, 764/1080)
+        find_name=""
         for attempt in range(1, 11):
             self.log_info(f"第 {attempt}/10 次尝试打开信任度界面")
             self.send_key("f", after_sleep=2)
+            result = {}
+            found_target = False
 
-            if not self.wait_click_ocr(
-                    match=[re.compile(i) for i in ["会客", "培养", "制造"]],
-                    time_out=5,
-                    after_sleep=2,
-            ):
-                self.log_info("未找到联络界面，任务失败")
+            # 1 查找优先角色（允许 scroll）
+            for _ in range(3):
+                self.next_frame()
+
+                found = self.find_one(feature_name=target_feature_name, box=search_char_box, threshold=0.7)
+
+                if found:
+                    result[target_feature_name] = found
+                    found_target = True
+                    break
+
+                self.scroll_relative(0.5, 0.5, -3)
+                self.wait_ui_stable(refresh_interval=0.5)
+            self.back(after_sleep=2)
+            self.send_key("f", after_sleep=2)
+
+            # 2 查找其他角色（不 scroll）
+            if not found_target:
+                self.log_info(f"未找到联络对象 {target_name}，尝试其他目标")
+
+                other_results = {}
+
+                for other_name, other_feature in self.can_contact_dict.items():
+
+                    if other_feature == target_feature_name:
+                        continue
+
+                    self.next_frame()
+
+                    found = self.find_one(feature_name=other_feature, box=search_char_box, threshold=0.7)
+
+                    if found:
+                        other_results[other_feature] = found
+
+                # 随机选一个
+                if other_results:
+                    feature = random.choice(list(other_results.keys()))
+                    result[feature] = other_results[feature]
+
+            # 3 最终判断
+            if not result:
+                self.log_info("未找到任何可联络对象")
                 return False
-            self.log_info("找到联络界面")
+            find_feature_name = next(iter(result))
 
+            find_name = next(k for k, v in self.can_contact_dict.items() if v == find_feature_name)
+            self.log_info("找到联络对象")
+            self.click(list(result.values())[0], after_sleep=2)
             if not self.wait_click_ocr(
                     match=re.compile("确认联络"),
                     box=self.box.bottom_right,
@@ -897,8 +946,13 @@ class DailyTask(BaseEfTask):
                     return False
                 self.next_frame()
                 self.sleep(0.2)
+            self.next_frame()
+            if not self.wait_ocr(match=find_name,box=self.box.center, time_out=2):
+                self.log_info(f"未找到 {find_name} 的名字,重新打开联络界面")
+                continue
+            self.log_info(f"找到 {find_name} 的名字，开始界面对齐")
             find_flag = self.align_ocr_or_find_target_to_center(
-                ocr_match_or_feature_name_list=[re.compile("工作"), re.compile("休息")],
+                ocr_match_or_feature_name_list=find_name,
                 raise_if_fail=False,
                 only_x=True,
                 max_time=14,
@@ -919,7 +973,7 @@ class DailyTask(BaseEfTask):
 
         while chat_box is None:
             chat_box = self.wait_ocr(
-                match=self.all_name_pattern,
+                match=find_name,
                 box=self.box.bottom_right,
                 time_out=1,
             )
@@ -927,7 +981,9 @@ class DailyTask(BaseEfTask):
                 self.log_info("发现干员，点击进行交互")
                 self.send_key_down("alt")
                 self.sleep(0.5)
-                self.click_box(chat_box)
+                self.click_box(chat_box,after_sleep=1)
+                self.next_frame()
+                self.wait_click_ocr(match=find_name, box=self.box.bottom_right, time_out=1)
                 self.send_key_up("alt")
                 self.log_info("干员联络完成")
                 return True
@@ -1046,7 +1102,14 @@ class DailyTask(BaseEfTask):
                 return False
             self.next_frame()
             self.sleep(0.5)
-        self.sleep(10)
+        self.log_info("舰桥提示已经消失，等待信赖弹窗并消失")
+        start_time = time.time()
+        if self.wait_ocr(match=re.compile("信赖"), box=self.box.left, time_out=5):
+            while self.ocr(match=re.compile("信赖"), box=self.box.left):
+                if time.time() - start_time > 10:
+                    self.log_info("等待 '信赖' 弹窗超时，进行下一步")
+                self.next_frame()
+                self.sleep(0.5)
         self.log_info("前往中央环厅")
         if not self.navigate_to_main_hall():
             self.log_info("未到达中央环厅，送礼任务中断")

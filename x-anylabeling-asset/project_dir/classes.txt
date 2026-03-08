@@ -1,4 +1,10 @@
+akekuri_contact
+alesh_contact
+antal_contact
+arclight_contact
+ardelia_contact
 assist_friend
+avywenna_contact
 b
 bluesteel_ore
 c
@@ -8,6 +14,7 @@ chat_icon
 chat_icon_2
 chat_icon_dark
 check_in_close
+chen_qianyu_contact
 claim_gift
 close
 clue_1_icon
@@ -19,7 +26,9 @@ clue_6_icon
 clue_7_icon
 consumables_icon
 cultivation_materials_icon
+da_pan_contact
 e
+ember_contact
 esc
 essence_locked
 essence_quality_gold_1
@@ -27,10 +36,15 @@ essence_quality_gold_2
 essence_quality_gold_3
 essence_ui_marker
 essence_unlocked
+estella_contact
+fluorite_contact
 friend_chat_icon
 gathering_materials_icon
+gilberta_contact
 high_capacity_valley_battery
 industrial_equipment_icon
+last_rite_contact
+lifeng_contact
 logout
 market_dispatch_terminal
 market_dispatch_terminal_out
@@ -43,10 +57,12 @@ one_click_claim
 one_task_to_map
 operator_liaison_station
 operator_liaison_station_out_map
+perlica_contact
 pick_f
 pick_recycle
 plants_icon
 plus_button
+pogranichnik_contact
 price_down
 price_up
 products_icon
@@ -63,6 +79,7 @@ skill_e
 skip_dialog_cancel
 skip_dialog_confirm
 skip_dialog_esc
+snowshine_contact
 source_ore
 switch_q
 ticket_valley
@@ -74,6 +91,7 @@ ult_2
 ult_3
 ult_4
 visit_icon
+wulfgard_contact
 wuling_6_65w
 wuling_7_31w
 wuling_7_31w_2k
@@ -81,3 +99,4 @@ wuling_7_31w_4k
 wuling_7_31w_dark
 wuling_7_31w_dark_2k
 wuling_7_31w_dark_4k
+xaihi_contact
