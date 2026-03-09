@@ -92,6 +92,7 @@ config = {
         "lib": "onnxocr",
         "params": {
             "use_openvino": True,
+            "use_dml": False,
         },
     },
     "windows": {  # Windows游戏请填写此设置
@@ -169,8 +170,5 @@ config = {
         ["src.tasks.AutoSkipDialogTask", "AutoSkipDialogTask"],
         ["src.tasks.AutoPickTask", "AutoPickTask"],
         ["src.tasks.AutoLoginTask", "AutoLoginTask"],
-    ],
-    "custom_tabs": [  # 自定义侧边栏页面
-        ["src.ui.TaskSchedulerTab", "TaskSchedulerTab"],  # 任务计划管理
-    ],
+    ]
 }
