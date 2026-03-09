@@ -156,7 +156,7 @@ class AutoCombatTask(BaseEfTask, TriggerTask):
 
     def use_e_skill(self):
         if self.find_one('skill_e', threshold=0.7):
-            self.send_key('e')
+            self.press_key('e')
             self.last_op_time = time.time()
             return True
         return False

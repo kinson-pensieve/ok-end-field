@@ -607,3 +607,84 @@ msgstr "Hours"
 
 msgid "(0 = disabled)"
 msgstr "(0 = disabled)"
+
+msgid "Interact Key"
+msgstr "Interact Key"
+
+msgid "Game Hotkey Config"
+msgstr "Game Hotkey Config"
+
+msgid "In Game Hotkey for Skills"
+msgstr "In Game Hotkey for Skills"
+
+msgid "In Game Hotkey Config"
+msgstr "In Game Hotkey Config"
+
+msgid "Dodge Key"
+msgstr "Dodge Key"
+
+msgid "Jump Key"
+msgstr "Jump Key"
+
+msgid "Backpack Key"
+msgstr "Backpack Key"
+
+msgid "Valuables Key"
+msgstr "Valuables Key"
+
+msgid "Team Key"
+msgstr "Team Key"
+
+msgid "Operator Key"
+msgstr "Operator Key"
+
+msgid "Mission Key"
+msgstr "Mission Key"
+
+msgid "Track Key"
+msgstr "Track Key"
+
+msgid "Map Key"
+msgstr "Map Key"
+
+msgid "Baker Key"
+msgstr "Baker Key"
+
+msgid "Mail Key"
+msgstr "Mail Key"
+
+msgid "Handbook Key"
+msgstr "Handbook Key"
+
+msgid "Recruitment Key"
+msgstr "Recruitment Key"
+
+msgid "Quick Tool Key"
+msgstr "Quick Tool Key"
+
+msgid "Industry Plan Key"
+msgstr "Industry Plan Key"
+
+msgid "Place Belt Key"
+msgstr "Place Belt Key"
+
+msgid "Place Pipeline Key"
+msgstr "Place Pipeline Key"
+
+msgid "Equipment List Key"
+msgstr "Equipment List Key"
+
+msgid "Overview Mode Key"
+msgstr "Overview Mode Key"
+
+msgid "Storage Mode Key"
+msgstr "Storage Mode Key"
+
+msgid "Area Build Key"
+msgstr "Area Build Key"
+
+msgid "Blueprint Key"
+msgstr "Blueprint Key"
+
+msgid "Product Icon Toggle Key"
+msgstr "Product Icon Toggle Key"

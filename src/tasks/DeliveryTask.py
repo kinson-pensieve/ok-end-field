@@ -417,7 +417,7 @@ class DeliveryTask(BaseEfTask):
             start = time.time()
             while True:
                 self.next_frame()
-                self.send_key("e")
+                self.press_key("e")
                 self.sleep(0.1)
                 result = self.ocr(
                     match=on_zip_line_stop,
@@ -503,15 +503,15 @@ class DeliveryTask(BaseEfTask):
         """
         if self.wait_ocr(match="登上滑索架", box=self.box.bottom_right, time_out=60, log=True):
             if self.wait_ocr(match="工业", box=self.box.top_left, time_out=2, log=True):
-                self.send_key("tab", after_sleep=1)
-            self.send_key("f", after_sleep=2)
+                self.press_key("tab", after_sleep=1)
+            self.press_key('f', after_sleep=2)
             self.zip_line_list_go([int(i) for i in self.config.get(self.CFG_TO_DELIVERY_POINT).split(
                 ",")])  # 需要在配置里指定出发点的滑索距离,这里默认是36m的滑索
             if only_zip_line:
                 return True
             if self.wait_ocr(match="登上滑索架", box=self.box.bottom_right, time_out=2, log=True):
                 self.send_key("v", after_sleep=1)
-                self.send_key("f", after_sleep=2)
+                self.press_key('f', after_sleep=2)
                 self.align_ocr_or_find_target_to_center(
                     ocr_match_or_feature_name_list=secondary_objective_direction_dot,
                     threshold=0.8,
@@ -523,7 +523,7 @@ class DeliveryTask(BaseEfTask):
                 self.click(key="right")
             for i in range(40):
                 self.sleep(2)
-                self.send_key("v")
+                self.press_key("v")
                 self.align_ocr_or_find_target_to_center(
                     ocr_match_or_feature_name_list=secondary_objective_direction_dot,
                     threshold=0.7,
@@ -537,7 +537,7 @@ class DeliveryTask(BaseEfTask):
                 )
                 if self.wait_ocr(match="仓储节点", box=self.box.bottom_right, time_out=2, log=True):
                     if self.wait_ocr(match="取货", box=self.box.bottom_right, time_out=2, log=True):
-                        self.send_key("f")
+                        self.press_key('f')
                     break
             while not self.wait_ocr(match="登上滑索架", box=self.box.bottom_right, time_out=2, log=True):
                 self.move_keys("s", 1)
@@ -552,8 +552,8 @@ class DeliveryTask(BaseEfTask):
         """
         self.ensure_main()
         if self.wait_ocr(match="登上滑索架", box=self.box.bottom_right, time_out=30, log=True):
-            self.send_key("v")
-            self.send_key("f")
+            self.press_key("v")
+            self.press_key('f')
             self.align_ocr_or_find_target_to_center(
                 ocr_match_or_feature_name_list=secondary_objective_direction_dot,
                 threshold=0.8,
@@ -580,7 +580,7 @@ class DeliveryTask(BaseEfTask):
             if self.wait_ocr(
                     match=end_pattern, box=self.box.bottom_right, time_out=2, log=True
             ):
-                self.send_key("f", after_sleep=2)
+                self.press_key('f', after_sleep=2)
                 if not self.find_feature(feature_name="reward_ok"):
                     self.skip_dialog()
                     self.wait_click_ocr(match="确认", settle_time=2, after_sleep=2)
@@ -613,7 +613,7 @@ class DeliveryTask(BaseEfTask):
                     results = self.wait_ocr(
                         match=list(ends_list_pattern_dict.keys()), box=self.box.left, time_out=10, log=True
                     )
-                    self.send_key("f", after_sleep=2)
+                    self.press_key('f', after_sleep=2)
                     end_pattern = None
                     if not results:
                         raise Exception("未识别到送货目标")
@@ -633,7 +633,7 @@ class DeliveryTask(BaseEfTask):
                 self.task_to_transfer_point()
                 self.to_storage_point_and_back_zip_line(only_zip_line=True)
                 self.wait_ocr(match="登上滑索架", box=self.box.bottom_right, time_out=2, log=True)
-                self.send_key("f", after_sleep=2)
+                self.press_key('f', after_sleep=2)
                 self.on_zip_line_start(end)
                 self.sleep(2)
         else:

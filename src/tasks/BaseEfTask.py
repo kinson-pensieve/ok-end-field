@@ -18,6 +18,7 @@ from src.essence.essence_recognizer import EssenceInfo, read_essence_info
 from src.interaction.Key import move_keys
 from src.interaction.Mouse import active_and_send_mouse_delta, move_to_target_once, run_at_window_pos
 from src.interaction.ScreenPosition import ScreenPosition
+from src.interaction.KeyConfig import KeyConfigManager
 
 TOLERANCE = 50
 
@@ -29,6 +30,52 @@ class BaseEfTask(BaseTask):
         super().__init__(*args, **kwargs)
         self._logged_in = False  # 记录是否已登录游戏
         self.box = ScreenPosition(self)  # 屏幕位置辅助对象，提供top/bottom/left/right等边界
+        self.key_config = self.get_global_config('Game Hotkey Config')  # 获取全局热键配置
+        self.key_manager = KeyConfigManager(self.key_config)  # 初始化热键管理器
+
+    def press_key(self, key: str, down_time: float = 0.02, after_sleep: float = 0, interval: int = -1):
+        """发送通用部分的游戏热键。
+        
+        先从配置中查询是否有该键的自定义映射，如果没有则直接使用传入的键值。
+        
+        Args:
+            key: 按键值（如 'q', 'e', 'f1' 等），系统会先检查配置中是否有映射
+            down_time: 按键按下持续时间（秒）
+            after_sleep: 发送后额外等待时间（秒）
+            interval: 按键间隔
+            
+        Returns:
+            send_key 的返回值
+            
+        Example:
+            self.press_key('m', after_sleep=0.5)           # 地图键
+            self.press_key('b')                            # 背包键
+            self.press_key('f8', after_sleep=1)            # 行动手册键
+        """
+        actual_key = self.key_manager.resolve_common_key(key)
+        return self.send_key(actual_key, interval=interval, down_time=down_time, after_sleep=after_sleep)
+
+    def press_industry_key(self, key: str, down_time: float = 0.02, after_sleep: float = 0, interval: int = -1):
+        """发送集成工业部分的游戏热键。
+        
+        先从配置中查询是否有该键的自定义映射，如果没有则直接使用传入的键值。
+        
+        Args:
+            key: 按键值（如 'q', 'e', 'capslock' 等），系统会先检查配置中是否有映射
+            down_time: 按键按下持续时间（秒）
+            after_sleep: 发送后额外等待时间（秒）
+            interval: 按键间隔
+            
+        Returns:
+            send_key 的返回值
+            
+        Example:
+            self.press_industry_key('q', after_sleep=0.5)     # 放置管道
+            self.press_industry_key('e')                      # 放置传送带
+            self.press_industry_key('capslock', after_sleep=1) # 俯瞰模式
+        """
+        actual_key = self.key_manager.resolve_industry_key(key)
+        return self.send_key(actual_key, interval=interval, down_time=down_time, after_sleep=after_sleep)
 
     def move_keys(self, keys, duration):
         """向当前窗口发送按键移动指令
