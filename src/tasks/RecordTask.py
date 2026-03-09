@@ -86,15 +86,13 @@ class RecordTask(BaseNavTask):
             self.ensure_main()
             self.sleep(2)
 
-        # 2. 通知用户即将开始录制
-        self.notification("3秒后开始录制，按 F12 停止")
-        self.sleep(3)
-
-        # 3. 开始录制（阻塞直到按 F12）
+        # 2. 开始录制（阻塞直到按 F12）
+        self.notification("开始录制，按 F12 停止")
         recorder = Recorder(self)
         recorder.start()
 
-        # 4. 保存录制结果
+        # 3. 保存录制结果
+        self.notification("录制完成")
         steps = recorder.get_steps()
         if not steps:
             self.log_error("录制结果为空，未保存")

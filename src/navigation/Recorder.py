@@ -269,6 +269,21 @@ class Recorder:
         """滑索模式主循环：持续检测金色距离文字，点击回调立即保存"""
         task = self.task
 
+        # 等待角色真正登上滑索（大世界UI消失或检测到金色距离文字）
+        task.log_info("等待登上滑索...")
+        wait_start = time.time()
+        while time.time() - wait_start < 10 and not self._stop_event.is_set():
+            task.next_frame()
+            if not task.in_world():
+                task.log_info("已登上滑索，开始录制")
+                break
+            task.sleep(0.3)
+        else:
+            if not self._stop_event.is_set():
+                task.log_error("等待登上滑索超时，退回步行模式")
+                self.state = "WALKING"
+                return
+
         while self.state == "ZIPLINING" and not self._stop_event.is_set():
             task.next_frame()
 
