@@ -70,7 +70,7 @@ class AutoPickTask(BaseEfTask, TriggerTask):
 
     def pick(self, count=1):
         for _ in range(count):
-            self.send_key('f', after_sleep=0.1)
+            self.press_key('f', after_sleep=0.1)
 
 
 white_color = {

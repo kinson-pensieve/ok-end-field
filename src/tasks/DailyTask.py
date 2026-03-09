@@ -267,7 +267,7 @@ class DailyTask(BaseEfTask):
                     if scroll_count >= 7:  # 交流只有循环 >=7 次才允许找 help
                         self.back(after_sleep=2)
                         self.ensure_in_friend_boat()
-                        self.send_key("f", after_sleep=2)
+                        self.press_key('f', after_sleep=2)
                         self.wait_ui_stable(refresh_interval=0.5)
                         left_exchange_time = 0
                         exchange_not_found = True
@@ -877,7 +877,7 @@ class DailyTask(BaseEfTask):
         find_name=""
         for attempt in range(1, 11):
             self.log_info(f"第 {attempt}/10 次尝试打开信任度界面")
-            self.send_key("f", after_sleep=2)
+            self.press_key('f', after_sleep=2)
             result = {}
             found_target = False
 
@@ -898,7 +898,7 @@ class DailyTask(BaseEfTask):
             # 2 查找其他角色（不 scroll）
             if not found_target:
                 self.back(after_sleep=2)
-                self.send_key("f", after_sleep=2)
+                self.press_key('f', after_sleep=2)
                 self.log_info(f"未找到联络对象 {target_name}，尝试其他目标")
 
                 other_results = {}
@@ -1042,7 +1042,7 @@ class DailyTask(BaseEfTask):
                 time_out=5,
                 after_sleep=2,
             )
-            self.send_key("f", after_sleep=2)
+            self.press_key('f', after_sleep=2)
 
             start_time = time.time()
             while True:
@@ -1383,8 +1383,7 @@ class DailyTask(BaseEfTask):
         )
 
         if result:
-            self.send_key("f", after_sleep=2)
-
+            self.press_key('f', after_sleep=2)
         return result
     def buy_sell(self):
         """按区域执行买卖货流程。

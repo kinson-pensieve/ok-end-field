@@ -563,3 +563,84 @@ msgstr "小时数"
 
 msgid "(0 = disabled)"
 msgstr "（0 = 禁用）"
+
+msgid "Interact Key"
+msgstr "交互键"
+
+msgid "Game Hotkey Config"
+msgstr "游戏热键配置"
+
+msgid "In Game Hotkey for Skills"
+msgstr "游戏内技能热键设置"
+
+msgid "In Game Hotkey Config"
+msgstr "游戏内热键配置"
+
+msgid "Dodge Key"
+msgstr "闪避键"
+
+msgid "Jump Key"
+msgstr "跳跃键"
+
+msgid "Backpack Key"
+msgstr "背包键"
+
+msgid "Valuables Key"
+msgstr "贵重品库键"
+
+msgid "Team Key"
+msgstr "编队键"
+
+msgid "Operator Key"
+msgstr "干员键"
+
+msgid "Mission Key"
+msgstr "任务键"
+
+msgid "Track Key"
+msgstr "追踪键"
+
+msgid "Map Key"
+msgstr "地图键"
+
+msgid "Baker Key"
+msgstr "Baker键"
+
+msgid "Mail Key"
+msgstr "邮箱键"
+
+msgid "Handbook Key"
+msgstr "行动手册键"
+
+msgid "Recruitment Key"
+msgstr "寻访键"
+
+msgid "Quick Tool Key"
+msgstr "快捷工具键"
+
+msgid "Industry Plan Key"
+msgstr "工业发展规划键"
+
+msgid "Place Belt Key"
+msgstr "放置传送带键"
+
+msgid "Place Pipeline Key"
+msgstr "放置管道键"
+
+msgid "Equipment List Key"
+msgstr "设备列表键"
+
+msgid "Overview Mode Key"
+msgstr "俯瞰模式键"
+
+msgid "Storage Mode Key"
+msgstr "收纳模式键"
+
+msgid "Area Build Key"
+msgstr "地区建设键"
+
+msgid "Blueprint Key"
+msgstr "蓝图键"
+
+msgid "Product Icon Toggle Key"
+msgstr "产物图标切换键"

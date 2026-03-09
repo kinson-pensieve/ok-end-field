@@ -756,6 +756,10 @@ class TaskSchedulerTab(Tab):
         self.config = main_config
         self.add_after_default_tabs = True
         self.position = NavigationItemPosition.TOP
+        self.enable_ui_table_polling = False
+        self.enable_background_sync = False
+        self.ui_table_polling_interval_ms = 5000
+        self.background_sync_interval_s = 30
         self.schedule_manager: Optional[WindowsScheduleManager] = None
         self.task_table: Optional[ScheduleTaskTable] = None
         self.refreshing = False
@@ -798,18 +802,21 @@ class TaskSchedulerTab(Tab):
         # 连接表格信号
         self.task_table.itemClicked.connect(self.on_table_item_clicked)
 
-        # 定时刷新表格
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.update_table)
-        self.timer.start(5000)  # 每 5 秒刷新一次
+        # 定时刷新表格（可通过属性开关控制）
+        self.timer = None
+        if self.enable_ui_table_polling:
+            self.timer = QTimer()
+            self.timer.timeout.connect(self.update_table)
+            self.timer.start(self.ui_table_polling_interval_ms)
 
     def setup_manager(self):
         """设置管理器"""
         self.schedule_manager = WindowsScheduleManager(config=self.config)
         self.schedule_manager.register_update_callback(self.on_task_updated)
 
-        # 启动后台同步
-        self.schedule_manager.start_background_sync(interval=30)
+        # 启动后台同步（可通过属性开关控制）
+        if self.enable_background_sync:
+            self.schedule_manager.start_background_sync(interval=self.background_sync_interval_s)
 
     def load_tasks(self):
         """加载任务列表"""
