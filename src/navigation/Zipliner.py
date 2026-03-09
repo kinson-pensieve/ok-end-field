@@ -36,7 +36,7 @@ class Zipliner:
         pixels_per_circle = self.FULL_CIRCLE_RATIO * self.task.width
         return round(degrees / 360 * pixels_per_circle)
 
-    def _mount_zipline(self):
+    def _mount_zipline(self, stop_event=None):
         """检测并登上滑索架
 
         检测屏幕右下角是否有"登上滑索架"提示，有则按 F 登上，
@@ -49,6 +49,8 @@ class Zipliner:
             start = time.time()
             retry = 0
             while True:
+                if stop_event and stop_event.is_set():
+                    return False
                 task.next_frame()
                 task.sleep(0.1)
                 mount_result = task.ocr(box=task.box_of_screen(*ZIP_LINE_TIP_BOX))
@@ -130,13 +132,14 @@ class Zipliner:
         angle_y = self._pixels_to_degrees(px_dy)
         return angle_x, angle_y, px_dx, px_dy
 
-    def _align_to_target(self, distance, tolerance=10, max_attempts=50):
+    def _align_to_target(self, distance, tolerance=10, max_attempts=50, stop_event=None):
         """滑索专用对中方法：角度开环移动 + 白色消失确认 + 金色精调
 
         Args:
             distance: 目标距离数字（整数）
             tolerance: 对中容差（像素）
             max_attempts: 最大尝试次数
+            stop_event: 可选的 threading.Event，触发时中断执行
 
         Returns:
             bool: 是否对齐成功
@@ -156,6 +159,8 @@ class Zipliner:
         tolerance_deg = self._pixels_to_degrees(tolerance)
 
         for attempt in range(max_attempts):
+            if stop_event and stop_event.is_set():
+                return False
             # ── 阶段1: 大范围扫描（金色+白色）──
             frame = task.next_frame()
             result, is_gold = self._scan_target(frame, pattern)
@@ -205,6 +210,8 @@ class Zipliner:
             # ── 阶段2: 小范围金色精调（带文字匹配）──
             small_fail = 0
             while small_fail < 10:
+                if stop_event and stop_event.is_set():
+                    return False
                 frame = task.next_frame()
                 result, is_gold = self._scan_target(frame, pattern, box=small_box, gold_only=True)
 
@@ -234,6 +241,8 @@ class Zipliner:
             task.log_info("进入阶段3: 纯金色位置确认")
             phase3_fail = 0
             while phase3_fail < 10:
+                if stop_event and stop_event.is_set():
+                    return False
                 frame = task.next_frame()
                 gold_raw = task.ocr(
                     box=tiny_box, frame=frame,
@@ -282,7 +291,9 @@ class Zipliner:
         task = self.task
 
         # 检测并登上滑索架
-        if not self._mount_zipline():
+        if not self._mount_zipline(stop_event=stop_event):
+            if stop_event and stop_event.is_set():
+                return False
             raise Exception("无法登上滑索架")
 
         for i, node in enumerate(nodes):
@@ -311,7 +322,9 @@ class Zipliner:
                 task.log_info(f"滑索 {i + 1}/{len(nodes)}: 直接点击（跳过对齐）")
             else:
                 task.log_info(f"滑索 {i + 1}/{len(nodes)}: 对齐距离 {distance}")
-                self._align_to_target(distance)
+                if not self._align_to_target(distance, stop_event=stop_event):
+                    if stop_event and stop_event.is_set():
+                        return False
 
             task.click(after_sleep=0.5)
             start = time.time()

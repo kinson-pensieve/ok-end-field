@@ -110,7 +110,10 @@ class Navigator:
             # 传送到起始点
             if teleport_point:
                 task.log_info(f"传送到: {teleport_point}")
-                if not self.teleporter.teleport_to(teleport_point):
+                if not self.teleporter.teleport_to(teleport_point, stop_event=self._stop_event):
+                    if self._stop_event.is_set():
+                        task.log_info("传送被 F12 中断")
+                        return False
                     task.log_error(f"传送到 {teleport_point} 失败")
                     return False
                 task.ensure_main()

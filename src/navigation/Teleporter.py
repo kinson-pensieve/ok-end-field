@@ -60,12 +60,13 @@ class Teleporter:
         task.log_error("多次尝试后仍未回到游戏世界")
         return False
 
-    def teleport_to(self, name: str, retry=3) -> bool:
+    def teleport_to(self, name: str, retry=3, stop_event=None) -> bool:
         """传送到指定传送点
 
         Args:
             name: 传送点名称（teleport_points.json 中的 name 字段）
             retry: 最大重试次数
+            stop_event: 可选的 threading.Event，触发时中断传送
 
         Returns:
             bool: 传送是否成功
@@ -83,6 +84,8 @@ class Teleporter:
             return False
 
         for attempt in range(retry):
+            if stop_event and stop_event.is_set():
+                return False
             if attempt > 0:
                 task.log_info(f"第 {attempt + 1}/{retry} 次重试传送到: {selected_point['name']}")
             else:
