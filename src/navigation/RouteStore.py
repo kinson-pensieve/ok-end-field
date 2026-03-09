@@ -13,7 +13,7 @@ class RouteStore:
         store.flush()
     """
 
-    _JSON_PATH = os.path.join("assets", "route.json")
+    _JSON_PATH = os.path.join("configs", "route.json")
 
     def __init__(self):
         self._routes: list[dict] = []

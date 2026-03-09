@@ -2,7 +2,7 @@
 
 ## 概述
 
-通过监听用户的键鼠操作，自动录制导航路线并写入 `assets/route.json`，替代手动编写路线配置。
+通过监听用户的键鼠操作，自动录制导航路线并写入 `configs/route.json`，替代手动编写路线配置。
 
 ## 整体流程
 
@@ -192,7 +192,7 @@ on_move(dx, dy):
 | 新增依赖 | `requirements.txt`（添加 pynput） |
 | 已实现 | `src/navigation/Recorder.py`（录制工具类） |
 | 已实现 | `src/tasks/RecordTask.py`（UI 任务入口） |
-| 修改 | `assets/route.json`（录制结果追加） |
+| 修改 | `configs/route.json`（录制结果追加） |
 
 ## UI 配置项
 
