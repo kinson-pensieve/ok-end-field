@@ -1,10 +1,15 @@
 import os
 
 import numpy as np
+import ok as _ok
 from ok import ConfigOption
 from src.interaction.EfInteraction import EfInteraction
+from src.ui.EfMainWindow import EfMainWindow as _EfMainWindow
 
 version = "dev"
+
+# 替换框架的 MainWindow 为自定义的 EfMainWindow
+_ok.MainWindow = _EfMainWindow
 
 
 # 不需要修改version, Github Action打包会自动修改
@@ -121,6 +126,8 @@ config = {
         ["src.tasks.WarehouseTransferTask", "WarehouseTransferTask"],
         ["src.tasks.DeliveryTask", "DeliveryTask"],
         ["src.tasks.EssenceScanTask", "EssenceScanTask"],
+        ["src.tasks.NavigationTask", "NavigationTask"],
+        ["src.tasks.RecordTask", "RecordTask"],
         ["src.tasks.Test", "Test"],
         ["ok.task.DiagnosisTask", "DiagnosisTask"],
     ],

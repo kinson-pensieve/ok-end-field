@@ -30,7 +30,13 @@ def move_keys(hwnd, keys, duration):
         "a": 0x41,
         "s": 0x53,
         "d": 0x44,
+        "f": 0x46,
+        "space": 0x20,
+        "shift": 0xA0,
     }
+
+    if isinstance(keys, str):
+        keys = [keys]
 
     KEYEVENTF_KEYUP = 0x0002
 

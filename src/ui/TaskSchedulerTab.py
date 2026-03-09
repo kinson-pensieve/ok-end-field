@@ -39,7 +39,7 @@ from qfluentwidgets import (
 )
 
 from ok import Logger, og
-from ok.gui.widget.Tab import Tab
+from ok.gui.widget.CustomTab import CustomTab
 from src.scheduler.windows_schedule import WindowsScheduleManager, ScheduleTaskInfo, TriggerType
 from src.config import config as main_config
 
@@ -731,7 +731,7 @@ class ModifyScheduleTaskDialog(MessageBoxBase):
         )
 
 
-class TaskSchedulerTab(Tab):
+class TaskSchedulerTab(CustomTab):
     """
     计划任务管理标签页
 
@@ -771,6 +771,10 @@ class TaskSchedulerTab(Tab):
     def name(self):
         """侧边栏显示的名称"""
         return og.app.tr("Task Schedule")
+
+    @property
+    def position(self):
+        return NavigationItemPosition.TOP
 
     def init_ui(self):
         """初始化 UI"""

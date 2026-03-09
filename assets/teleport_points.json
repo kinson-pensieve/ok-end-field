@@ -1,0 +1,402 @@
+[
+  {
+    "name": "谷地要塞",
+    "region": "四号谷地",
+    "area": "谷地通道",
+    "direction": "top_left",
+    "coordinates": "0.36,0.53",
+    "world": "塔卫二"
+  },
+  {
+    "name": "谷地中转站",
+    "region": "四号谷地",
+    "area": "谷地通道",
+    "direction": "top_left",
+    "coordinates": "0.41,0.54",
+    "world": "塔卫二"
+  },
+  {
+    "name": "通道入口",
+    "region": "四号谷地",
+    "area": "谷地通道",
+    "direction": "bottom_right",
+    "coordinates": "0.56,0.72",
+    "world": "塔卫二"
+  },
+  {
+    "name": "货运平台",
+    "region": "四号谷地",
+    "area": "枢纽区",
+    "direction": "top_left",
+    "coordinates": "0.58,0.22",
+    "world": "塔卫二"
+  },
+  {
+    "name": "岩丘通道",
+    "region": "四号谷地",
+    "area": "枢纽区",
+    "direction": "top_left",
+    "coordinates": "0.51,0.28",
+    "world": "塔卫二"
+  },
+  {
+    "name": "枢纽基地电站",
+    "region": "四号谷地",
+    "area": "枢纽区",
+    "direction": "top_left",
+    "coordinates": "0.41,0.73",
+    "world": "塔卫二"
+  },
+  {
+    "name": "源石副产物中心",
+    "region": "四号谷地",
+    "area": "枢纽区",
+    "direction": "bottom_left",
+    "coordinates": "0.32,0.75",
+    "world": "塔卫二"
+  },
+  {
+    "name": "枢纽基地区",
+    "region": "四号谷地",
+    "area": "枢纽区",
+    "direction": "bottom_left",
+    "coordinates": "0.63,0.57",
+    "world": "塔卫二"
+  },
+  {
+    "name": "南部草甸",
+    "region": "四号谷地",
+    "area": "枢纽区",
+    "direction": "bottom_left",
+    "coordinates": "0.60,0.72",
+    "world": "塔卫二"
+  },
+  {
+    "name": "工人之家",
+    "region": "四号谷地",
+    "area": "枢纽区",
+    "direction": "bottom_left",
+    "coordinates": "0.72,0.71",
+    "world": "塔卫二"
+  },
+  {
+    "name": "采石场入口",
+    "region": "四号谷地",
+    "area": "阿伯莉采石场",
+    "direction": "top_left",
+    "coordinates": "0.43,0.33",
+    "world": "塔卫二"
+  },
+  {
+    "name": "深层管理区",
+    "region": "四号谷地",
+    "area": "阿伯莉采石场",
+    "direction": "top_left",
+    "coordinates": "0.67,0.46",
+    "world": "塔卫二"
+  },
+  {
+    "name": "存料区",
+    "region": "四号谷地",
+    "area": "阿伯莉采石场",
+    "direction": "top_left",
+    "coordinates": "0.59,0.63",
+    "world": "塔卫二"
+  },
+  {
+    "name": "采石作业区",
+    "region": "四号谷地",
+    "area": "阿伯莉采石场",
+    "direction": "bottom_left",
+    "coordinates": "0.58,0.63",
+    "world": "塔卫二"
+  },
+  {
+    "name": "五号公路",
+    "region": "四号谷地",
+    "area": "源石研究园",
+    "direction": "top_left",
+    "coordinates": "0.27,0.67",
+    "world": "塔卫二"
+  },
+  {
+    "name": "研究所",
+    "region": "四号谷地",
+    "area": "源石研究园",
+    "direction": "top_left",
+    "coordinates": "0.57,0.41",
+    "world": "塔卫二"
+  },
+  {
+    "name": "醇化合物工厂",
+    "region": "四号谷地",
+    "area": "源石研究园",
+    "direction": "top_left",
+    "coordinates": "0.58,0.78",
+    "world": "塔卫二"
+  },
+  {
+    "name": "崖边山道",
+    "region": "四号谷地",
+    "area": "源石研究园",
+    "direction": "top_left",
+    "coordinates": "0.68,0.22",
+    "world": "塔卫二"
+  },
+  {
+    "name": "山道缓坡",
+    "region": "四号谷地",
+    "area": "源石研究园",
+    "direction": "top_left",
+    "coordinates": "0.80,0.49",
+    "world": "塔卫二"
+  },
+  {
+    "name": "源石隧道",
+    "region": "四号谷地",
+    "area": "矿脉源区",
+    "direction": "top_left",
+    "coordinates": "0.29,0.47",
+    "world": "塔卫二"
+  },
+  {
+    "name": "矿区缆车站",
+    "region": "四号谷地",
+    "area": "矿脉源区",
+    "direction": "top_left",
+    "coordinates": "0.37,0.84",
+    "world": "塔卫二"
+  },
+  {
+    "name": "旧矿区",
+    "region": "四号谷地",
+    "area": "矿脉源区",
+    "direction": "top_left",
+    "coordinates": "0.78,0.93",
+    "world": "塔卫二"
+  },
+  {
+    "name": "矿区医疗站",
+    "region": "四号谷地",
+    "area": "矿脉源区",
+    "direction": "bottom_right",
+    "coordinates": "0.46,0.26",
+    "world": "塔卫二"
+  },
+  {
+    "name": "裂地者营地",
+    "region": "四号谷地",
+    "area": "矿脉源区",
+    "direction": "bottom_right",
+    "coordinates": "0.67,0.57",
+    "world": "塔卫二"
+  },
+  {
+    "name": "高地主路",
+    "region": "四号谷地",
+    "area": "供能高地",
+    "direction": "top_left",
+    "coordinates": "0.59,0.50",
+    "world": "塔卫二"
+  },
+  {
+    "name": "源石发电站",
+    "region": "四号谷地",
+    "area": "供能高地",
+    "direction": "top_left",
+    "coordinates": "0.73,0.29",
+    "world": "塔卫二"
+  },
+  {
+    "name": "碾骨战营",
+    "region": "四号谷地",
+    "area": "供能高地",
+    "direction": "top_left",
+    "coordinates": "0.41,0.67",
+    "world": "塔卫二"
+  },
+  {
+    "name": "超域试验场",
+    "region": "四号谷地",
+    "area": "供能高地",
+    "direction": "bottom_right",
+    "coordinates": "0.51,0.22",
+    "world": "塔卫二"
+  },
+  {
+    "name": "界石坪",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "bottom_right",
+    "coordinates": "0.17,0.02",
+    "world": "塔卫二"
+  },
+  {
+    "name": "方兴衢",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "bottom_right",
+    "coordinates": "0.38,0.11",
+    "world": "塔卫二"
+  },
+  {
+    "name": "天师府学院",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "bottom_right",
+    "coordinates": "0.20,0.34",
+    "world": "塔卫二"
+  },
+  {
+    "name": "孤喉泽",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "bottom_right",
+    "coordinates": "0.38,0.61",
+    "world": "塔卫二"
+  },
+  {
+    "name": "储备站",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "bottom_right",
+    "coordinates": "0.55,0.57",
+    "world": "塔卫二"
+  },
+  {
+    "name": "天井院",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "bottom_right",
+    "coordinates": "0.63,0.41",
+    "world": "塔卫二"
+  },
+  {
+    "name": "待修缮区",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "bottom_right",
+    "coordinates": "0.60,0.04",
+    "world": "塔卫二"
+  },
+  {
+    "name": "观测站",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "top_left",
+    "coordinates": "0.81,0.49",
+    "world": "塔卫二"
+  },
+  {
+    "name": "生态实验站",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "top_left",
+    "coordinates": "0.50,0.45",
+    "world": "塔卫二"
+  },
+  {
+    "name": "聚宝窟外",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "top_left",
+    "coordinates": "0.48,0.84",
+    "world": "塔卫二"
+  },
+  {
+    "name": "聚宝窟内",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "center",
+    "coordinates": "0.42,0.49",
+    "world": "塔卫二"
+  },
+  {
+    "name": "天王坪东",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "top_left",
+    "coordinates": "0.70,0.91",
+    "world": "塔卫二"
+  },
+  {
+    "name": "天王坪南",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "center",
+    "coordinates": "0.68,0.52",
+    "world": "塔卫二"
+  },
+  {
+    "name": "踩道",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "top_left",
+    "coordinates": "0.69,0.58",
+    "world": "塔卫二"
+  },
+  {
+    "name": "驮鼻山",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "bottom_left",
+    "coordinates": "0.69,0.02",
+    "world": "塔卫二"
+  },
+  {
+    "name": "迷踪林",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "bottom_left",
+    "coordinates": "0.43,0.21",
+    "world": "塔卫二"
+  },
+  {
+    "name": "摘菱屿",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "bottom_left",
+    "coordinates": "0.36,0.33",
+    "world": "塔卫二"
+  },
+  {
+    "name": "南山",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "bottom_left",
+    "coordinates": "0.50,0.57",
+    "world": "塔卫二"
+  },
+  {
+    "name": "水泽涧",
+    "region": "武陵",
+    "area": "景玉谷",
+    "direction": "bottom_left",
+    "coordinates": "0.25,0.69",
+    "world": "塔卫二"
+  },
+  {
+    "name": "传送台",
+    "region": "",
+    "area": "",
+    "direction": "top_left",
+    "coordinates": "0.58,0.28",
+    "world": "帝江号"
+  },
+  {
+    "name": "舰桥",
+    "region": "",
+    "area": "",
+    "direction": "top_left",
+    "coordinates": "0.45,0.58",
+    "world": "帝江号"
+  },
+  {
+    "name": "基建",
+    "region": "",
+    "area": "",
+    "direction": "top_left",
+    "coordinates": "0.72,0.58",
+    "world": "帝江号"
+  }
+]
