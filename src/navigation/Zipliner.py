@@ -6,6 +6,7 @@ from src.image.hsv_config import HSVRange as hR
 
 on_zip_line_tip = ["向目标移动", "离开滑索架"]
 on_zip_line_stop = [re.compile(i) for i in on_zip_line_tip]
+ZIP_LINE_TIP_BOX = (0.35, 0.94, 0.65, 0.98)
 
 
 class Zipliner:
@@ -46,12 +47,22 @@ class Zipliner:
             task.log_info("检测到滑索架，按F登上")
             task.send_key("f", after_sleep=2)
             start = time.time()
+            retry = 0
             while True:
                 task.next_frame()
                 task.sleep(0.1)
-                if task.ocr(match=on_zip_line_stop, box="bottom", log=True):
-                    task.log_info("已成功登上滑索架")
-                    return True
+                mount_result = task.ocr(box=task.box_of_screen(*ZIP_LINE_TIP_BOX))
+                if mount_result:
+                    task.log_debug(f"登上检测: {[r.name for r in mount_result]}")
+                    matched = [r for r in mount_result
+                              if any(len(set(r.name) & set(tip)) >= 3 for tip in on_zip_line_tip)]
+                    if matched:
+                        task.log_info("已成功登上滑索架")
+                        return True
+                retry += 1
+                if retry % 5 == 0:
+                    jitter = random.randint(-3, 3)
+                    task.active_and_send_mouse_delta(jitter, 0)
                 if time.time() - start > 30:
                     task.log_error("登上滑索架超时")
                     return False
@@ -120,7 +131,7 @@ class Zipliner:
         return angle_x, angle_y, px_dx, px_dy
 
     def _align_to_target(self, distance, tolerance=10, max_attempts=50):
-        """滑索专用对中方法：角度开环移动 + 两阶段搜索 + 金色确认
+        """滑索专用对中方法：角度开环移动 + 白色消失确认 + 金色精调
 
         Args:
             distance: 目标距离数字（整数）
@@ -132,8 +143,16 @@ class Zipliner:
         """
         task = self.task
         pattern = re.compile(str(distance))
-        # 小范围搜索框：屏幕中心 40%
-        small_box = task.box_of_screen(0.30, 0.30, 0.70, 0.70)
+        # 阶段2搜索框：屏幕中心正方形（以宽度40%为边长，768×768 @1080p）
+        half_ratio = 0.20  # 宽度的40%的一半
+        v_half = half_ratio * task.width / task.height  # 等像素换算为高度比例
+        small_box = task.box_of_screen(0.5 - half_ratio, 0.5 - v_half,
+                                       0.5 + half_ratio, 0.5 + v_half)
+        # 阶段3搜索框：更小的中心正方形（以宽度20%为边长，384×384 @1080p）
+        tiny_ratio = 0.10
+        tv_half = tiny_ratio * task.width / task.height
+        tiny_box = task.box_of_screen(0.5 - tiny_ratio, 0.5 - tv_half,
+                                      0.5 + tiny_ratio, 0.5 + tv_half)
         tolerance_deg = self._pixels_to_degrees(tolerance)
 
         for attempt in range(max_attempts):
@@ -145,15 +164,15 @@ class Zipliner:
                 # 没找到目标，系统化扫描：每次固定转30°
                 scan_deg = 30 if (attempt % 12) < 6 else -30
                 scan_px = self._degrees_to_pixels(scan_deg)
-                task.log_debug(f"对齐第{attempt + 1}轮: 未找到目标，系统扫描 {scan_deg}° ({scan_px}px)")
+                task.log_info(f"对齐第{attempt + 1}轮: 未找到目标，系统扫描 {scan_deg}°")
                 task.active_and_send_mouse_delta(scan_px, 0)
                 task.sleep(0.2)
                 continue
 
             angle_x, angle_y, px_dx, px_dy = self._calc_offset(result)
             color = "金色" if is_gold else "白色"
-            task.log_debug(f"对齐第{attempt + 1}轮: {color}命中, "
-                           f"偏移角度=({angle_x}°,{angle_y}°), 像素=({px_dx},{px_dy})")
+            task.log_info(f"对齐第{attempt + 1}轮: {color}命中, "
+                          f"像素=({px_dx},{px_dy})")
 
             # 如果金色且已在容差内，直接完成
             if is_gold and abs(px_dx) <= tolerance and abs(px_dy) <= tolerance:
@@ -161,15 +180,29 @@ class Zipliner:
                               f"像素=({px_dx},{px_dy}), 轮次={attempt + 1}")
                 return True
 
-            # 一步移动到目标位置（白色命中打折，避免远距离过冲）
-            scale = 0.7 if not is_gold else 1.0
+            # 一步移动到目标位置（白色打折避免过冲）
+            scale = 0.85 if not is_gold else 1.0
             move_px_x = self._degrees_to_pixels(angle_x * scale)
             move_px_y = self._degrees_to_pixels(angle_y * scale)
             task.log_debug(f"执行移动: {angle_x}°/{angle_y}° ×{scale} → {move_px_x}px/{move_px_y}px")
+
             task.active_and_send_mouse_delta(move_px_x, move_px_y)
             task.sleep(0.15)
 
-            # ── 阶段2: 小范围金色确认 ──
+            # 白色命中后检测是否已进入金色区域，未进入则跳过精调直接重搜
+            if not is_gold:
+                frame = task.next_frame()
+                white_result = task.ocr(
+                    frame=frame,
+                    frame_processor=task.make_hsv_isolator(hR.WHITE),
+                )
+                white_matched = [r for r in white_result if pattern.search(r.name)] if white_result else []
+                if white_matched:
+                    task.log_info("白色仍在，跳过精调继续搜索")
+                    continue
+                task.log_debug("白色消失，进入精调")
+
+            # ── 阶段2: 小范围金色精调（带文字匹配）──
             small_fail = 0
             while small_fail < 10:
                 frame = task.next_frame()
@@ -178,25 +211,55 @@ class Zipliner:
                 if is_gold:
                     small_fail = 0  # 找到金色，重置连续失败计数
                     angle_x, angle_y, px_dx, px_dy = self._calc_offset(result)
-                    task.log_debug(f"小范围确认: 金色命中, "
+                    task.log_debug(f"阶段2: 金色命中, "
                                    f"角度=({angle_x}°,{angle_y}°), 像素=({px_dx},{px_dy})")
                     if abs(px_dx) <= tolerance and abs(px_dy) <= tolerance:
-                        task.log_info(f"对齐完成: 角度=({angle_x}°,{angle_y}°), "
-                                      f"像素=({px_dx},{px_dy}), 轮次={attempt + 1}")
+                        task.log_info(f"对齐完成(阶段2): 像素=({px_dx},{px_dy}), 轮次={attempt + 1}")
                         return True
                     # 微调（衰减系数防止震荡）
-                    adj_px_x = self._degrees_to_pixels(angle_x * 0.7)
-                    adj_px_y = self._degrees_to_pixels(angle_y * 0.7)
-                    task.log_debug(f"微调移动: {angle_x}°/{angle_y}° ×0.7 → {adj_px_x}px/{adj_px_y}px")
+                    adj_px_x = self._degrees_to_pixels(angle_x * 0.85)
+                    adj_px_y = self._degrees_to_pixels(angle_y * 0.85)
+                    task.log_debug(f"阶段2微调: {angle_x}°/{angle_y}° ×0.85 → {adj_px_x}px/{adj_px_y}px")
                     task.active_and_send_mouse_delta(adj_px_x, adj_px_y)
                     task.sleep(0.1)
                 else:
                     small_fail += 1
-                    task.log_debug(f"小范围确认: 未找到金色 ({small_fail}/10)")
+                    # 每3次失败小幅随机抖动，避免3D遮挡导致固定角度识别失败
+                    if small_fail % 3 == 0:
+                        jitter = random.randint(-5, 5)
+                        task.active_and_send_mouse_delta(jitter, 0)
                     task.sleep(0.1)
 
-            # 小范围连续 10 次失败，回退到阶段1
-            task.log_debug("小范围确认失败，回退大范围重新搜索")
+            # ── 阶段3: 纯金色位置确认（不匹配文字）──
+            task.log_info("进入阶段3: 纯金色位置确认")
+            phase3_fail = 0
+            while phase3_fail < 10:
+                frame = task.next_frame()
+                gold_raw = task.ocr(
+                    box=tiny_box, frame=frame,
+                    frame_processor=task.make_hsv_isolator(hR.GOLD_SELECTED),
+                )
+                if gold_raw:
+                    phase3_fail = 0
+                    _, _, raw_dx, raw_dy = self._calc_offset(gold_raw[0])
+                    task.log_debug(f"阶段3: 金色检测, 像素=({raw_dx},{raw_dy})")
+                    if abs(raw_dx) <= tolerance and abs(raw_dy) <= tolerance:
+                        task.log_info(f"对齐完成(阶段3): 像素=({raw_dx},{raw_dy}), 轮次={attempt + 1}")
+                        return True
+                    adj_px_x = self._degrees_to_pixels(self._pixels_to_degrees(raw_dx) * 0.85)
+                    adj_px_y = self._degrees_to_pixels(self._pixels_to_degrees(raw_dy) * 0.85)
+                    task.log_debug(f"阶段3微调: {raw_dx}px/{raw_dy}px ×0.85 → {adj_px_x}px/{adj_px_y}px")
+                    task.active_and_send_mouse_delta(adj_px_x, adj_px_y)
+                    task.sleep(0.1)
+                else:
+                    phase3_fail += 1
+                    if phase3_fail % 3 == 0:
+                        jitter = random.randint(-5, 5)
+                        task.active_and_send_mouse_delta(jitter, 0)
+                    task.sleep(0.1)
+
+            # 阶段2+3 均失败，回退到阶段1
+            task.log_info(f"阶段3连续{phase3_fail}次失败，回退重新搜索")
 
         task.log_error(f"滑索对齐失败: 共尝试{max_attempts}轮, 容差={tolerance}px/{tolerance_deg}°")
         raise Exception("滑索对中失败")
@@ -236,16 +299,19 @@ class Zipliner:
                 py = self._degrees_to_pixels(ay)
                 task.log_info(f"滑索 {i + 1}/{len(nodes)}: 调整视角 {ax}°/{ay}° → {px}px/{py}px")
                 task.active_and_send_mouse_delta(px, py)
-                task.sleep(0.3)
+                task.sleep(0.5)
             elif "mouse_x" in node or "mouse_y" in node:
                 mx = node.get("mouse_x", 0)
                 my = node.get("mouse_y", 0)
                 task.log_info(f"滑索 {i + 1}/{len(nodes)}: 调整视角 mouse {mx}px/{my}px")
                 task.active_and_send_mouse_delta(mx, my)
-                task.sleep(0.3)
+                task.sleep(0.5)
 
-            task.log_info(f"滑索 {i + 1}/{len(nodes)}: 对齐距离 {distance}")
-            self._align_to_target(distance)
+            if node.get("direct_click"):
+                task.log_info(f"滑索 {i + 1}/{len(nodes)}: 直接点击（跳过对齐）")
+            else:
+                task.log_info(f"滑索 {i + 1}/{len(nodes)}: 对齐距离 {distance}")
+                self._align_to_target(distance)
 
             task.click(after_sleep=0.5)
             start = time.time()
@@ -257,8 +323,7 @@ class Zipliner:
                 task.sleep(0.1)
                 result = task.ocr(
                     match=on_zip_line_stop,
-                    box="bottom",
-                    log=True,
+                    box=task.box_of_screen(*ZIP_LINE_TIP_BOX),
                 )
                 if result:
                     break
