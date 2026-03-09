@@ -65,6 +65,7 @@ class Interactor:
         task.log_info(f"执行送货交互: {name}")
         if task.wait_ocr(match=name, time_out=5):
             task.send_key("f", after_sleep=0.5)
+            task.skip_dialog()
             task.log_info(f"已完成送货: {name}")
         else:
             task.log_error(f"未检测到送货目标: {name}")

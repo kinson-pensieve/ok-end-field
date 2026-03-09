@@ -52,7 +52,7 @@ class Teleporter:
         task = self.task
         for i in range(max_attempts):
             task.next_frame()
-            if task.in_world():
+            if task.in_world() or task.in_combat_world():
                 task.log_debug(f"已在游戏世界中 (第{i + 1}次检测)")
                 return True
             task.log_debug(f"未在游戏世界中，按 esc 尝试关闭 UI (第{i + 1}次)")
