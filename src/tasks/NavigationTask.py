@@ -1,6 +1,7 @@
 from qfluentwidgets import FluentIcon
 
 from ok.gui.Communicate import communicate
+import src.globals  # noqa: F401 — 确保 Config.add_listener 补丁已注入
 from src.tasks.BaseNavTask import BaseNavTask
 from src.navigation.Navigator import Navigator
 from src.navigation.RouteStore import RouteStore
