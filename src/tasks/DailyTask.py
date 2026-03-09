@@ -533,63 +533,93 @@ class DailyTask(BaseEfTask):
 
     def perform_outpost_exchange(self, outpost_name):
         """据点内循环尝试更换货品并兑换。
-
         当据点券低于阈值（1000）或无可兑换目标时结束。
         """
+
         self.log_info(f"开始处理据点: {outpost_name}")
+
         self.wait_click_ocr(
-            match=outpost_name, box=self.box.top, time_out=5, after_sleep=2
+            match=outpost_name,
+            box=self.box.top,
+            time_out=5,
+            after_sleep=2,
         )
 
         can_exchange_goods = default_goods.get(
             get_area_by_outpost_name(outpost_name), []
         )
+
+        # 预编译 OCR 匹配
+        goods_patterns = [
+            re.compile(i) for i in get_goods_by_outpost_name(outpost_name)
+        ]
+
         max_attempts = 5
-        attempt = 0
         skip_goods = set()
 
-        while attempt < max_attempts:
+        for attempt in range(1, max_attempts + 1):
+
             num = self.read_outpost_ticket_num(outpost_name)
             if num < 1000:
                 self.log_info(f"{outpost_name} 据点当前券数量不足 (<1000)，停止兑换")
                 break
-            attempt += 1
+
             self.log_info(f"尝试第 {attempt}/{max_attempts} 次更换货品")
+
             self.wait_click_ocr(match="更换货品", after_sleep=2)
 
             goods = self.wait_ocr(
-                match=[re.compile(i) for i in get_goods_by_outpost_name(outpost_name)],
+                match=goods_patterns,
                 time_out=5,
             )
+
             if not goods:
-                self.log_info(f"{outpost_name} 没有可兑换的货物，结束本次尝试")
+                self.log_info(f"{outpost_name} 没有可兑换的货物")
                 break
+
             exchange_good = None
+
             for good in goods:
-                # 1. 使用集合进行瞬时排除
-                if good.name in skip_goods:
-                    self.log_info(f"跳过已处理货物: {good.name}")
+
+                # OCR -> 标准名称映射
+                standard_name = next(
+                    (
+                        kw for kw in can_exchange_goods
+                        if (kw in good.name or good.name in kw)
+                        and len(good.name) >= max(2, len(kw) - 1)
+                    ),
+                    None
+                )
+
+                if not standard_name:
+                    self.log_info(f"未知货物: {good.name}，跳过")
                     continue
 
-                # 2. 检查名称关键词匹配
-                is_valid = any(keyword in good.name for keyword in can_exchange_goods)
+                if good.name != standard_name:
+                    self.log_info(
+                        f"修正 OCR 识别结果: '{good.name}' -> '{standard_name}'"
+                    )
+                    good.name = standard_name
 
-                if not is_valid:
-                    self.log_info(f"{good.name} 不在可兑换列表中，跳过")
+                if standard_name in skip_goods:
+                    self.log_info(f"跳过已处理货物: {standard_name}")
                     continue
 
-                # 3. 命中目标
-                skip_goods.add(good.name)  # set 使用 add
+                skip_goods.add(standard_name)
                 exchange_good = good
-                self.log_info(f"成功锁定兑换目标: {good.name}")
+
+                self.log_info(f"成功锁定兑换目标: {standard_name}")
                 break
 
             if not exchange_good:
-                self.log_info(f"{outpost_name} 没有可兑换的货物，结束本次尝试")
+                self.log_info(f"{outpost_name} 本轮没有可兑换目标")
                 break
 
+            # 兑换流程
             self.log_info(f"选择货物进行兑换: {exchange_good.name}")
+
             self.click(exchange_good, after_sleep=2)
+
             self.wait_click_ocr(
                 match=re.compile("确认"),
                 box=self.box.bottom_right,
@@ -597,6 +627,7 @@ class DailyTask(BaseEfTask):
                 after_sleep=2,
             )
 
+            # 再检查一次券
             num = self.read_outpost_ticket_num(outpost_name)
             if num < 1000:
                 self.log_info(f"{outpost_name} 据点当前券数量不足 (<1000)，停止兑换")
@@ -607,16 +638,22 @@ class DailyTask(BaseEfTask):
                 box=self.box.bottom_right,
                 threshold=0.8,
             )
-            if plus_button:
-                self.log_info(f"找到加号按钮，执行点击")
-                self.click(plus_button, down_time=12)
-                self.wait_click_ocr(
-                    match="交易",
-                    box=self.box.bottom_right,
-                    time_out=5,
-                    after_sleep=2,
-                )
-                self.wait_pop_up(after_sleep=2)
+
+            if not plus_button:
+                continue
+
+            self.log_info("找到加号按钮，执行点击")
+
+            self.click(plus_button, down_time=12)
+
+            self.wait_click_ocr(
+                match="交易",
+                box=self.box.bottom_right,
+                time_out=5,
+                after_sleep=2,
+            )
+
+            self.wait_pop_up(after_sleep=2)
 
         self.log_info(f"{outpost_name} 兑换操作完成")
 
