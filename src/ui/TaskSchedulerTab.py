@@ -754,7 +754,6 @@ class TaskSchedulerTab(CustomTab):
     def __init__(self):
         super().__init__()
         self.config = main_config
-        self.add_after_default_tabs = True
         self.enable_ui_table_polling = False
         self.enable_background_sync = False
         self.ui_table_polling_interval_ms = 5000
