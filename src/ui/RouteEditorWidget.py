@@ -11,6 +11,7 @@ from qfluentwidgets import (
     PushButton, PrimaryPushButton, FluentIcon,
     LineEdit, ComboBox, SpinBox, DoubleSpinBox,
     TextEdit, BodyLabel, StrongBodyLabel, CaptionLabel, CheckBox,
+    isDarkTheme, qconfig,
 )
 
 from ok.gui.Communicate import communicate
@@ -55,6 +56,8 @@ def _node_summary(node):
         ax = node.get("angle_x", 0)
         ay = node.get("angle_y", 0)
         s += f" 视角{ax}°/{ay}°"
+    if node.get("direct_click"):
+        s += " [直接点击]"
     return s
 
 
@@ -107,11 +110,13 @@ class RouteEditorWidget(QWidget):
         ui_layout.setSpacing(8)
 
         # QGroupBox 标题样式（加粗，颜色跟随主题）
-        group_style = "QGroupBox { font-weight: bold; }"
+        self._group_boxes = []
+        group_style = self._group_box_style()
 
         # 基本信息
         info_group = QGroupBox("基本信息")
         info_group.setStyleSheet(group_style)
+        self._group_boxes.append(info_group)
         info_form = QFormLayout(info_group)
         info_form.setSpacing(6)
 
@@ -153,6 +158,7 @@ class RouteEditorWidget(QWidget):
         # 步骤列表
         steps_group = QGroupBox("步骤")
         steps_group.setStyleSheet(group_style)
+        self._group_boxes.append(steps_group)
         steps_layout = QVBoxLayout(steps_group)
         steps_layout.setSpacing(4)
 
@@ -185,6 +191,7 @@ class RouteEditorWidget(QWidget):
         # 步骤详情（动作/节点列表）
         self._detail_group = QGroupBox("详情")
         self._detail_group.setStyleSheet(group_style)
+        self._group_boxes.append(self._detail_group)
         detail_layout = QVBoxLayout(self._detail_group)
         detail_layout.setSpacing(4)
 
@@ -272,6 +279,18 @@ class RouteEditorWidget(QWidget):
 
         # 默认 UI 模式
         self._stack.setCurrentIndex(0)
+
+        # 监听主题切换
+        qconfig.themeChangedFinished.connect(self._on_theme_changed)
+
+    def _group_box_style(self):
+        color = "white" if isDarkTheme() else "black"
+        return f"QGroupBox {{ color: {color}; font-weight: bold; }}"
+
+    def _on_theme_changed(self):
+        style = self._group_box_style()
+        for gb in self._group_boxes:
+            gb.setStyleSheet(style)
 
     # ── 动作编辑表单 ──
 
@@ -413,6 +432,10 @@ class RouteEditorWidget(QWidget):
         self._node_angle_y.setDecimals(2)
         self._node_angle_y.valueChanged.connect(self._on_node_field_changed)
         layout.addRow("视角Y:", self._node_angle_y)
+
+        self._node_direct_click = CheckBox("直接点击（跳过对齐）")
+        self._node_direct_click.stateChanged.connect(self._on_node_field_changed)
+        layout.addRow("", self._node_direct_click)
 
         return w
 
@@ -756,6 +779,7 @@ class RouteEditorWidget(QWidget):
             self._node_distance.setValue(node.get("distance", 0))
             self._node_angle_x.setValue(node.get("angle_x", 0))
             self._node_angle_y.setValue(node.get("angle_y", 0))
+            self._node_direct_click.setChecked(node.get("direct_click", False))
         finally:
             self._updating = False
 
@@ -777,6 +801,8 @@ class RouteEditorWidget(QWidget):
             node["angle_x"] = ax
         if ay != 0:
             node["angle_y"] = ay
+        if self._node_direct_click.isChecked():
+            node["direct_click"] = True
 
         nodes[row] = node
         self._detail_list.item(row).setText(_node_summary(node))

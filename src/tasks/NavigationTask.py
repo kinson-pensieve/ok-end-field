@@ -37,7 +37,7 @@ class NavigationTask(BaseNavTask):
             "type": "drop_down",
             "options": ["关闭", "开启"],
         }
-        self.config_description["单步调试"] = "开启后每步暂停，按F10继续下一步"
+        self.config_description["单步调试"] = "开启后每步暂停，按F11继续下一步"
 
         self.config_type["路线编辑器"] = {
             "type": "custom_widget",
@@ -79,6 +79,13 @@ class NavigationTask(BaseNavTask):
     def on_create(self):
         """load_config 之后，监听下拉框变化"""
         self.config.add_listener("目的地", self._load_route_for_dest)
+        self.config.add_listener("单步调试", self._on_debug_changed)
+
+    def _on_debug_changed(self, value):
+        """单步调试下拉框变化时立即更新 navigator 状态"""
+        debug = value == "开启"
+        self.navigator.set_debug_mode(debug)
+        communicate.task.emit(self)
 
     def _load_route_for_dest(self, display_name):
         route_info = self.name_mapping.get(display_name)

@@ -14,10 +14,10 @@ from typing import Optional, List
 import re
 from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, QMessageBox, QTableWidgetItem, QHeaderView
-from qfluentwidgets import PushButton, SwitchButton, FluentIcon, InfoBar, InfoBarPosition, TableWidget, MessageBoxBase, SubtitleLabel, ComboBox, SpinBox, CheckBox
+from qfluentwidgets import PushButton, SwitchButton, FluentIcon, InfoBar, InfoBarPosition, TableWidget, MessageBoxBase, SubtitleLabel, ComboBox, SpinBox, CheckBox, NavigationItemPosition
 
 from ok import Logger, og
-from ok.gui.widget.Tab import Tab
+from ok.gui.widget.CustomTab import CustomTab
 from src.scheduler.windows_schedule import WindowsScheduleManager, ScheduleTaskInfo, TriggerType
 from src.config import config as main_config
 logger = Logger.get_logger(__name__)
@@ -549,7 +549,7 @@ class ModifyScheduleTaskDialog(MessageBoxBase):
         )
 
 
-class TaskSchedulerTab(Tab):
+class TaskSchedulerTab(CustomTab):
     """
     计划任务管理标签页
     
@@ -586,6 +586,10 @@ class TaskSchedulerTab(Tab):
     def name(self):
         """侧边栏显示的名称"""
         return og.app.tr("Task Schedule")
+
+    @property
+    def position(self):
+        return NavigationItemPosition.TOP
 
     def init_ui(self):
         """初始化 UI"""
