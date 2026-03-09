@@ -484,13 +484,13 @@ class DeliveryTask(BaseEfTask):
                                    threshold=0.8)
         if not result:
             return False
-        self.click(result)
+        self.click(result,after_sleep=2)
 
         result = self.wait_ocr(match="传送", box=self.box.bottom_right, time_out=10, log=True)
         if not result:
             return False
 
-        self.click(result)
+        self.click(result, after_sleep=2)
         return True
 
     def to_storage_point_and_back_zip_line(self, only_zip_line=False):
@@ -521,7 +521,7 @@ class DeliveryTask(BaseEfTask):
                     raise_if_fail=False,
                     need_scroll=self.config.get(self.CFG_SCROLL_ENABLE),
                 )
-                self.click(key="right")
+                self.click(key="right", after_sleep=2)
             for i in range(40):
                 self.sleep(2)
                 self.press_key("v")
@@ -553,8 +553,8 @@ class DeliveryTask(BaseEfTask):
         """
         self.ensure_main()
         if self.wait_ocr(match="登上滑索架", box=self.box.bottom_right, time_out=30, log=True):
-            self.press_key("v")
-            self.press_key('f')
+            self.press_key("v", after_sleep=1)
+            self.press_key('f', after_sleep=2)
             self.align_ocr_or_find_target_to_center(
                 ocr_match_or_feature_name_list=secondary_objective_direction_dot,
                 threshold=0.8,
@@ -562,10 +562,10 @@ class DeliveryTask(BaseEfTask):
                 raise_if_fail=False,
                 need_scroll=self.config.get(self.CFG_SCROLL_ENABLE),
             )
-            self.click(key="right")
+            self.click(key="right", after_sleep=2)
         for i in range(40):
             self.sleep(2)
-            self.send_key("v")
+            self.send_key("v", after_sleep=1)
             self.align_ocr_or_find_target_to_center(
                 ocr_match_or_feature_name_list=secondary_objective_direction_dot,
                 threshold=0.8,

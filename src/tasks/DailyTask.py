@@ -707,7 +707,7 @@ class DailyTask(BaseEfTask):
         self.info_set("current_task", "make_weapon")
         self.log_info("开始造装备任务")
 
-        self.back()
+        self.back(after_sleep=2)
         self.log_info("打开终端界面")
 
         if not self.wait_click_ocr(
@@ -1703,7 +1703,7 @@ class DailyTask(BaseEfTask):
 
             for result in results:
                 self.logger.info("点击线索框")
-                self.click(result)
+                self.click(result,after_sleep=1)
                 self.wait_click_ocr(match=re.compile("的线索"),time_out=4, box=self.box.top_right,after_sleep=1)
                 if not self.wait_ocr(match=[re.compile(i) for i in ["设施","等级"]],box=self.box.left, time_out=1):
                     self.back(after_sleep=2)
