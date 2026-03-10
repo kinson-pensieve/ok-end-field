@@ -59,13 +59,16 @@ class Interactor:
             task.log_error("未检测到取货")
 
     def _deliver(self, dest):
-        """送货交互：OCR 检测目的地名称后按 F 交互"""
+        """送货交互：按 F 交互 → 跳过对话 → 点确认 → 领取奖励"""
         task = self.task
         name = dest.get("name", "")
         task.log_info(f"执行送货交互: {name}")
         if task.wait_ocr(match=name, time_out=5):
-            task.send_key("f", after_sleep=0.5)
-            task.skip_dialog()
+            task.press_key('f', after_sleep=2)
+            if not task.find_feature(feature_name="reward_ok"):
+                task.skip_dialog()
+                task.wait_click_ocr(match="确认", settle_time=2, after_sleep=2)
+            task.wait_pop_up(after_sleep=2)
             task.log_info(f"已完成送货: {name}")
         else:
             task.log_error(f"未检测到送货目标: {name}")
