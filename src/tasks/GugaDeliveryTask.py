@@ -320,25 +320,34 @@ class GugaDeliveryTask(BaseNavTask):
         self.log_info(f"opening warehouse node for area: {area}")
         self.to_model_area(area, "仓储节点")
 
-        # click first "货物装箱" (left to right)
-        cargo_box = self.box_of_screen(0.13, 0.79, 0.77, 0.84)
-        cargo_results = None
+        # scan for action buttons by priority: 查看任务 > 查看报价 > 货物装箱
+        action_box = self.box_of_screen(0.13, 0.79, 0.77, 0.84)
+        action_priorities = ["查看任务", "查看报价", "货物装箱"]
+        target = None
         start = time.time()
         while time.time() - start < 5:
             self.next_frame()
-            cargo_results = self.ocr(
-                match="货物装箱", box=cargo_box,
+            all_results = self.ocr(
+                match=re.compile("|".join(action_priorities)), box=action_box,
                 frame_processor=self.make_hsv_isolator(hR.DARK_GRAY_TEXT),
             )
-            if cargo_results:
+            if all_results:
+                # pick highest priority, then leftmost
+                for action in action_priorities:
+                    matches = [r for r in all_results if action in r.name]
+                    if matches:
+                        matches.sort(key=lambda r: r.x)
+                        target = matches[0]
+                        break
+            if target:
                 break
             self.sleep(0.3)
-        if not cargo_results:
-            self.log_info("未找到'货物装箱'，该区域无本地仓储订单")
+        if not target:
+            self.log_info("未找到可用操作按钮，该区域无本地仓储订单")
             self.back(after_sleep=1)
             return None
-        cargo_results.sort(key=lambda r: r.x)
-        self.click(cargo_results[0], after_sleep=1)
+        self.log_info(f"clicking: {target.name}")
+        self.click(target, after_sleep=1)
 
         # click 下一步
         if not self.wait_click_ocr(match="下一步", box="bottom_right", time_out=5, after_sleep=1):
