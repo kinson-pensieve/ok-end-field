@@ -16,6 +16,11 @@ class HSVRange(tuple, Enum):
     GRAY_TO_WHITE_TEXT = (
         ((0, 0, 160), (50, 80, 255)),  # 浅灰到白色的文字范围
     )
+    # delivery destination yellow/gold text
+    # (FDCB00, EFBF02, F7C601, FAC801, EEBF02, BB9709, D1A806, DFB404)
+    DEST_TEXT = (
+        ((16, 200, 170), (30, 255, 255)),
+    )
     TEXT_HSV_RANGES = (
         # 灰白文字
         ((0, 0, 170), (50, 70, 255)),

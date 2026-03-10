@@ -42,6 +42,18 @@ class RouteStore:
         """按 type 过滤所有路线"""
         return [r for r in self._routes if r.get("type") == dest_type]
 
+    def find_by_area_and_type(self, area: str, dest_type: str) -> dict | None:
+        """按 area + type 查找第一条匹配路线
+
+        Args:
+            area: 所属地区
+            dest_type: 目的地类型
+        """
+        for route in self._routes:
+            if route.get("area") == area and route.get("type") == dest_type:
+                return route
+        return None
+
     def find_by_id(self, route_id: str) -> dict | None:
         """按 id 查找"""
         for route in self._routes:

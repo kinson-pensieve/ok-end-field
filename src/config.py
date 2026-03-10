@@ -159,6 +159,7 @@ config = {
         ["src.tasks.TakeDeliveryTask", "TakeDeliveryTask"],
         ["src.tasks.WarehouseTransferTask", "WarehouseTransferTask"],
         ["src.tasks.DeliveryTask", "DeliveryTask"],
+        ["src.tasks.GugaDeliveryTask", "GugaDeliveryTask"],
         ["src.tasks.EssenceScanTask", "EssenceScanTask"],
         ["src.tasks.NavigationTask", "NavigationTask"],
         ["src.tasks.RecordTask", "RecordTask"],
