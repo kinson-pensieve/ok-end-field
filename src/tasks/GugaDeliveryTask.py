@@ -346,32 +346,35 @@ class GugaDeliveryTask(BaseNavTask):
             self.log_info("未找到可用操作按钮，该区域无本地仓储订单")
             self.back(after_sleep=1)
             return None
-        self.log_info(f"clicking: {target.name}")
+        action_name = target.name
+        self.log_info(f"clicking: {action_name}")
         self.sleep(2)
         self.click(target, after_sleep=1)
 
-        # click 下一步
-        if not self.wait_click_ocr(match="下一步", box="bottom_right", time_out=5, after_sleep=1):
-            self.log_error("未找到第一个'下一步'按钮")
-            return False
+        if "查看任务" in action_name:
+            # already packed and shipping, equivalent to pressing J
+            return True
 
-        # click 填充至满
-        fill_box = self.box_of_screen(0.85, 0.21, 0.95, 0.28)
-        if not self.wait_click_ocr(match="填充至满", box=fill_box, time_out=5, after_sleep=1):
-            self.log_error("未找到'填充至满'按钮")
-            return False
+        if "货物装箱" in action_name:
+            # full packing flow: 下一步 -> 填充至满 -> 下一步
+            if not self.wait_click_ocr(match="下一步", box="bottom_right", time_out=5, after_sleep=1):
+                self.log_error("未找到第一个'下一步'按钮")
+                return False
 
-        # click 下一步 again
-        if not self.wait_click_ocr(match="下一步", box="bottom_right", time_out=5, after_sleep=1):
-            self.log_error("未找到第二个'下一步'按钮")
-            return False
+            fill_box = self.box_of_screen(0.85, 0.21, 0.95, 0.28)
+            if not self.wait_click_ocr(match="填充至满", box=fill_box, time_out=5, after_sleep=1):
+                self.log_error("未找到'填充至满'按钮")
+                return False
 
-        # wait for animation (~5s), then click 开始运送
+            if not self.wait_click_ocr(match="下一步", box="bottom_right", time_out=5, after_sleep=1):
+                self.log_error("未找到第二个'下一步'按钮")
+                return False
+
+        # 查看报价 and 货物装箱 both continue from here: 开始运送 -> 点击屏幕继续
         if not self.wait_click_ocr(match="开始运送", box="bottom_right", time_out=10, after_sleep=2):
             self.log_error("未找到'开始运送'按钮")
             return False
 
-        # click screen to continue
         if not self.wait_ocr(match="点击屏幕继续", box="bottom", time_out=10):
             self.log_error("未找到'点击屏幕继续'提示")
             return False
