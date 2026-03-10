@@ -6,9 +6,10 @@ from src.data.FeatureList import FeatureList as fL
 from src.data.world_map import areas_list
 from src.image.hsv_config import HSVRange as hR
 from src.tasks.daily.common import GoodsInfo
+from src.tasks.BaseEfTask import BaseEfTask
 
 
-class DailyTradeMixin:
+class DailyTradeMixin(BaseEfTask):
     def collect_market_goods_info(self):
         def ocr_stock_quantity() -> int:
             stock_piece = self.ocr(

@@ -596,7 +596,6 @@ class DeliveryTask(BaseEfTask):
                     self.ensure_main(time_out=240)
                 else:
                     self.ensure_main()
-                self.active_and_send_mouse_delta(activate=True,only_activate=True)
                 self.back(after_sleep=2)
                 self.ensure_main()
                 if self.config.get(self.CFG_ONLY_ACCEPT):

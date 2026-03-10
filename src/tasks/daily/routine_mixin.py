@@ -4,9 +4,10 @@ import time
 from src.data.world_map import areas_list, outpost_dict, default_goods
 from src.data.world_map_utils import get_area_by_outpost_name, get_goods_by_outpost_name
 from src.image.hsv_config import HSVRange as hR
+from src.tasks.BaseEfTask import BaseEfTask
 
 
-class DailyRoutineMixin:
+class DailyRoutineMixin(BaseEfTask):
     def wait_friend_list(self, end_icon_name="friend_chat_icon"):
         start_time = time.time()
         while True:

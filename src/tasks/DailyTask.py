@@ -5,14 +5,13 @@ from qfluentwidgets import FluentIcon
 from src.data.characters import all_list
 from src.data.characters_utils import get_contact_list_with_feature_list
 from src.data.world_map import areas_list
-from src.tasks.BaseEfTask import BaseEfTask
 from src.tasks.daily.common import build_name_patterns
 from src.tasks.daily.liaison_mixin import DailyLiaisonMixin
 from src.tasks.daily.routine_mixin import DailyRoutineMixin
 from src.tasks.daily.trade_mixin import DailyTradeMixin
 
 
-class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin, BaseEfTask):
+class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin):
     """日常任务聚合执行器。"""
 
     def __init__(self, *args, **kwargs):
@@ -65,7 +64,6 @@ class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin, BaseEfTas
             self.ensure_main(time_out=240)
         else:
             self.ensure_main()
-        self.active_and_send_mouse_delta(activate=True,only_activate=True)
         tasks = [  # 确保在主界面
             ("送礼", self.execute_gift_task),
             ("据点兑换", self.exchange_outpost_goods),

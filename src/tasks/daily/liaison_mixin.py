@@ -4,9 +4,10 @@ import time
 
 from src.data.FeatureList import FeatureList as fL
 from src.tasks.daily.common import LiaisonResult, build_name_patterns
+from src.tasks.BaseEfTask import BaseEfTask
 
 
-class DailyLiaisonMixin:
+class DailyLiaisonMixin(BaseEfTask):
     def transfer_to_home_point(self):
         """通过地图界面传送到帝江号指定点"""
         self.ensure_main()

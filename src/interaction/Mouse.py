@@ -44,11 +44,50 @@ def active_and_send_mouse_delta(
         try:
             current_hwnd = win32gui.GetForegroundWindow()
             if current_hwnd != hwnd:
-                win32gui.ShowWindow(hwnd, 5)
-                win32gui.SetForegroundWindow(hwnd)
+                # 检查窗口是否有效
+                if not win32gui.IsWindow(hwnd):
+                    print(f"窗口激活失败: 无效的窗口句柄 {hwnd}")
+                    return
+                
+                # 如果窗口最小化，先恢复
+                if win32gui.IsIconic(hwnd):
+                    win32gui.ShowWindow(hwnd, 9)  # SW_RESTORE
+                    time.sleep(0.15)
+                
+                # 确保窗口可见 - 这是关键，必须先显示再激活
+                if not win32gui.IsWindowVisible(hwnd):
+                    win32gui.ShowWindow(hwnd, 5)  # SW_SHOW
+                    time.sleep(0.15)
+                
+                # 尝试激活窗口 - 使用 SW_RESTORE 更可靠
+                win32gui.ShowWindow(hwnd, 9)  # SW_RESTORE (即使没最小化也有效)
+                time.sleep(0.05)
+                
+                # 尝试设置前台窗口
+                try:
+                    win32gui.SetForegroundWindow(hwnd)
+                except win32gui.error:
+                    # SetForegroundWindow 可能因为 Windows 限制失败
+                    # 尝试备用方案：模拟 Alt 按键来绕过限制
+                    import win32api
+                    import win32con
+                    win32api.keybd_event(win32con.VK_MENU, 0, 0, 0)
+                    time.sleep(0.01)
+                    win32gui.SetForegroundWindow(hwnd)
+                    win32api.keybd_event(win32con.VK_MENU, 0, win32con.KEYEVENTF_KEYUP, 0)
+                
                 time.sleep(delay)
+                
+                # 验证激活是否成功
+                final_hwnd = win32gui.GetForegroundWindow()
+                if final_hwnd != hwnd:
+                    print(f"窗口激活警告: 窗口未完全置于前台 (目标:{hwnd}, 当前:{final_hwnd})")
+        except win32gui.error as e:
+            # 只在真正的错误时打印，错误码 0 通常表示成功但有限制
+            if e.winerror != 0:
+                print(f"窗口激活失败 (Win32错误 {e.winerror}): {e}")
         except Exception as e:
-            print("窗口激活失败:", e)
+            print(f"窗口激活失败 (未知错误): {type(e).__name__}: {e}")
 
     if not only_activate:
         for _ in range(steps):

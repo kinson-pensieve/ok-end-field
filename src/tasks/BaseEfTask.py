@@ -645,6 +645,8 @@ class BaseEfTask(BaseTask):
             bool: True表示处于主界面，False表示需要继续处理
         """
         self.next_frame()  # 确保拿到最新的截图
+        if not self._logged_in:
+            self.active_and_send_mouse_delta(activate=True, only_activate=True)  # 激活窗口，获取最新状态
         if self.in_world():
             self._logged_in = True
             return True
