@@ -18,6 +18,11 @@ CFG_ORDER_TYPE = "接单方式"
 ORDER_COMMISSION = "运送委托"
 ORDER_LOCAL = "本地仓储"
 
+CFG_AREA = "送货区域"
+AREA_ALL = "全部"
+AREA_WULING = "武陵城"
+AREA_VALLEY = "四号谷地"
+
 
 @dataclass
 class DeliveryRow:
@@ -37,6 +42,7 @@ class GugaDeliveryTask(BaseNavTask):
         self.default_config = {
             "_enabled": True,
             CFG_ORDER_TYPE: ORDER_COMMISSION,
+            CFG_AREA: AREA_ALL,
         }
         self.config_type[CFG_ORDER_TYPE] = {
             "type": "drop_down",
@@ -44,7 +50,16 @@ class GugaDeliveryTask(BaseNavTask):
         }
         self.config_description[CFG_ORDER_TYPE] = (
             f"{ORDER_COMMISSION}: 从运送委托列表接取他人委托\n"
-            f"{ORDER_LOCAL}: 从本地仓储接取自有订单（暂未实现）"
+            f"{ORDER_LOCAL}: 从本地仓储接取自有订单"
+        )
+        self.config_type[CFG_AREA] = {
+            "type": "drop_down",
+            "options": [AREA_ALL, AREA_WULING, AREA_VALLEY],
+        }
+        self.config_description[CFG_AREA] = (
+            f"{AREA_ALL}: 武陵城(×1) + 四号谷地(×3)\n"
+            f"{AREA_WULING}: 仅武陵城(×1)\n"
+            f"{AREA_VALLEY}: 仅四号谷地(×3)"
         )
 
         self.store = RouteStore()
@@ -52,6 +67,10 @@ class GugaDeliveryTask(BaseNavTask):
 
         self.wuling_location = ["武陵城"]
         self.valley_location = ["供能高地", "矿脉源区", "源石研究园"]
+        self.local_warehouses = [
+            {"area": "武陵城", "count": 1},
+            {"area": "四号谷地", "count": 3},
+        ]
         self._last_refresh_ts = 0
 
     # ── commission acceptance (from DeliveryTask) ──
@@ -287,14 +306,60 @@ class GugaDeliveryTask(BaseNavTask):
                     time.sleep(1.0)
 
     def _accept_local_order(self):
-        """Accept a local storage order
+        """Accept a local storage order from the warehouse node.
+
+        Flow: Y -> click 货物装箱 -> 下一步 -> 填充至满 -> 下一步 -> 开始运送 -> 点击屏幕继续
 
         Returns:
             bool: True if order accepted successfully
         """
-        # TODO: implement local storage order acceptance
-        self.log_info("TODO: local storage order acceptance not implemented yet")
-        return False
+        self.ensure_main(time_out=120)
+        self.log_info("opening warehouse node")
+        self.send_key("y", after_sleep=2)
+
+        # click first "货物装箱" (left to right)
+        cargo_box = self.box_of_screen(0.13, 0.79, 0.77, 0.84)
+        cargo_results = self.wait_ocr(
+            match="货物装箱", box=cargo_box,
+            frame_processor=self.make_hsv_isolator(hR.DARK_GRAY_TEXT),
+            time_out=5,
+        )
+        if not cargo_results:
+            self.log_info("未找到'货物装箱'，该区域无本地仓储订单")
+            self.back(after_sleep=1)
+            return None
+        cargo_results.sort(key=lambda r: r.x)
+        self.click(cargo_results[0], after_sleep=1)
+
+        # click 下一步
+        if not self.wait_click_ocr(match="下一步", box="bottom_right", time_out=5, after_sleep=1):
+            self.log_error("未找到第一个'下一步'按钮")
+            return False
+
+        # click 填充至满
+        fill_box = self.box_of_screen(0.85, 0.21, 0.95, 0.28)
+        if not self.wait_click_ocr(match="填充至满", box=fill_box, time_out=5, after_sleep=1):
+            self.log_error("未找到'填充至满'按钮")
+            return False
+
+        # click 下一步 again
+        if not self.wait_click_ocr(match="下一步", box="bottom_right", time_out=5, after_sleep=1):
+            self.log_error("未找到第二个'下一步'按钮")
+            return False
+
+        # wait for animation (~5s), then click 开始运送
+        if not self.wait_click_ocr(match="开始运送", box="bottom_right", time_out=10, after_sleep=2):
+            self.log_error("未找到'开始运送'按钮")
+            return False
+
+        # click screen to continue
+        if not self.wait_ocr(match="点击屏幕继续", box="bottom", time_out=10):
+            self.log_error("未找到'点击屏幕继续'提示")
+            return False
+        self.click_relative(0.5, 0.5, after_sleep=2)
+
+        self.log_info("local order accepted successfully")
+        return True
 
     # ── detection ──
 
@@ -361,39 +426,47 @@ class GugaDeliveryTask(BaseNavTask):
 
     # ── main flow ──
 
-    def run(self):
-        self.ensure_main()
+    def _run_single_delivery(self, order_type):
+        """Execute a single delivery cycle: accept -> detect destination -> navigate -> deliver
 
-        # Step 0: accept order
-        order_type = self.config.get(CFG_ORDER_TYPE)
+        Args:
+            order_type: ORDER_COMMISSION or ORDER_LOCAL
+
+        Returns:
+            bool: True if delivery completed successfully
+        """
+        # accept order
         if order_type == ORDER_COMMISSION:
             if not self._accept_commission_order():
                 self.log_error("failed to accept commission order")
                 return False
         elif order_type == ORDER_LOCAL:
-            if not self._accept_local_order():
+            result = self._accept_local_order()
+            if result is None:
+                return None  # no orders available, skip
+            if not result:
                 self.log_error("failed to accept local order")
                 return False
 
-        # Step 1: detect pickup location from task panel
-        pickup_route = self._detect_pickup_location()
-        if not pickup_route:
-            return False
-        pickup_name = pickup_route.get("name")
+        # detect pickup and navigate to storage (commission only)
+        if order_type == ORDER_COMMISSION:
+            pickup_route = self._detect_pickup_location()
+            if not pickup_route:
+                return False
+            pickup_name = pickup_route.get("name")
 
-        # Step 2: navigate to storage node and pick up goods
-        self.log_info(f"navigating to storage node: {pickup_name}")
-        if not self.navigator.navigate_to(pickup_name, dest_type="仓储节点"):
-            self.log_error(f"navigation to storage node failed: {pickup_name}")
-            return False
+            self.log_info(f"navigating to storage node: {pickup_name}")
+            if not self.navigator.navigate_to(pickup_name, dest_type="仓储节点"):
+                self.log_error(f"navigation to storage node failed: {pickup_name}")
+                return False
 
-        # Step 3: detect destination
+        # detect destination
         destination = self._detect_destination()
         if not destination:
             self.log_error("unable to detect destination, task aborted")
             return False
 
-        # Step 4: navigate to destination and deliver
+        # navigate to destination and deliver
         dest_route = self.store.find(destination, dest_type="送货")
         if not dest_route:
             self.log_error(f"no route found for destination: {destination}, please record the route first")
@@ -405,3 +478,61 @@ class GugaDeliveryTask(BaseNavTask):
 
         self.log_info("delivery completed")
         return True
+
+    def execute(self, order_type=None, area_filter=None):
+        """Execute delivery task. Can be called by other tasks.
+
+        Args:
+            order_type: ORDER_COMMISSION or ORDER_LOCAL, defaults to config value
+            area_filter: AREA_ALL / AREA_WULING / AREA_VALLEY, defaults to config value
+
+        Returns:
+            bool: True if all deliveries completed successfully
+        """
+        self.ensure_main()
+        if order_type is None:
+            order_type = self.config.get(CFG_ORDER_TYPE)
+        if area_filter is None:
+            area_filter = self.config.get(CFG_AREA, AREA_ALL)
+
+        if order_type == ORDER_LOCAL:
+            warehouses = [
+                w for w in self.local_warehouses
+                if area_filter == AREA_ALL or w["area"] == area_filter
+            ]
+            total = sum(w["count"] for w in warehouses)
+            completed = 0
+            for warehouse in warehouses:
+                area = warehouse["area"]
+                count = warehouse["count"]
+                for i in range(count):
+                    completed += 1
+                    self.log_info(f"local delivery {completed}/{total} (area: {area})")
+
+                    # teleport to the area first so Y opens the correct warehouse
+                    route = self.store.find_by_area(area)
+                    if not route:
+                        self.log_error(f"no route found in area: {area}, please record a route first")
+                        return False
+                    teleport_point = route.get("teleport")
+                    if not teleport_point:
+                        self.log_error(f"route in area {area} has no teleport point")
+                        return False
+                    self.log_info(f"teleporting to area: {area} via {teleport_point}")
+                    if not self.navigator.teleporter.teleport_to(teleport_point):
+                        self.log_error(f"failed to teleport to area: {area}")
+                        return False
+                    self.ensure_main()
+
+                    result = self._run_single_delivery(ORDER_LOCAL)
+                    if result is None:
+                        self.log_info(f"no more local orders in {area}, skipping")
+                        break
+                    if not result:
+                        return False
+            return True
+        else:
+            return self._run_single_delivery(ORDER_COMMISSION)
+
+    def run(self):
+        return self.execute()
