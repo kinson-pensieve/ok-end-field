@@ -352,10 +352,9 @@ class GugaDeliveryTask(BaseNavTask):
         self.click(target, after_sleep=1)
 
         if "查看任务" in action_name:
-            # already packed and shipping, equivalent to pressing J
-            # task panel is now open, close it before continuing
-            self.back(after_sleep=1)
-            return True
+            # already packed, task panel is now open (equivalent to pressing J)
+            # read pickup location from panel, then need to navigate to storage
+            return self._read_pickup_from_panel()
 
         if "货物装箱" in action_name:
             # full packing flow: 下一步 -> 填充至满 -> 下一步
@@ -387,14 +386,13 @@ class GugaDeliveryTask(BaseNavTask):
 
     # ── detection ──
 
-    def _detect_pickup_location(self):
-        """Open task panel with J, OCR the task info area to find the area name,
+    def _read_pickup_from_panel(self):
+        """Read the task panel (already open) to find the area name,
         then look up a storage node route in that area.
 
         Returns:
             dict | None: route dict for the storage node, or None
         """
-        self.press_key("j", after_sleep=2)
         task_info_box = self.box_of_screen(0.32, 0.07, 0.40, 0.16)
         results = self.ocr(
             match=re.compile(r"[\u4e00-\u9fff]+"),
@@ -425,6 +423,15 @@ class GugaDeliveryTask(BaseNavTask):
             return None
 
         return route
+
+    def _detect_pickup_location(self):
+        """Open task panel with J, then read pickup location.
+
+        Returns:
+            dict | None: route dict for the storage node, or None
+        """
+        self.press_key("j", after_sleep=2)
+        return self._read_pickup_from_panel()
 
     def _detect_destination(self):
         """Detect the delivery destination name by HSV color isolation (yellow/gold).
@@ -469,17 +476,22 @@ class GugaDeliveryTask(BaseNavTask):
             result = self._accept_local_order(area)
             if result is None:
                 return None  # no orders available, skip
-            if not result:
+            if isinstance(result, dict):
+                # 查看任务: need to navigate to storage node first
+                pickup_route = result
+            elif not result:
                 self.log_error("failed to accept local order")
                 return False
+            else:
+                pickup_route = None
 
-        # detect pickup and navigate to storage (commission only)
+        # detect pickup and navigate to storage
         if order_type == ORDER_COMMISSION:
             pickup_route = self._detect_pickup_location()
             if not pickup_route:
                 return False
+        if pickup_route:
             pickup_name = pickup_route.get("name")
-
             self.log_info(f"navigating to storage node: {pickup_name}")
             if not self.navigator.navigate_to(pickup_name, dest_type="仓储节点"):
                 self.log_error(f"navigation to storage node failed: {pickup_name}")
