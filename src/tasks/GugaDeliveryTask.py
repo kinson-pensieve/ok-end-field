@@ -347,6 +347,7 @@ class GugaDeliveryTask(BaseNavTask):
             self.back(after_sleep=1)
             return None
         self.log_info(f"clicking: {target.name}")
+        self.sleep(2)
         self.click(target, after_sleep=1)
 
         # click 下一步
