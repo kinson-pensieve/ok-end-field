@@ -353,6 +353,8 @@ class GugaDeliveryTask(BaseNavTask):
 
         if "查看任务" in action_name:
             # already packed and shipping, equivalent to pressing J
+            # task panel is now open, close it before continuing
+            self.back(after_sleep=1)
             return True
 
         if "货物装箱" in action_name:
