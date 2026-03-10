@@ -20,7 +20,7 @@ ORDER_LOCAL = "本地仓储"
 
 CFG_AREA = "送货区域"
 AREA_ALL = "全部"
-AREA_WULING = "武陵城"
+AREA_WULING = "武陵"
 AREA_VALLEY = "四号谷地"
 
 
@@ -57,8 +57,8 @@ class GugaDeliveryTask(BaseNavTask):
             "options": [AREA_ALL, AREA_WULING, AREA_VALLEY],
         }
         self.config_description[CFG_AREA] = (
-            f"{AREA_ALL}: 武陵城(×1) + 四号谷地(×3)\n"
-            f"{AREA_WULING}: 仅武陵城(×1)\n"
+            f"{AREA_ALL}: 武陵(×1) + 四号谷地(×3)\n"
+            f"{AREA_WULING}: 仅武陵(×1)\n"
             f"{AREA_VALLEY}: 仅四号谷地(×3)"
         )
 
@@ -68,8 +68,8 @@ class GugaDeliveryTask(BaseNavTask):
         self.wuling_location = ["武陵城"]
         self.valley_location = ["供能高地", "矿脉源区", "源石研究园"]
         self.local_warehouses = [
-            {"area": "武陵城", "count": 1},
-            {"area": "四号谷地", "count": 3},
+            {"area": AREA_WULING, "count": 1},
+            {"area": AREA_VALLEY, "count": 3},
         ]
         self._last_refresh_ts = 0
 
