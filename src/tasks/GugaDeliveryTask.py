@@ -393,7 +393,7 @@ class GugaDeliveryTask(BaseNavTask):
         Returns:
             dict | None: route dict for the storage node, or None
         """
-        task_info_box = self.box_of_screen(0.32, 0.07, 0.40, 0.16)
+        task_info_box = self.box_of_screen(0.32, 0.07, 0.45, 0.16)
         results = self.ocr(
             match=re.compile(r"[\u4e00-\u9fff]+"),
             box=task_info_box,
