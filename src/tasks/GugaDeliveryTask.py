@@ -322,11 +322,17 @@ class GugaDeliveryTask(BaseNavTask):
 
         # click first "货物装箱" (left to right)
         cargo_box = self.box_of_screen(0.13, 0.79, 0.77, 0.84)
-        cargo_results = self.wait_ocr(
-            match="货物装箱", box=cargo_box,
-            frame_processor=self.make_hsv_isolator(hR.DARK_GRAY_TEXT),
-            time_out=5,
-        )
+        cargo_results = None
+        start = time.time()
+        while time.time() - start < 5:
+            self.next_frame()
+            cargo_results = self.ocr(
+                match="货物装箱", box=cargo_box,
+                frame_processor=self.make_hsv_isolator(hR.DARK_GRAY_TEXT),
+            )
+            if cargo_results:
+                break
+            self.sleep(0.3)
         if not cargo_results:
             self.log_info("未找到'货物装箱'，该区域无本地仓储订单")
             self.back(after_sleep=1)
