@@ -87,8 +87,8 @@ class BaseEfTask(BaseTask):
         """
         move_keys(self.hwnd.hwnd, keys, duration)
 
-    def _dodge_with_direction(self, direction_key: str, pre_hold: float = 0.04,
-                              dodge_down_time: float = 0.03, after_sleep: float = 0.05):
+    def _dodge_with_direction(self, direction_key: str, pre_hold: float = 0.004,
+                              dodge_down_time: float = 0.003, after_sleep: float = 0.005):
         """按住方向键后触发闪避键。
 
         Args:
@@ -104,7 +104,7 @@ class BaseEfTask(BaseTask):
         self.sleep(0.005)
         # 闪避键支持全局热键映射（默认 lshift）
         self.press_key('lshift', down_time=dodge_down_time)
-        move_thread.join(timeout=max(pre_hold + 0.2, 0.3))
+        move_thread.join(timeout=max(pre_hold + 0.02, 0.05))
         if after_sleep > 0:
             self.sleep(after_sleep)
 

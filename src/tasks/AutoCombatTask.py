@@ -28,7 +28,7 @@ class AutoCombatTask(BaseEfTask, TriggerTask):
             "技能释放": "满技能时, 开始释放技能, 如123, 建议只放3个技能",
             "启动技能点数": "当技能点达到该数值时，开始执行技能序列, 1-3",
             "平A间隔": "平A点击间隔(秒), 越小越快, 建议 0.08~0.15",
-            "无数字操作间隔": "战斗中未检测到数字时，执行锁定+向前闪避的最小间隔(秒)",
+            "无数字操作间隔": "战斗中周期触发锁敌+向前闪避的最小间隔(秒，最少6秒)",
         })
         self.lv_regex = re.compile(r"(?i)lv|\d{2}")
         self.last_op_time = 0
@@ -104,7 +104,7 @@ class AutoCombatTask(BaseEfTask, TriggerTask):
 
                         self.handle_no_damage_number_actions()
                         self.perform_attack_weave()
-                        self.sleep(0.05)
+                        self.sleep(0.02)
 
                     # Double check combat didn't end during the wait loop
                     if not self.in_combat():
@@ -122,7 +122,7 @@ class AutoCombatTask(BaseEfTask, TriggerTask):
                 # Charging phase: Just attack
                 self.perform_attack_weave()
 
-            self.sleep(0.05)
+            self.sleep(0.02)
 
     def perform_attack_weave(self):
         """Performs a normal attack if the 0.3s operation interval permits."""
@@ -134,15 +134,12 @@ class AutoCombatTask(BaseEfTask, TriggerTask):
             self.last_op_time = time.time()
 
     def handle_no_damage_number_actions(self):
-
         interval = self.config.get("无数字操作间隔", 6)
-        interval = max(0.1, min(float(interval), 30.0))
+        interval = max(6.0, min(float(interval), 30.0))
         if time.time() - self.last_no_number_action_time < interval:
             return
-        """战斗中若未检测到中心数字，则执行中键+左Shift。"""
-        if self._check_center_area_has_number():
-            return
-        self.log_info("战斗中未检测到数字，执行向前闪避（贴近敌人）")
+        self.log_info("战斗中周期触发：执行索敌+向前闪避（贴近敌人）")
+        self.click(key='middle', down_time=0.002)
         self.dodge_forward(pre_hold=0.05, dodge_down_time=0.03, after_sleep=0.02)
         self.last_no_number_action_time = time.time()
         self.last_op_time = time.time()
@@ -178,7 +175,7 @@ class AutoCombatTask(BaseEfTask, TriggerTask):
             elif click:
                 self.perform_attack_weave()
             else:
-                self.sleep(0.1)
+                self.sleep(0.03)
 
     def is_combat_ended(self):
         """
