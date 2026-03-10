@@ -305,17 +305,20 @@ class GugaDeliveryTask(BaseNavTask):
                     self.log_info("refresh button not found, retrying...")
                     time.sleep(1.0)
 
-    def _accept_local_order(self):
+    def _accept_local_order(self, area):
         """Accept a local storage order from the warehouse node.
 
-        Flow: Y -> click 货物装箱 -> 下一步 -> 填充至满 -> 下一步 -> 开始运送 -> 点击屏幕继续
+        Flow: to_model_area -> click 货物装箱 -> 下一步 -> 填充至满 -> 下一步 -> 开始运送 -> 点击屏幕继续
+
+        Args:
+            area: area name to select in the warehouse panel
 
         Returns:
-            bool: True if order accepted successfully
+            bool | None: True if accepted, False if failed, None if no orders
         """
         self.ensure_main(time_out=120)
-        self.log_info("opening warehouse node")
-        self.send_key("y", after_sleep=2)
+        self.log_info(f"opening warehouse node for area: {area}")
+        self.to_model_area(area, "仓储节点")
 
         # click first "货物装箱" (left to right)
         cargo_box = self.box_of_screen(0.13, 0.79, 0.77, 0.84)
@@ -426,14 +429,15 @@ class GugaDeliveryTask(BaseNavTask):
 
     # ── main flow ──
 
-    def _run_single_delivery(self, order_type):
+    def _run_single_delivery(self, order_type, area=None):
         """Execute a single delivery cycle: accept -> detect destination -> navigate -> deliver
 
         Args:
             order_type: ORDER_COMMISSION or ORDER_LOCAL
+            area: area name, required for ORDER_LOCAL
 
         Returns:
-            bool: True if delivery completed successfully
+            bool | None: True if completed, False if failed, None if no local orders
         """
         # accept order
         if order_type == ORDER_COMMISSION:
@@ -441,7 +445,7 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_error("failed to accept commission order")
                 return False
         elif order_type == ORDER_LOCAL:
-            result = self._accept_local_order()
+            result = self._accept_local_order(area)
             if result is None:
                 return None  # no orders available, skip
             if not result:
@@ -508,23 +512,7 @@ class GugaDeliveryTask(BaseNavTask):
                 for i in range(count):
                     completed += 1
                     self.log_info(f"local delivery {completed}/{total} (area: {area})")
-
-                    # teleport to the area first so Y opens the correct warehouse
-                    route = self.store.find_by_area(area)
-                    if not route:
-                        self.log_error(f"no route found in area: {area}, please record a route first")
-                        return False
-                    teleport_point = route.get("teleport")
-                    if not teleport_point:
-                        self.log_error(f"route in area {area} has no teleport point")
-                        return False
-                    self.log_info(f"teleporting to area: {area} via {teleport_point}")
-                    if not self.navigator.teleporter.teleport_to(teleport_point):
-                        self.log_error(f"failed to teleport to area: {area}")
-                        return False
-                    self.ensure_main()
-
-                    result = self._run_single_delivery(ORDER_LOCAL)
+                    result = self._run_single_delivery(ORDER_LOCAL, area=area)
                     if result is None:
                         self.log_info(f"no more local orders in {area}, skipping")
                         break
