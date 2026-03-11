@@ -497,6 +497,9 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_error(f"navigation to storage node failed: {pickup_name}")
                 return False
 
+        # open task panel to see delivery destination
+        self.press_key("j", after_sleep=2)
+
         # detect destination
         destination = self._detect_destination()
         if not destination:
