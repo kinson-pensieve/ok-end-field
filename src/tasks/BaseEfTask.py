@@ -1,3 +1,4 @@
+import os
 import random
 import re
 import time
@@ -36,11 +37,12 @@ class BaseEfTask(BaseTask):
         self.key_config = self.get_global_config('Game Hotkey Config')  # 获取全局热键配置
         self.key_manager = KeyConfigManager(self.key_config)  # 初始化热键管理器
         # 初始化 YOLO 检测器
-
         self._yolo_detector = None  # YOLO 检测器实例
         self._yolo_model_path = None
         self._yolo_loading = False
         self._yolo_loaded_event = threading.Event()
+        if os.getenv("CI"):
+            return
         self._start_yolo_loading_thread()
 
     def _start_yolo_loading_thread(self):
