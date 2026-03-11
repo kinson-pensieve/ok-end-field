@@ -19,7 +19,8 @@ thread_dumps.txt
 /screenshots/
 /items_process/
 /configs/
-
+/tests/configs
+/tests/logs
 ############################
 # 🧠 OCR / 标注输出
 ############################

@@ -469,12 +469,12 @@ class DeliveryTask(BaseEfTask):
         self.click(result, after_sleep=2)
 
         if not self.wait_click_ocr(
-                match="标记显示管理", box=self.box.bottom_left, time_out=10, log=True
+                match="标记显示管理", box=self.box.bottom_left, time_out=10, log=True,after_sleep=2
         ):
             return False
 
         if not self.wait_click_ocr(
-                match="清空选中", box=self.box.bottom_left, time_out=10, log=True
+                match="清空选中", box=self.box.bottom_left, time_out=10, log=True,after_sleep=2
         ):
             return False
 
@@ -606,7 +606,13 @@ class DeliveryTask(BaseEfTask):
                         self.other_run()
                         self.wait_click_ocr(match=re.compile("送达"), box=self.box.bottom_right, settle_time=4, time_out=10,
                                             after_sleep=10, log=True)
-                    if not self.task_to_transfer_point():
+                    success=None
+                    for _ in range(3):
+                        success=self.task_to_transfer_point()
+                        if success:
+                            break
+                    if not success:
+                        self.log_info("前往传送点失败，重试...")
                         return
                     if not self.to_storage_point_and_back_zip_line():
                         return
