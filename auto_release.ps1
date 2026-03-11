@@ -223,9 +223,9 @@ function Push-GitTag {
 }
 
 Write-Host ""
-Write-Host "=" * 60
+Write-Host ("=" * 60)
 Write-Host "自动版本发布脚本" -ForegroundColor Cyan
-Write-Host "=" * 60
+Write-Host ("=" * 60)
 
 $tags = Get-AllTags
 
