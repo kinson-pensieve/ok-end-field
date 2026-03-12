@@ -232,7 +232,6 @@ class BaseEfTask(BaseTask):
 
         if not name:
             raise ValueError("yolo_detect 至少需要传入一个 name")
-        name="echo"
         raw_names = [name] if isinstance(name, str) else name
         target_names = {
             str(n.value) if isinstance(n, Enum) else str(n)

@@ -21,7 +21,7 @@ class OnnxYolo8Detect:  # Renamed class
         yolov ONNX Runtime inference
         dic_labels: {0: 'person', 1: 'bicycle'}
         """
-        self.dic_labels = {0: "echo"}
+        self.dic_labels = {0: "battle_end"}
         self.weights = weights
         # Store model_h and model_w for preprocessing.
         # These will be the target dimensions for the letterbox function.
