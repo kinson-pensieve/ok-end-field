@@ -479,9 +479,14 @@ class DeliveryTask(BaseEfTask):
             return False
 
         self.back(after_sleep=2)
-
-        result = self.find_feature(feature_name="transfer_point", box=self.box_of_screen(0.01, 0.01, 0.99, 0.99),
-                                   threshold=0.8)
+        result=None
+        for _ in range(8):
+            result = self.find_feature(feature_name="transfer_point", box=self.box.top,
+                                    threshold=0.8)
+            if result:
+                break
+            self.next_frame()
+            self.scroll_relative(0.5,0.5, -5)
         if not result:
             return False
         self.click(result,after_sleep=2)
