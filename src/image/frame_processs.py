@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+
 def isolate_by_hsv_ranges(frame, ranges, invert=True, kernel_size=2):
     """
     通用 HSV 颜色提取器

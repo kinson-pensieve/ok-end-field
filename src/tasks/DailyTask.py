@@ -27,7 +27,7 @@ class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin):
             buy_sell[f"{area}买入价"] = 900
             buy_sell[f"{area}卖出价"] = 4500
             buy_sell[area] = True
-        self.stages_list=stages_list
+        self.stages_list = stages_list
         self.default_config.update(buy_sell)
         self.default_config.update({"优先送礼对象": list(self.can_contact_dict.keys())[0]})
         self.default_config.update({
@@ -97,7 +97,7 @@ class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin):
             ("收信用", self.collect_credit),
             ("收集线索", self.collect_clue),
             ("买卖货", self.buy_sell),
-            ("刷体力",self.battle),
+            ("刷体力", self.battle),
             ("日常奖励", self.claim_daily_rewards),
         ]
         all_fail_tasks = []

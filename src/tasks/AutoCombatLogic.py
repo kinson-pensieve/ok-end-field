@@ -14,7 +14,7 @@ class AutoCombatLogic:
 
         if not in_combat_check:
             task.log_info("未检测到战斗状态,退出自动战斗")
-            return  False
+            return False
 
         task.log_info("检测到进入战斗,开始自动战斗流程")
         raw_skill_config = task.config.get("技能释放", "123")

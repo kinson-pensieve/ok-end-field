@@ -469,27 +469,27 @@ class DeliveryTask(BaseEfTask):
         self.click(result, after_sleep=2)
 
         if not self.wait_click_ocr(
-                match="标记显示管理", box=self.box.bottom_left, time_out=10, log=True,after_sleep=2
+                match="标记显示管理", box=self.box.bottom_left, time_out=10, log=True, after_sleep=2
         ):
             return False
 
         if not self.wait_click_ocr(
-                match="清空选中", box=self.box.bottom_left, time_out=10, log=True,after_sleep=2
+                match="清空选中", box=self.box.bottom_left, time_out=10, log=True, after_sleep=2
         ):
             return False
 
         self.back(after_sleep=2)
-        result=None
+        result = None
         for _ in range(8):
             result = self.find_feature(feature_name="transfer_point", box=self.box.top,
-                                    threshold=0.8)
+                                       threshold=0.8)
             if result:
                 break
             self.next_frame()
-            self.scroll_relative(0.5,0.5, -5)
+            self.scroll_relative(0.5, 0.5, -5)
         if not result:
             return False
-        self.click(result,after_sleep=2)
+        self.click(result, after_sleep=2)
 
         result = self.wait_ocr(match="传送", box=self.box.bottom_right, time_out=10, log=True)
         if not result:
@@ -609,11 +609,12 @@ class DeliveryTask(BaseEfTask):
                 else:
                     if not self.config.get(self.CFG_ONLY_DELIVER):
                         self.other_run()
-                        self.wait_click_ocr(match=re.compile("送达"), box=self.box.bottom_right, settle_time=4, time_out=10,
+                        self.wait_click_ocr(match=re.compile("送达"), box=self.box.bottom_right, settle_time=4,
+                                            time_out=10,
                                             after_sleep=10, log=True)
-                    success=None
+                    success = None
                     for _ in range(3):
-                        success=self.task_to_transfer_point()
+                        success = self.task_to_transfer_point()
                         if success:
                             break
                     if not success:

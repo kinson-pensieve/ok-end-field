@@ -8,16 +8,19 @@ from qfluentwidgets import FluentIcon
 from src.tasks.daily.liaison_mixin import DailyLiaisonMixin
 import re
 import time
-battle_end_list=[fL.battle_end,fL.battle_end_small,fL.battle_end_big]
+
+battle_end_list = [fL.battle_end, fL.battle_end_small, fL.battle_end_big]
+
+
 class BattleTask(DailyLiaisonMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = "刷体力"
         self.description = "刷体力任务"
-        self.stages_list=stages_list
+        self.stages_list = stages_list
         self.icon = FluentIcon.BRIGHTNESS
         self.default_config = {
-            "体力本":"干员经验",
+            "体力本": "干员经验",
             "技能释放": "123",
             "启动技能点数": 2,
             "后台结束战斗通知": True,
@@ -25,7 +28,7 @@ class BattleTask(DailyLiaisonMixin):
             "进入战斗后的初始等待时间": 3
         }
         self.config_type["体力本"] = {"type": "drop_down", "options": self.stages_list}
-        self.max_half_time=3
+        self.max_half_time = 3
         self.lv_regex = re.compile(r"(?i)lv|\d{2}")
         self.last_op_time = 0
         self.last_skill_time = 0

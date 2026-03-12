@@ -28,7 +28,6 @@ _INFO_GRADUATED_WEAPONS: Final = "已毕业武器"
 _INFO_NEW_LOCKED_WEAPONS: Final = "本次新锁毕业武器"
 _INFO_SUMMARY: Final = "汇总"
 
-
 _FEATURE_ESSENCE_UI_MARKER: Final = "essence_ui_marker"
 _FEATURE_ESSENCE_QUALITY_GOLD: Final[tuple[str, ...]] = (
     # 兼容旧单标签
@@ -338,6 +337,7 @@ class EssenceScanTask(BaseEfTask):
             return True, True
 
         return False, True
+
     def _is_gold_cell(self, cell_box) -> bool:
         for feature_name in _FEATURE_ESSENCE_QUALITY_GOLD:
             if self._has_feature(feature_name, box=cell_box, threshold=_ESSENCE_QUALITY_THRESHOLD):
@@ -564,8 +564,8 @@ class EssenceScanTask(BaseEfTask):
             ).crop_frame(self.frame)
             first_mean = float(first_cell.mean()) if first_cell.size else 0.0
             if (
-                last_first_cell_mean is not None
-                and abs(first_mean - last_first_cell_mean) < 0.2
+                    last_first_cell_mean is not None
+                    and abs(first_mean - last_first_cell_mean) < 0.2
             ):
                 self.log_info("[essence] stop: reached bottom (first cell unchanged)")
                 break

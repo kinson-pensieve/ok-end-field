@@ -7,7 +7,7 @@ ITEM_CATEGORY_EN_BY_ZH = {
     "功能道具": "utility_items",
     "珍贵物品": "valuables",
 }
-ITEM_WAREHOUSE_CATEGORY_EN_BY_ZH={
+ITEM_WAREHOUSE_CATEGORY_EN_BY_ZH = {
     "矿物": "minerals",
     "植物": "plants",
     "产物": "products",

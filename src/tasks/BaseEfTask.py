@@ -188,7 +188,8 @@ class BaseEfTask(BaseTask):
             min_step: 最小移动步长
             slow_radius: 减速半径
         """
-        return move_to_target_once(self.hwnd.hwnd, ocr_obj, self.screen_center, max_step=max_step, min_step=min_step, slow_radius=slow_radius)
+        return move_to_target_once(self.hwnd.hwnd, ocr_obj, self.screen_center, max_step=max_step, min_step=min_step,
+                                   slow_radius=slow_radius)
 
     def active_and_send_mouse_delta(self, dx=1, dy=1, activate=True, only_activate=False, delay=0.02, steps=3):
         """激活窗口并发送鼠标位移
@@ -221,12 +222,13 @@ class BaseEfTask(BaseTask):
             ranges: HSV区间列表
         """
         return partial(self.isolate_by_hsv_ranges, ranges=ranges)
+
     def yolo_detect(
-        self,
-        name: str | list[str],
-        frame=None,
-        box: Box | None = None,
-        conf: float = 0.7,
+            self,
+            name: str | list[str],
+            frame=None,
+            box: Box | None = None,
+            conf: float = 0.7,
     ) -> list[Box]:
         """使用 YOLO 识别目标，并按名称过滤后返回 Box 列表。"""
 
@@ -259,7 +261,7 @@ class BaseEfTask(BaseTask):
         results: list[Box] = []
 
         for det in detections:
-            self.log_info(f"Raw detection: name={getattr(det,'name',None)}, conf={det.confidence:.3f}")
+            self.log_info(f"Raw detection: name={getattr(det, 'name', None)}, conf={det.confidence:.3f}")
             if getattr(det, "name", None) not in target_names:
                 continue
 
@@ -280,7 +282,7 @@ class BaseEfTask(BaseTask):
 
         return sorted(results, key=lambda item: item.confidence, reverse=True)
 
-    def click_with_alt(self, x: int| float | Box | List[Box] = -1, y: int|float = -1, move_back: bool = False,
+    def click_with_alt(self, x: int | float | Box | List[Box] = -1, y: int | float = -1, move_back: bool = False,
                        name: str | None = None, interval: int = -1, move: bool = True, down_time: float = 0.01,
                        after_sleep: float = 0, key: str = 'left'):
         """按住Alt并点击指定位置
@@ -735,13 +737,16 @@ class BaseEfTask(BaseTask):
         if in_combat_world:
             self._logged_in = True
         return in_combat_world
+
     def find_reward_ok(self):
         """寻找"奖励"对话框中的"确定"按钮
 
         Returns:
             Box: 找到的按钮位置，否则None
         """
-        return self.find_one("reward_ok", vertical_variance=0.05,box=self.box_of_screen(1760/3840,1760/2160, 2100/3840, 2100/2160))
+        return self.find_one("reward_ok", vertical_variance=0.05,
+                             box=self.box_of_screen(1760 / 3840, 1760 / 2160, 2100 / 3840, 2100 / 2160))
+
     def find_f(self):
         """寻找"F"键提示（拾取物品）
         

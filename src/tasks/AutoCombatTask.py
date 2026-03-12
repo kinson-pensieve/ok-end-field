@@ -9,11 +9,10 @@ from src.tasks.battle_mixin import BattleMixin
 logger = Logger.get_logger(__name__)
 
 
-
 # 自动战斗主逻辑独立类
 
 # 原有任务类调用独立逻辑
-class AutoCombatTask( BattleMixin, TriggerTask):
+class AutoCombatTask(BattleMixin, TriggerTask):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.default_config = {'_enabled': False}
@@ -44,4 +43,3 @@ class AutoCombatTask( BattleMixin, TriggerTask):
 
     def run(self):
         self._combat_logic.run()
-

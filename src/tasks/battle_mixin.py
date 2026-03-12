@@ -88,7 +88,8 @@ class BattleMixin(BaseEfTask):
             self.log_info("退出检查失败: 中间区域仍有伤害数字")
             return False
 
-        self.log_info(f"退出检查通过: skill_count={skill_count}, has_lv={has_lv}, in_team={in_team}, center_number={has_center_number}")
+        self.log_info(
+            f"退出检查通过: skill_count={skill_count}, has_lv={has_lv}, in_team={in_team}, center_number={has_center_number}")
         return True
 
     def _check_center_area_has_number(self):
@@ -111,7 +112,8 @@ class BattleMixin(BaseEfTask):
         lv = self.ocr(0.02, 0.89, 0.23, 0.93, match=self.lv_regex, name='lv_text')
         if len(lv) > 0:
             return True
-        lv = self.ocr(0.02, 0.89, 0.23, 0.93, frame_processor=isolate_white_text_to_black, match=self.lv_regex, name='lv_text')
+        lv = self.ocr(0.02, 0.89, 0.23, 0.93, frame_processor=isolate_white_text_to_black, match=self.lv_regex,
+                      name='lv_text')
         return len(lv) > 0
 
     def wait_in_combat(self, time_out=3, click=False):
@@ -162,7 +164,8 @@ class BattleMixin(BaseEfTask):
                 break
 
         if count == 0:
-            has_white_left = self.check_is_pure_color_in_4k(1604, y_start, 1614, y_end, white_skill_color, threshold=0.1)
+            has_white_left = self.check_is_pure_color_in_4k(1604, y_start, 1614, y_end, white_skill_color,
+                                                            threshold=0.1)
             if not has_white_left:
                 count = -1
         return count
@@ -198,7 +201,8 @@ class BattleMixin(BaseEfTask):
             else:
                 consecutive_matches = 0
         return False
-    def auto_battle(self,start_sleep: float = None):
+
+    def auto_battle(self, start_sleep: float = None):
         end_time = None
         start_time = time.time()
         while True:

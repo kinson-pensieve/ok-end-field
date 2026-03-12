@@ -87,7 +87,7 @@ class DailyTradeMixin(BaseEfTask):
             )
             back_to_area_deadline = time.time() + 20
             while not self.wait_ocr(
-                match=re.compile("地区建设"), box=self.box.top_left, time_out=1
+                    match=re.compile("地区建设"), box=self.box.top_left, time_out=1
             ):
                 if time.time() > back_to_area_deadline:
                     self.log_info("等待返回 '地区建设' 界面超时，结束当前市场采集")
@@ -231,17 +231,17 @@ class DailyTradeMixin(BaseEfTask):
             if buy_good:
                 if not can_buy:
                     if self.wait_ocr(
-                        match=[re.compile("即将"), re.compile("溢出")],
-                        box=self.box.top_left,
-                        time_out=3,
+                            match=[re.compile("即将"), re.compile("溢出")],
+                            box=self.box.top_left,
+                            time_out=3,
                     ):
                         can_buy = True
                 if can_buy:
                     back_to_area_deadline = time.time() + 20
                     while not self.wait_ocr(
-                        match=re.compile("地区建设"),
-                        box=self.box.top_left,
-                        time_out=1,
+                            match=re.compile("地区建设"),
+                            box=self.box.top_left,
+                            time_out=1,
                     ):
                         if time.time() > back_to_area_deadline:
                             self.log_info(

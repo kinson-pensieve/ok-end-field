@@ -70,7 +70,7 @@ class TakeDeliveryTask(BaseEfTask, TriggerTask):
         # 保持较大的搜索范围设置，以适应高分辨率
         search_hw_ratio = 3.6
         search_h_ratio = 2.4
-        min_box_size = 110 # 保持这个较大的值以兼容 2K/4K
+        min_box_size = 110  # 保持这个较大的值以兼容 2K/4K
 
         search_width = max(reward_obj.height * search_hw_ratio, min_box_size)
         search_height = max(reward_obj.height * search_h_ratio, min_box_size)
@@ -88,13 +88,13 @@ class TakeDeliveryTask(BaseEfTask, TriggerTask):
             target_y = y_ceiling
 
         target_real_height = search_height + reward_obj.height * 0.5
-        y_offset_val = target_y - reward_obj.y # 重新计算相对位移
+        y_offset_val = target_y - reward_obj.y  # 重新计算相对位移
 
         icon_search_box = reward_obj.copy(
-            x_offset = x_offset_val,
-            y_offset = y_offset_val,
-            width_offset = search_width - reward_obj.width,
-            height_offset = target_real_height - reward_obj.height
+            x_offset=x_offset_val,
+            y_offset=y_offset_val,
+            width_offset=search_width - reward_obj.width,
+            height_offset=target_real_height - reward_obj.height
         )
 
         # 边界检查
@@ -170,9 +170,9 @@ class TakeDeliveryTask(BaseEfTask, TriggerTask):
         filter_min = min(active_mins)
 
         # 滚动控制状态
-        scroll_step = 0             # 当前滚动计数 (0, 1) -> 2次后刷新
-        scroll_direction = -1       # -1: 向下(wheel负值), 1: 向上(wheel正值)
-        refresh_not_found_count = 0 # 连续未找到刷新按钮计数
+        scroll_step = 0  # 当前滚动计数 (0, 1) -> 2次后刷新
+        scroll_direction = -1  # -1: 向下(wheel负值), 1: 向上(wheel正值)
+        refresh_not_found_count = 0  # 连续未找到刷新按钮计数
 
         while True:
             if not self.enabled:
@@ -286,13 +286,13 @@ class TakeDeliveryTask(BaseEfTask, TriggerTask):
                         cx = int(self.width * 0.5)
                         cy = int(self.height * 0.5)
                         self.scroll(cx, cy, scroll_direction * 3)
-                        self.sleep(1.0) # 等待滚动动画
-                        continue    # 滚动后重新OCR
+                        self.sleep(1.0)  # 等待滚动动画
+                        continue  # 滚动后重新OCR
 
                     # 3. 滚动次数已满，准备刷新
                     self.log_info("已完成当前列表扫描，准备检测刷新")
 
-                    refresh_not_found_count = 0 # 重置计数
+                    refresh_not_found_count = 0  # 重置计数
 
                     if last_refresh_box:
 
@@ -311,9 +311,9 @@ class TakeDeliveryTask(BaseEfTask, TriggerTask):
 
                         # 刷新成功后，滚动状态反转
                         scroll_direction *= -1
-                        scroll_step = 0             # 重置计数
+                        scroll_step = 0  # 重置计数
 
-                        self.sleep(1.0) # 等待刷新内容加载
+                        self.sleep(1.0)  # 等待刷新内容加载
                     else:
                         refresh_not_found_count += 1
                         self.log_info(f"警告: 尚未定位到刷新按钮位置 ({refresh_not_found_count}/10)")

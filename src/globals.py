@@ -9,4 +9,3 @@ class Globals(QObject):
 
     def __init__(self, exit_event):
         super().__init__()
-

@@ -21,7 +21,8 @@ class DailyRoutineMixin(BaseEfTask):
         self.info_set("current_task", "collect_credit")
         self.send_key("f5", after_sleep=2)
         self.wait_click_ocr(match=re.compile("信用交易所"), box=self.box.top, time_out=5, after_sleep=2)
-        result = self.wait_click_ocr(match=[re.compile("收取信用"), re.compile("无待领取信用")], box=self.box.bottom_left,
+        result = self.wait_click_ocr(match=[re.compile("收取信用"), re.compile("无待领取信用")],
+                                     box=self.box.bottom_left,
                                      time_out=5, after_sleep=2)
         if not result:
             self.log_info("未找到可收取信用或无待领取信用的选项")
@@ -46,7 +47,8 @@ class DailyRoutineMixin(BaseEfTask):
                 self.wait_click_ocr(match=re.compile("好友"), box=self.box.right, time_out=5, after_sleep=2)
             else:
                 if left_exchange_time <= 0 and left_help_time <= 0:
-                    self.wait_click_ocr(match=re.compile("结束拜访"), box=self.box.bottom_right, time_out=5, after_sleep=2)
+                    self.wait_click_ocr(match=re.compile("结束拜访"), box=self.box.bottom_right, time_out=5,
+                                        after_sleep=2)
                     self.log_info("交流和助力次数已完成，结束拜访")
                     self.wait_click_ocr(match=re.compile("确认"), box=self.box.bottom_right, time_out=5, after_sleep=2)
                     if exchange_not_found:
@@ -350,7 +352,7 @@ class DailyRoutineMixin(BaseEfTask):
                     (
                         kw for kw in can_exchange_goods
                         if (kw in good.name or good.name in kw)
-                        and len(good.name) >= max(2, len(kw) - 1)
+                           and len(good.name) >= max(2, len(kw) - 1)
                     ),
                     None
                 )
@@ -415,9 +417,11 @@ class DailyRoutineMixin(BaseEfTask):
             self.wait_pop_up(after_sleep=2)
 
         self.log_info(f"{outpost_name} 兑换操作完成")
+
     def test_ocr_full(self):
         self.next_frame()
         self.ocr(log=True)
+
     def test_ocr(self):
         box1 = self.box_of_screen(1749 / 1920, 107 / 1080, 1789 / 1920, 134 / 1080)
         box2 = self.box_of_screen(

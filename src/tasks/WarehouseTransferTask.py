@@ -3,13 +3,14 @@
 from qfluentwidgets import FluentIcon
 
 from src.data.world_map import item_to_warehouse_dict
-from src.data.zh_en import ITEM_WAREHOUSE_CATEGORY_EN_BY_ZH,ITEM_TRANSLATION_DICT
+from src.data.zh_en import ITEM_WAREHOUSE_CATEGORY_EN_BY_ZH, ITEM_TRANSLATION_DICT
 from src.tasks.BaseEfTask import BaseEfTask
 
 _LOCATIONS = {
     "valley4": "四号谷地",
     "wuling": "武陵",
 }
+
 
 class WarehouseTransferTask(BaseEfTask):
     """
@@ -52,6 +53,7 @@ class WarehouseTransferTask(BaseEfTask):
         }
         self._template_cache: dict[str, object] = {}
         self._item_name_cache: dict[str, str] | None = None
+
     def _to_one_type_page(self, item_name: str):
         category_en_name = ITEM_WAREHOUSE_CATEGORY_EN_BY_ZH.get(item_to_warehouse_dict.get(item_name, ""), "")
         if not category_en_name:
@@ -61,6 +63,7 @@ class WarehouseTransferTask(BaseEfTask):
             self.log_info(f"物品 {item_name} 无法找到分类图标,可能已经进入该分类页")
         if result:
             self.click(result[0], move_back=True, after_sleep=2)
+
     def _detect_current_location(self) -> str | None:
         boxes = self.ocr(box=self.box_of_screen(0.15, 0.18, 0.26, 0.22, name="current_location_area"))
         for box in boxes or []:
@@ -142,7 +145,7 @@ class WarehouseTransferTask(BaseEfTask):
             raise RuntimeError("未选择物品")
         max_times = int(self.config.get("转移轮次", 10))
         self.send_key("b", after_sleep=1)
-        search_box=self.box_of_screen(0.12, 0.30, 0.55, 0.68)
+        search_box = self.box_of_screen(0.12, 0.30, 0.55, 0.68)
         while True:
             current = self._detect_current_location()
             if current != from_key:
@@ -158,11 +161,11 @@ class WarehouseTransferTask(BaseEfTask):
 
             ROUND = 5
             icon = None
-            item_key_en=ITEM_TRANSLATION_DICT.get(item_key,"")
+            item_key_en = ITEM_TRANSLATION_DICT.get(item_key, "")
             if not item_key_en:
                 self.log_info(f"找不到的图标名 {item_key}")
             for round_idx in range(ROUND + 1):
-                icon=self.find_one(feature_name=item_key_en,box=search_box,threshold=0.8)
+                icon = self.find_one(feature_name=item_key_en, box=search_box, threshold=0.8)
                 if icon:
                     break
                 if round_idx == ROUND:
@@ -175,7 +178,7 @@ class WarehouseTransferTask(BaseEfTask):
                 raise RuntimeError(f"未找到物品图标（滚动{ROUND}轮后仍失败）：{item_key}")
             self._ctrl_click(icon)
             self.sleep(0.35)
-            icon_after=self.find_feature(feature_name=item_key_en,box=search_box,threshold=0.8)
+            icon_after = self.find_feature(feature_name=item_key_en, box=search_box, threshold=0.8)
             if not icon_after:
                 self.log_info(f"物品图标已消失（可能已倒完）：{item_key}")
                 # count_after = self._read_count_near_icon(icon_after)

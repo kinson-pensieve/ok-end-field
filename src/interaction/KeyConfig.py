@@ -7,7 +7,7 @@ DEFAULT_COMMON_KEYS = {
     # 'Backpack Key': 'b',作为is_main特征则不可自定义
     'Valuables Key': 'n',
     'Team Key': 'u',
-    
+
     # 通用部分 - UI/信息
     # 'Operator Key': 'c',作为is_main特征则不可自定义
     'Mission Key': 'j',
@@ -17,7 +17,7 @@ DEFAULT_COMMON_KEYS = {
     'Mail Key': 'k',
     'Handbook Key': 'f8',
     'Recruitment Key': 'f9',
-    
+
     # 快捷工具
     'Quick Tool Key': 'r',
 }
@@ -43,7 +43,7 @@ DEFAULT_COMBAT_KEYS = {
 
 class KeyConfigManager:
     """游戏热键配置管理器，负责替换逻辑"""
-    
+
     def __init__(self, key_config: dict = None):
         """
         初始化热键配置管理器。
@@ -52,7 +52,7 @@ class KeyConfigManager:
             key_config: 用户自定义的热键配置字典（通常来自全局配置）
         """
         self.key_config = key_config or {}
-    
+
     def update_config(self, key_config: dict):
         """更新用户配置。
         
@@ -60,7 +60,7 @@ class KeyConfigManager:
             key_config: 新的配置字典
         """
         self.key_config = key_config or {}
-    
+
     def resolve_common_key(self, key: str) -> str:
         """解析通用部分的热键。
         
@@ -83,13 +83,13 @@ class KeyConfigManager:
             if key_value == key:
                 config_key_name = key_name
                 break
-        
+
         # 从配置中查询（如果用户自定义了），否则使用传入的键值
         if config_key_name:
             return self.key_config.get(config_key_name, key)
-        
+
         return key
-    
+
     def resolve_industry_key(self, key: str) -> str:
         """解析集成工业部分的热键。
         
@@ -112,13 +112,13 @@ class KeyConfigManager:
             if key_value == key:
                 config_key_name = key_name
                 break
-        
+
         # 从配置中查询（如果用户自定义了），否则使用传入的键值
         if config_key_name:
             return self.key_config.get(config_key_name, key)
-        
+
         return key
-    
+
     def resolve_combat_key(self, key: str) -> str:
         """解析战斗专用部分的热键。
         
@@ -141,9 +141,9 @@ class KeyConfigManager:
             if key_value == key:
                 config_key_name = key_name
                 break
-        
+
         # 从配置中查询（如果用户自定义了），否则使用传入的键值
         if config_key_name:
             return self.key_config.get(config_key_name, key)
-        
+
         return key

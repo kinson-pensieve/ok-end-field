@@ -6,13 +6,12 @@ import win32gui
 user32 = ctypes.windll.user32
 MOUSEEVENTF_MOVE = 0x0001
 
-
 # ===== math layer =====
 import math
 
 
 def calc_direction_step(
-    from_pos, to_pos, max_step=100, min_step=20, slow_radius=200, deadzone=4
+        from_pos, to_pos, max_step=100, min_step=20, slow_radius=200, deadzone=4
 ):
     dx_raw = to_pos[0] - from_pos[0]
     dy_raw = to_pos[1] - from_pos[1]
@@ -35,7 +34,7 @@ def calc_direction_step(
 
 # ===== device control =====
 def active_and_send_mouse_delta(
-    hwnd, dx=1, dy=1, activate=True, only_activate=False, delay=0.02, steps=3
+        hwnd, dx=1, dy=1, activate=True, only_activate=False, delay=0.02, steps=3
 ):
     if only_activate:
         activate = True
@@ -48,21 +47,21 @@ def active_and_send_mouse_delta(
                 if not win32gui.IsWindow(hwnd):
                     print(f"窗口激活失败: 无效的窗口句柄 {hwnd}")
                     return
-                
+
                 # 如果窗口最小化，先恢复
                 if win32gui.IsIconic(hwnd):
                     win32gui.ShowWindow(hwnd, 9)  # SW_RESTORE
                     time.sleep(0.15)
-                
+
                 # 确保窗口可见 - 这是关键，必须先显示再激活
                 if not win32gui.IsWindowVisible(hwnd):
                     win32gui.ShowWindow(hwnd, 5)  # SW_SHOW
                     time.sleep(0.15)
-                
+
                 # 尝试激活窗口 - 使用 SW_RESTORE 更可靠
                 win32gui.ShowWindow(hwnd, 9)  # SW_RESTORE (即使没最小化也有效)
                 time.sleep(0.05)
-                
+
                 # 尝试设置前台窗口
                 try:
                     win32gui.SetForegroundWindow(hwnd)
@@ -75,9 +74,9 @@ def active_and_send_mouse_delta(
                     time.sleep(0.01)
                     win32gui.SetForegroundWindow(hwnd)
                     win32api.keybd_event(win32con.VK_MENU, 0, win32con.KEYEVENTF_KEYUP, 0)
-                
+
                 time.sleep(delay)
-                
+
                 # 验证激活是否成功
                 final_hwnd = win32gui.GetForegroundWindow()
                 if final_hwnd != hwnd:
@@ -98,7 +97,7 @@ def active_and_send_mouse_delta(
 
 
 # ===== control =====
-def move_to_target_once(hwnd, ocr_obj, screen_center_func,max_step=100,min_step=20,slow_radius=200):
+def move_to_target_once(hwnd, ocr_obj, screen_center_func, max_step=100, min_step=20, slow_radius=200):
     if ocr_obj is None:
         return None
 
@@ -109,7 +108,8 @@ def move_to_target_once(hwnd, ocr_obj, screen_center_func,max_step=100,min_step=
 
     center_pos = screen_center_func()
 
-    dx, dy = calc_direction_step(center_pos, target_center,max_step= max_step,min_step= min_step,slow_radius= slow_radius)
+    dx, dy = calc_direction_step(center_pos, target_center, max_step=max_step, min_step=min_step,
+                                 slow_radius=slow_radius)
 
     if dx != 0 or dy != 0:
         active_and_send_mouse_delta(hwnd, dx, dy)

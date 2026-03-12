@@ -93,12 +93,12 @@ stages_dict = {
         "武陵城",
     }
 }
-stages_cost={
-    "干员养成":80,
-    "武器养成":80,
-    "危镜再现":120,
-    "危境预演":80,
-    "能量淤积点":80,
+stages_cost = {
+    "干员养成": 80,
+    "武器养成": 80,
+    "危镜再现": 120,
+    "危境预演": 80,
+    "能量淤积点": 80,
 }
 stages_list = [stage for stages in stages_dict.values() for stage in stages]
 higher_order_feature_dict = {

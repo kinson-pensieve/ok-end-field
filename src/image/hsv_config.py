@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class HSVRange(tuple, Enum):
     WHITE = (((0, 0, 200), (180, 50, 255)),)
     GOLD_TEXT = (
