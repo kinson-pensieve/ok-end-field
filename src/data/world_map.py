@@ -103,7 +103,7 @@ stages_cost={
 stages_list = [stage for stages in stages_dict.values() for stage in stages]
 higher_order_feature_dict = {
     "D96钢": fL.higher_order_d96,
-    "超距辉映管": fL.higher_order_quadrant_liquid,
+    "超距辉映管": fL.higher_order_reflection_tube,
     "快子遴捡晶格": fL.higher_order_lattice,
     "象限拟合液": fL.higher_order_quadrant_liquid,
     "三相纳米片": fL.higher_order_three_photos,

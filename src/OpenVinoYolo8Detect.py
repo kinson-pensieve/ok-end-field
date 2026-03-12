@@ -128,7 +128,7 @@ class OpenVinoYolo8Detect:
 
         return results
 
-    def detect(self, image, threshold=0.5, label=-1):
+    def detect(self, image, threshold=0.7, label=-1):
         try:
             h, w = image.shape[:2]
             img_data, pad = self._preprocess(image)

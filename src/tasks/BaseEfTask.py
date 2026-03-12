@@ -226,7 +226,7 @@ class BaseEfTask(BaseTask):
         name: str | list[str],
         frame=None,
         box: Box | None = None,
-        conf: float = 0.25,
+        conf: float = 0.7,
     ) -> list[Box]:
         """使用 YOLO 识别目标，并按名称过滤后返回 Box 列表。"""
 

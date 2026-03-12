@@ -569,12 +569,12 @@ class DailyLiaisonMixin(BattleMixin):
         to_text = "前往"
 
         # 判断是否是高阶关卡
-        is_higher_order = category_name == "危境预演" and stage_name in higher_order_feature_dict
+        is_higher_order = category_name == "危境预演"
         location=None
         for _ in range(3):
             if is_higher_order:
                 # 高阶关卡，使用 feature_dict 查找位置
-                location = self.find_one(feature_name=higher_order_feature_dict[stage_name])
+                location = self.find_feature(feature_name=higher_order_feature_dict[stage_name])
             else:
                 # 普通关卡
                 location = self.wait_ocr(match=re.compile(stage_name), box=self.box.left, log=True)
@@ -583,6 +583,7 @@ class DailyLiaisonMixin(BattleMixin):
             if location:
                 break
             self.scroll_relative(0.5,0.5,count=-4)
+            self.wait_ui_stable(refresh_interval=0.5)
 
         # 如果找到位置，则点击按钮
         if location:

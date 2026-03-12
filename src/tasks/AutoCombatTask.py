@@ -26,7 +26,7 @@ class AutoCombatTask( BattleMixin, TriggerTask):
             "后台结束战斗通知": True,
             "平A间隔": 0.12,
             "无数字操作间隔": 6,
-            "进入战斗后的初始等待时间": 1,
+            "进入战斗后的初始等待时间": 2,
         })
         self.config_description.update({
             "技能释放": "满技能时, 开始释放技能, 如123, 建议只放3个技能",
