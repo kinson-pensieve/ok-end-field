@@ -121,7 +121,7 @@ class DailyRoutineMixin(BaseEfTask):
                             if result := self.wait_ocr(match=re.compile("生产助力"), box=exchange_help_box, time_out=5):
                                 self.log_info("继续进行助力操作")
                                 self.click(result[-1], after_sleep=2)
-                                if self.find_feature(feature_name="reward_ok"):
+                                if self.find_reward_ok():
                                     self.wait_pop_up(after_sleep=2)
                                 left_help_time -= 1
                                 help_time += 1

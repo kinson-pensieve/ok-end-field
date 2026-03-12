@@ -142,11 +142,11 @@ class Test(BattleMixin):
         self.to_end()
     def to_end(self):
         search_box = self.box_of_screen((1920 - 1550) / 1920, 0, 1550 / 1920, (1080 - 150) / 1080)
-        for _ in range(5):
+        for _ in range(9):
             if self.yolo_detect(fL.battle_end, box=search_box):
                 break
             self.click(key="middle", after_sleep=2)
-            self.move_keys('a', duration=0.01)
+            self.move_keys('aw', duration=0.01)
             self.sleep(2)
 
         self.align_ocr_or_find_target_to_center(
@@ -159,10 +159,7 @@ class Test(BattleMixin):
             raise_if_fail=False,
             threshold=0.5,
         )
-        start_time=time.time()
         while self.align_ocr_or_find_target_to_center(fL.battle_end, ocr=False, use_yolo=True, box=search_box, only_x=True, threshold=0.5, tolerance=100):
-            if time.time()-start_time>60:
-                return False
             if self.wait_ocr(match=re.compile("领取"), time_out=1, box=self.box.bottom_right):
                 self.sleep(0.5)
                 self.press_key("f",down_time=0.2)

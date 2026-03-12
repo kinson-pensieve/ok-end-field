@@ -582,7 +582,7 @@ class DeliveryTask(BaseEfTask):
                     match=end_pattern, box=self.box.bottom_right, time_out=2, log=True
             ):
                 self.press_key('f', after_sleep=2)
-                if not self.find_feature(feature_name="reward_ok"):
+                if not self.find_reward_ok():
                     self.skip_dialog()
                     self.wait_click_ocr(match="确认", settle_time=2, after_sleep=2)
                 self.wait_pop_up(after_sleep=2)

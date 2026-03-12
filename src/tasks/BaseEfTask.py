@@ -736,7 +736,13 @@ class BaseEfTask(BaseTask):
         if in_combat_world:
             self._logged_in = True
         return in_combat_world
+    def find_reward_ok(self):
+        """寻找"奖励"对话框中的"确定"按钮
 
+        Returns:
+            Box: 找到的按钮位置，否则None
+        """
+        return self.find_one("reward_ok", vertical_variance=0.05,box=self.box_of_screen(1760/3840,1760/2160, 2100/3840, 2100/2160))
     def find_f(self):
         """寻找"F"键提示（拾取物品）
         
