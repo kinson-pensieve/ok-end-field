@@ -85,7 +85,7 @@ class GugaDeliveryTask(BaseNavTask):
         Returns:
             dict: {destination: [targets...]}
         """
-        mapping_file = Path(__file__).parent.parent / "data" / "delivery_mapping.json"
+        mapping_file = Path(__file__).parent.parent.parent / "assets" / "delivery_mapping.json"
         if not mapping_file.exists():
             self.log_warning(f"delivery_mapping.json not found at {mapping_file}")
             return {}
