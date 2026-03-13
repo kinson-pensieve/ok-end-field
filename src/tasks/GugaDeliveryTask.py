@@ -78,8 +78,19 @@ class GugaDeliveryTask(BaseNavTask):
     def _load_recycling_stations(self) -> list[dict]:
         """Load recycling station coordinates from JSON file.
 
+        File format:
+        [
+          {
+            "name": "资源回收站",
+            "region": "武陵",
+            "area": "武陵城",
+            "direction": "top_left",
+            "coordinates": "0.5,0.5"
+          }
+        ]
+
         Returns:
-            list[dict]: list of recycling stations with coordinates
+            list[dict]: list of recycling stations with coordinates and direction
         """
         stations_file = Path(__file__).parent.parent.parent / "assets" / "recycling_stations.json"
         if not stations_file.exists():
