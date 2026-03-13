@@ -486,7 +486,7 @@ class GugaDeliveryTask(BaseNavTask):
 
     def _confirm_recycling_station(self, area: str) -> str | None:
         """For recycling stations, iterate through all stations in the area and click
-        to confirm the correct one via "追踪中的任务" detection.
+        to confirm the correct one via "追踪中的任务" detection (detect but don't click).
 
         Args:
             area: Current area name to filter recycling stations
@@ -527,6 +527,7 @@ class GugaDeliveryTask(BaseNavTask):
             self.click(box, after_sleep=1)
 
             # Check if "追踪中的任务" appears (confirms this is the correct station)
+            # Do NOT click it, just detect if it exists
             tracking_box = self.wait_ocr(match="追踪中的任务", time_out=2)
             if tracking_box:
                 self.log_info(f"confirmed recycling station: {station.get('name')}")
