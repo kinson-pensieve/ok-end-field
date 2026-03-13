@@ -487,12 +487,13 @@ class GugaDeliveryTask(BaseNavTask):
     def _confirm_recycling_station(self, area: str) -> str | None:
         """For recycling stations, iterate through all stations in the area and click
         to confirm the correct one via "追踪中的任务" detection (detect but don't click).
+        Returns the station name which is used to find the corresponding delivery route.
 
         Args:
             area: Current area name to filter recycling stations
 
         Returns:
-            str | None: "资源回收站" if confirmed, None otherwise
+            str | None: station name if confirmed, None otherwise
         """
         # Find all recycling stations in the current area
         area_stations = [
@@ -507,12 +508,13 @@ class GugaDeliveryTask(BaseNavTask):
         self.log_info(f"found {len(area_stations)} recycling stations in {area}, iterating to confirm")
 
         for station in area_stations:
-            self.log_info(f"clicking recycling station: {station.get('name')}")
+            station_name = station.get("name")
+            self.log_info(f"clicking recycling station: {station_name}")
 
             # Parse coordinates
             coord_str = station.get("coordinates", "").split(",")
             if len(coord_str) != 2:
-                self.log_error(f"invalid coordinates for station: {station.get('name')}")
+                self.log_error(f"invalid coordinates for station: {station_name}")
                 continue
 
             try:
@@ -530,10 +532,10 @@ class GugaDeliveryTask(BaseNavTask):
             # Do NOT click it, just detect if it exists
             tracking_box = self.wait_ocr(match="追踪中的任务", time_out=2)
             if tracking_box:
-                self.log_info(f"confirmed recycling station: {station.get('name')}")
-                return "资源回收站"
+                self.log_info(f"confirmed recycling station: {station_name}")
+                return station_name
             else:
-                self.log_info(f"station {station.get('name')} is not the target, continuing")
+                self.log_info(f"station {station_name} is not the target, continuing")
 
         self.log_error("failed to confirm any recycling station in area")
         return None
