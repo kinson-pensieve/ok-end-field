@@ -18,6 +18,8 @@ CFG_ORDER_TYPE = "接单方式"
 ORDER_COMMISSION = "运送委托"
 ORDER_LOCAL = "本地仓储"
 
+CFG_AREA = "送货区域"
+AREA_ALL = "全部"
 AREA_WULING = "武陵"
 AREA_VALLEY = "四号谷地"
 
@@ -40,6 +42,7 @@ class GugaDeliveryTask(BaseNavTask):
         self.default_config = {
             "_enabled": True,
             CFG_ORDER_TYPE: ORDER_COMMISSION,
+            CFG_AREA: AREA_ALL,
         }
         self.config_type[CFG_ORDER_TYPE] = {
             "type": "drop_down",
@@ -48,6 +51,15 @@ class GugaDeliveryTask(BaseNavTask):
         self.config_description[CFG_ORDER_TYPE] = (
             f"{ORDER_COMMISSION}: 从运送委托列表接取他人委托\n"
             f"{ORDER_LOCAL}: 从本地仓储接取自有订单"
+        )
+        self.config_type[CFG_AREA] = {
+            "type": "drop_down",
+            "options": [AREA_ALL, AREA_WULING, AREA_VALLEY],
+        }
+        self.config_description[CFG_AREA] = (
+            f"{AREA_ALL}: 武陵 + 四号谷地\n"
+            f"{AREA_WULING}: 仅武陵\n"
+            f"{AREA_VALLEY}: 仅四号谷地"
         )
 
         self.store = RouteStore()
@@ -482,11 +494,12 @@ class GugaDeliveryTask(BaseNavTask):
         self.log_info("delivery completed")
         return True
 
-    def execute(self, order_type=None):
+    def execute(self, order_type=None, area_filter=None):
         """Execute delivery task. Can be called by other tasks.
 
         Args:
             order_type: ORDER_COMMISSION or ORDER_LOCAL, defaults to config value
+            area_filter: AREA_ALL / AREA_WULING / AREA_VALLEY, defaults to config value
 
         Returns:
             bool: True if delivery completed successfully
@@ -494,10 +507,17 @@ class GugaDeliveryTask(BaseNavTask):
         self.ensure_main()
         if order_type is None:
             order_type = self.config.get(CFG_ORDER_TYPE)
+        if area_filter is None:
+            area_filter = self.config.get(CFG_AREA, AREA_ALL)
 
         if order_type == ORDER_LOCAL:
-            # Loop through all local warehouses until no more orders found
-            areas = [AREA_WULING, AREA_VALLEY]
+            # Determine which areas to process based on filter
+            if area_filter == AREA_ALL:
+                areas = [AREA_WULING, AREA_VALLEY]
+            else:
+                areas = [area_filter]
+
+            # Loop through each area until no more orders found
             for area in areas:
                 while True:
                     self.log_info(f"attempting local delivery in {area}")
