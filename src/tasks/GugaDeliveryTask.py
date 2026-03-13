@@ -340,19 +340,21 @@ class GugaDeliveryTask(BaseNavTask):
 
         Flow: to_model_area -> click action button -> execute packing (if needed) -> 开始运送 -> 点击屏幕继续
 
+        For 查看任务: task panel is already open, read pickup location then navigate to storage.
+
         Args:
             area: area name to select in the warehouse panel
 
         Returns:
-            bool | None: True if accepted, False if failed, None if no orders
+            dict | None | bool: dict (pickup route) if 查看任务, True if accepted, False if failed, None if no orders
         """
         self.ensure_main(time_out=120)
         self.log_info(f"opening warehouse node for area: {area}")
         self.to_model_area(area, "仓储节点")
 
-        # scan for action buttons by priority: 查看报价 > 货物装箱
+        # scan for action buttons by priority: 查看任务 > 查看报价 > 货物装箱
         action_box = self.box_of_screen(0.13, 0.79, 0.77, 0.84)
-        action_priorities = ["查看报价", "货物装箱"]
+        action_priorities = ["查看任务", "查看报价", "货物装箱"]
         target = None
         start = time.time()
         while time.time() - start < 5:
@@ -380,6 +382,12 @@ class GugaDeliveryTask(BaseNavTask):
         self.log_info(f"clicking: {action_name}")
         self.sleep(2)
         self.click(target, after_sleep=1)
+
+        if "查看任务" in action_name:
+            # already packed, task panel is now open (equivalent to pressing J)
+            # read pickup location from panel, then need to navigate to storage
+            pickup_route = self._read_pickup_from_panel()
+            return pickup_route  # return route dict to signal special handling
 
         if "货物装箱" in action_name:
             # full packing flow: 下一步 -> 填充至满 -> 下一步
@@ -410,6 +418,46 @@ class GugaDeliveryTask(BaseNavTask):
         return True
 
     # ── detection ──
+
+    def _read_pickup_from_panel(self):
+        """Read the task panel (already open) to find the area name,
+        then look up a storage node route in that area.
+
+        Used when 查看任务 is clicked - the panel is already open without pressing J.
+
+        Returns:
+            dict | None: route dict for the storage node, or None
+        """
+        task_info_box = self.box_of_screen(0.32, 0.07, 0.45, 0.16)
+        results = self.ocr(
+            match=re.compile(r"[\u4e00-\u9fff]+"),
+            box=task_info_box,
+            log=True,
+        )
+        if not results:
+            self.log_error("task panel OCR returned no text")
+            self.back(after_sleep=1)
+            return None
+
+        area = None
+        for r in results:
+            if TASK_KEYWORD not in r.name:
+                area = r.name.strip()
+                break
+
+        self.back(after_sleep=1)
+
+        if not area:
+            self.log_error("unable to detect area name from task panel")
+            return None
+
+        self.log_info(f"detected delivery area: {area}")
+        route = self.store.find_by_area_and_type(area, "仓储节点")
+        if not route:
+            self.log_error(f"no storage node route found for area: {area}, please record the route first")
+            return None
+
+        return route
 
     def _detect_pickup_location(self):
         """Open task panel with J, OCR the task info area to find the area name,
@@ -545,6 +593,11 @@ class GugaDeliveryTask(BaseNavTask):
     def _run_single_delivery(self, order_type, area=None):
         """Execute a single delivery cycle: accept -> navigate to storage -> detect destination -> navigate -> deliver
 
+        For local orders, handles three cases:
+        - 查看任务: panel opened automatically, read pickup location
+        - 查看报价: need to click 开始运送, then read pickup location with J
+        - 货物装箱: need full packing flow, then read pickup location with J
+
         Args:
             order_type: ORDER_COMMISSION or ORDER_LOCAL
             area: area name, required for ORDER_LOCAL
@@ -553,6 +606,7 @@ class GugaDeliveryTask(BaseNavTask):
             bool | None: True if completed, False if failed, None if no local orders
         """
         # accept order
+        pickup_route = None
         if order_type == ORDER_COMMISSION:
             if not self._accept_commission_order():
                 self.log_error("failed to accept commission order")
@@ -561,12 +615,16 @@ class GugaDeliveryTask(BaseNavTask):
             result = self._accept_local_order(area)
             if result is None:
                 return None  # no orders available, skip
-            if not result:
+            elif isinstance(result, dict):
+                # 查看任务: result is already the pickup route from the task panel
+                pickup_route = result
+            elif not result:
                 self.log_error("failed to accept local order")
                 return False
 
-        # detect pickup location and navigate to storage node
-        pickup_route = self._detect_pickup_location()
+        # detect pickup location and navigate to storage node (only if not already obtained)
+        if not pickup_route:
+            pickup_route = self._detect_pickup_location()
         if not pickup_route:
             return False
         pickup_name = pickup_route.get("name")
