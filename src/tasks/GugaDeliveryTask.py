@@ -1,6 +1,8 @@
+import json
 import re
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import List, Tuple
 
 from qfluentwidgets import FluentIcon
@@ -72,6 +74,27 @@ class GugaDeliveryTask(BaseNavTask):
             {"area": AREA_VALLEY, "count": 3},
         ]
         self._last_refresh_ts = 0
+        self._detected_destination = None
+
+        # load delivery mapping (送货目标 -> 目的地)
+        self.delivery_mapping = self._load_delivery_mapping()
+
+    def _load_delivery_mapping(self) -> dict:
+        """Load delivery target to destination mapping from JSON file.
+
+        Returns:
+            dict: {destination: [targets...]}
+        """
+        mapping_file = Path(__file__).parent.parent.parent / "data" / "delivery_mapping.json"
+        if not mapping_file.exists():
+            self.log_warning(f"delivery_mapping.json not found at {mapping_file}")
+            return {}
+        try:
+            with open(mapping_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            self.log_error(f"failed to load delivery_mapping.json: {e}")
+            return {}
 
     # ── commission acceptance (from DeliveryTask) ──
 
@@ -366,6 +389,12 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_error("未找到第二个'下一步'按钮")
                 return False
 
+        # detect delivery target before clicking 开始运送
+        self._detected_destination = self._detect_delivery_target()
+        if not self._detected_destination:
+            self.log_error("unable to detect destination, aborting")
+            return False
+
         # 查看报价 and 货物装箱 both continue from here: 开始运送 -> 点击屏幕继续
         if not self.wait_click_ocr(match="开始运送", box="bottom_right", time_out=10, after_sleep=2):
             self.log_error("未找到'开始运送'按钮")
@@ -377,6 +406,7 @@ class GugaDeliveryTask(BaseNavTask):
         self.click_relative(0.5, 0.5, after_sleep=2)
 
         self.log_info("local order accepted successfully")
+        self._detected_destination = None
         return True
 
     # ── detection ──
@@ -419,6 +449,35 @@ class GugaDeliveryTask(BaseNavTask):
             return None
 
         return route
+
+    def _detect_delivery_target(self):
+        """Detect delivery target from 查看报价 screen (0.60,0.19)~(0.83,0.21).
+        Then map to destination using delivery_mapping.json.
+
+        Returns:
+            str | None: destination name, or None if not detected or not found in mapping
+        """
+        target_box = self.box_of_screen(0.60, 0.19, 0.83, 0.21)
+        results = self.ocr(
+            match=re.compile(r"[\u4e00-\u9fff]+"),
+            box=target_box,
+            log=True,
+        )
+        if not results:
+            self.log_error("unable to detect delivery target")
+            return None
+
+        target = results[0].name.strip()
+        self.log_info(f"detected delivery target: {target}")
+
+        # reverse lookup: find destination that contains this target
+        for destination, targets in self.delivery_mapping.items():
+            if target in targets:
+                self.log_info(f"mapped target '{target}' to destination '{destination}'")
+                return destination
+
+        self.log_error(f"delivery target '{target}' not found in mapping")
+        return None
 
     def _detect_destination(self):
         """Detect the delivery destination name by HSV color isolation (yellow/gold).
@@ -478,14 +537,17 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_error(f"navigation to storage node failed: {pickup_name}")
                 return False
 
-        # open task panel to see delivery destination
-        self.press_key("j", after_sleep=2)
-
         # detect destination
-        destination = self._detect_destination()
-        if not destination:
-            self.log_error("unable to detect destination, task aborted")
-            return False
+        if order_type == ORDER_LOCAL and self._detected_destination:
+            # local order already detected destination in _accept_local_order
+            destination = self._detected_destination
+        else:
+            # commission order: open task panel to see delivery destination
+            self.press_key("j", after_sleep=2)
+            destination = self._detect_destination()
+            if not destination:
+                self.log_error("unable to detect destination, task aborted")
+                return False
 
         # navigate to destination and deliver
         dest_route = self.store.find(destination, dest_type="送货")
