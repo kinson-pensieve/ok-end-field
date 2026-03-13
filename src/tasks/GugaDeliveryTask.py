@@ -1,6 +1,8 @@
+import json
 import re
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import List, Tuple
 
 from qfluentwidgets import FluentIcon
@@ -69,6 +71,26 @@ class GugaDeliveryTask(BaseNavTask):
         self.valley_location = ["供能高地", "矿脉源区", "源石研究园"]
         self._last_refresh_ts = 0
 
+        # Load recycling stations for resource recycling center detection
+        self.recycling_stations = self._load_recycling_stations()
+
+
+    def _load_recycling_stations(self) -> list[dict]:
+        """Load recycling station coordinates from JSON file.
+
+        Returns:
+            list[dict]: list of recycling stations with coordinates
+        """
+        stations_file = Path(__file__).parent.parent.parent / "assets" / "recycling_stations.json"
+        if not stations_file.exists():
+            self.log_warning(f"recycling_stations.json not found at {stations_file}")
+            return []
+        try:
+            with open(stations_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            self.log_error(f"failed to load recycling_stations.json: {e}")
+            return []
 
     # ── commission acceptance (from DeliveryTask) ──
 
@@ -417,9 +439,15 @@ class GugaDeliveryTask(BaseNavTask):
 
         return route
 
-    def _detect_destination(self):
+    def _detect_destination(self, current_area: str = None):
         """Detect the delivery destination name by HSV color isolation (yellow/gold).
         Scans screen region (0.36,0.25)~(0.97,0.29) for colored destination text.
+
+        For resource recycling center, iterates through stations in the area and clicks
+        to confirm the correct one via "追踪中的任务" prompt.
+
+        Args:
+            current_area: Current area name, used for recycling station matching
 
         Returns:
             str | None: destination name, or None if not detected
@@ -431,12 +459,71 @@ class GugaDeliveryTask(BaseNavTask):
             frame_processor=self.make_hsv_isolator(hR.DEST_TEXT),
             log=True,
         )
-        if results:
-            name = results[0].name.strip()
-            self.log_info(f"detected destination: {name}")
-            return name
+        if not results:
+            self.log_error("unable to detect destination text by color")
+            return None
 
-        self.log_error("unable to detect destination text by color")
+        destination = results[0].name.strip()
+        self.log_info(f"detected destination: {destination}")
+
+        # Handle resource recycling center (special case)
+        if destination == "资源回收站":
+            confirmed_destination = self._confirm_recycling_station(current_area)
+            return confirmed_destination if confirmed_destination else None
+
+        return destination
+
+    def _confirm_recycling_station(self, area: str) -> str | None:
+        """For recycling stations, iterate through all stations in the area and click
+        to confirm the correct one via "追踪中的任务" detection.
+
+        Args:
+            area: Current area name to filter recycling stations
+
+        Returns:
+            str | None: "资源回收站" if confirmed, None otherwise
+        """
+        # Find all recycling stations in the current area
+        area_stations = [
+            s for s in self.recycling_stations
+            if s.get("area") == area
+        ]
+
+        if not area_stations:
+            self.log_error(f"no recycling stations found for area: {area}")
+            return None
+
+        self.log_info(f"found {len(area_stations)} recycling stations in {area}, iterating to confirm")
+
+        for station in area_stations:
+            self.log_info(f"clicking recycling station: {station.get('name')}")
+
+            # Parse coordinates
+            coord_str = station.get("coordinates", "").split(",")
+            if len(coord_str) != 2:
+                self.log_error(f"invalid coordinates for station: {station.get('name')}")
+                continue
+
+            try:
+                x = float(coord_str[0])
+                y = float(coord_str[1])
+            except ValueError:
+                self.log_error(f"failed to parse coordinates: {station.get('coordinates')}")
+                continue
+
+            # Click the station
+            box = self.box_of_screen(x, y, x, y)
+            self.click(box, after_sleep=1)
+
+            # Check if "追踪中的任务" appears (confirms this is the correct station)
+            tracking_box = self.wait_ocr(match="追踪中的任务", time_out=2)
+            if tracking_box:
+                self.log_info(f"confirmed recycling station: {station.get('name')}")
+                return "资源回收站"
+            else:
+                self.log_info(f"station {station.get('name')} is not the target, continuing")
+
+        self.log_error("failed to confirm any recycling station in area")
         return None
 
     # ── main flow ──
@@ -469,6 +556,7 @@ class GugaDeliveryTask(BaseNavTask):
         if not pickup_route:
             return False
         pickup_name = pickup_route.get("name")
+        pickup_area = pickup_route.get("area")
         self.log_info(f"navigating to storage node: {pickup_name}")
         if not self.navigator.navigate_to(pickup_name, dest_type="仓储节点"):
             self.log_error(f"navigation to storage node failed: {pickup_name}")
@@ -476,7 +564,7 @@ class GugaDeliveryTask(BaseNavTask):
 
         # detect destination from task panel
         self.press_key("j", after_sleep=2)
-        destination = self._detect_destination()
+        destination = self._detect_destination(current_area=pickup_area)
         if not destination:
             self.log_error("unable to detect destination, task aborted")
             return False
