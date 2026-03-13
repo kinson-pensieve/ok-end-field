@@ -4,7 +4,7 @@ import uuid
 
 
 class RouteStore:
-    """route.json 的统一数据管理，内存持有 + 按需落盘
+    """routes.json 的统一数据管理，内存持有 + 按需落盘
 
     用法:
         store = RouteStore()
@@ -13,7 +13,7 @@ class RouteStore:
         store.flush()
     """
 
-    _JSON_PATH = os.path.join("configs", "route.json")
+    _JSON_PATH = os.path.join("assets", "routes.json")
 
     def __init__(self):
         self._routes: list[dict] = []
@@ -104,7 +104,7 @@ class RouteStore:
     # ── 落盘 ──
 
     def flush(self):
-        """将内存数据写入 route.json"""
+        """将内存数据写入 routes.json"""
         with open(self._JSON_PATH, 'w', encoding='utf-8') as f:
             json.dump(self._routes, f, ensure_ascii=False, indent=2)
 
