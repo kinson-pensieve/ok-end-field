@@ -1,8 +1,6 @@
-import json
 import re
 import time
 from dataclasses import dataclass
-from pathlib import Path
 from typing import List, Tuple
 
 from qfluentwidgets import FluentIcon
@@ -20,8 +18,6 @@ CFG_ORDER_TYPE = "接单方式"
 ORDER_COMMISSION = "运送委托"
 ORDER_LOCAL = "本地仓储"
 
-CFG_AREA = "送货区域"
-AREA_ALL = "全部"
 AREA_WULING = "武陵"
 AREA_VALLEY = "四号谷地"
 
@@ -44,7 +40,6 @@ class GugaDeliveryTask(BaseNavTask):
         self.default_config = {
             "_enabled": True,
             CFG_ORDER_TYPE: ORDER_COMMISSION,
-            CFG_AREA: AREA_ALL,
         }
         self.config_type[CFG_ORDER_TYPE] = {
             "type": "drop_down",
@@ -54,47 +49,14 @@ class GugaDeliveryTask(BaseNavTask):
             f"{ORDER_COMMISSION}: 从运送委托列表接取他人委托\n"
             f"{ORDER_LOCAL}: 从本地仓储接取自有订单"
         )
-        self.config_type[CFG_AREA] = {
-            "type": "drop_down",
-            "options": [AREA_ALL, AREA_WULING, AREA_VALLEY],
-        }
-        self.config_description[CFG_AREA] = (
-            f"{AREA_ALL}: 武陵(×1) + 四号谷地(×3)\n"
-            f"{AREA_WULING}: 仅武陵(×1)\n"
-            f"{AREA_VALLEY}: 仅四号谷地(×3)"
-        )
 
         self.store = RouteStore()
         self.navigator = Navigator(self, store=self.store)
 
         self.wuling_location = ["武陵城"]
         self.valley_location = ["供能高地", "矿脉源区", "源石研究园"]
-        self.local_warehouses = [
-            {"area": AREA_WULING, "count": 1},
-            {"area": AREA_VALLEY, "count": 3},
-        ]
         self._last_refresh_ts = 0
-        self._detected_destination = None
 
-        # load delivery mapping (送货目标 -> 目的地)
-        self.delivery_mapping = self._load_delivery_mapping()
-
-    def _load_delivery_mapping(self) -> dict:
-        """Load delivery target to destination mapping from JSON file.
-
-        Returns:
-            dict: {destination: [targets...]}
-        """
-        mapping_file = Path(__file__).parent.parent.parent / "assets" / "delivery_mapping.json"
-        if not mapping_file.exists():
-            self.log_warning(f"delivery_mapping.json not found at {mapping_file}")
-            return {}
-        try:
-            with open(mapping_file, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            self.log_error(f"failed to load delivery_mapping.json: {e}")
-            return {}
 
     # ── commission acceptance (from DeliveryTask) ──
 
@@ -331,7 +293,7 @@ class GugaDeliveryTask(BaseNavTask):
     def _accept_local_order(self, area):
         """Accept a local storage order from the warehouse node.
 
-        Flow: to_model_area -> click 货物装箱 -> 下一步 -> 填充至满 -> 下一步 -> 开始运送 -> 点击屏幕继续
+        Flow: to_model_area -> click action button -> execute packing (if needed) -> 开始运送 -> 点击屏幕继续
 
         Args:
             area: area name to select in the warehouse panel
@@ -389,12 +351,6 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_error("未找到第二个'下一步'按钮")
                 return False
 
-        # detect delivery target before clicking 开始运送
-        self._detected_destination = self._detect_delivery_target()
-        if not self._detected_destination:
-            self.log_error("unable to detect destination, aborting")
-            return False
-
         # 查看报价 and 货物装箱 both continue from here: 开始运送 -> 点击屏幕继续
         if not self.wait_click_ocr(match="开始运送", box="bottom_right", time_out=10, after_sleep=2):
             self.log_error("未找到'开始运送'按钮")
@@ -406,7 +362,6 @@ class GugaDeliveryTask(BaseNavTask):
         self.click_relative(0.5, 0.5, after_sleep=2)
 
         self.log_info("local order accepted successfully")
-        self._detected_destination = None
         return True
 
     # ── detection ──
@@ -450,35 +405,6 @@ class GugaDeliveryTask(BaseNavTask):
 
         return route
 
-    def _detect_delivery_target(self):
-        """Detect delivery target from 查看报价 screen (0.60,0.19)~(0.83,0.21).
-        Then map to destination using delivery_mapping.json.
-
-        Returns:
-            str | None: destination name, or None if not detected or not found in mapping
-        """
-        target_box = self.box_of_screen(0.60, 0.19, 0.83, 0.21)
-        results = self.ocr(
-            match=re.compile(r"[\u4e00-\u9fff]+"),
-            box=target_box,
-            log=True,
-        )
-        if not results:
-            self.log_error("unable to detect delivery target")
-            return None
-
-        target = results[0].name.strip()
-        self.log_info(f"detected delivery target: {target}")
-
-        # reverse lookup: find destination that contains this target
-        for destination, targets in self.delivery_mapping.items():
-            if target in targets:
-                self.log_info(f"mapped target '{target}' to destination '{destination}'")
-                return destination
-
-        self.log_error(f"delivery target '{target}' not found in mapping")
-        return None
-
     def _detect_destination(self):
         """Detect the delivery destination name by HSV color isolation (yellow/gold).
         Scans screen region (0.36,0.25)~(0.97,0.29) for colored destination text.
@@ -504,7 +430,7 @@ class GugaDeliveryTask(BaseNavTask):
     # ── main flow ──
 
     def _run_single_delivery(self, order_type, area=None):
-        """Execute a single delivery cycle: accept -> detect destination -> navigate -> deliver
+        """Execute a single delivery cycle: accept -> navigate to storage -> detect destination -> navigate -> deliver
 
         Args:
             order_type: ORDER_COMMISSION or ORDER_LOCAL
@@ -526,28 +452,22 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_error("failed to accept local order")
                 return False
 
-        # detect pickup and navigate to storage (commission only, local already packed)
-        if order_type == ORDER_COMMISSION:
-            pickup_route = self._detect_pickup_location()
-            if not pickup_route:
-                return False
-            pickup_name = pickup_route.get("name")
-            self.log_info(f"navigating to storage node: {pickup_name}")
-            if not self.navigator.navigate_to(pickup_name, dest_type="仓储节点"):
-                self.log_error(f"navigation to storage node failed: {pickup_name}")
-                return False
+        # detect pickup location and navigate to storage node
+        pickup_route = self._detect_pickup_location()
+        if not pickup_route:
+            return False
+        pickup_name = pickup_route.get("name")
+        self.log_info(f"navigating to storage node: {pickup_name}")
+        if not self.navigator.navigate_to(pickup_name, dest_type="仓储节点"):
+            self.log_error(f"navigation to storage node failed: {pickup_name}")
+            return False
 
-        # detect destination
-        if order_type == ORDER_LOCAL and self._detected_destination:
-            # local order already detected destination in _accept_local_order
-            destination = self._detected_destination
-        else:
-            # commission order: open task panel to see delivery destination
-            self.press_key("j", after_sleep=2)
-            destination = self._detect_destination()
-            if not destination:
-                self.log_error("unable to detect destination, task aborted")
-                return False
+        # detect destination from task panel
+        self.press_key("j", after_sleep=2)
+        destination = self._detect_destination()
+        if not destination:
+            self.log_error("unable to detect destination, task aborted")
+            return False
 
         # navigate to destination and deliver
         dest_route = self.store.find(destination, dest_type="送货")
@@ -562,38 +482,28 @@ class GugaDeliveryTask(BaseNavTask):
         self.log_info("delivery completed")
         return True
 
-    def execute(self, order_type=None, area_filter=None):
+    def execute(self, order_type=None):
         """Execute delivery task. Can be called by other tasks.
 
         Args:
             order_type: ORDER_COMMISSION or ORDER_LOCAL, defaults to config value
-            area_filter: AREA_ALL / AREA_WULING / AREA_VALLEY, defaults to config value
 
         Returns:
-            bool: True if all deliveries completed successfully
+            bool: True if delivery completed successfully
         """
         self.ensure_main()
         if order_type is None:
             order_type = self.config.get(CFG_ORDER_TYPE)
-        if area_filter is None:
-            area_filter = self.config.get(CFG_AREA, AREA_ALL)
 
         if order_type == ORDER_LOCAL:
-            warehouses = [
-                w for w in self.local_warehouses
-                if area_filter == AREA_ALL or w["area"] == area_filter
-            ]
-            total = sum(w["count"] for w in warehouses)
-            completed = 0
-            for warehouse in warehouses:
-                area = warehouse["area"]
-                count = warehouse["count"]
-                for i in range(count):
-                    completed += 1
-                    self.log_info(f"local delivery {completed}/{total} (area: {area})")
+            # Loop through all local warehouses until no more orders found
+            areas = [AREA_WULING, AREA_VALLEY]
+            for area in areas:
+                while True:
+                    self.log_info(f"attempting local delivery in {area}")
                     result = self._run_single_delivery(ORDER_LOCAL, area=area)
                     if result is None:
-                        self.log_info(f"no more local orders in {area}, skipping")
+                        self.log_info(f"no more local orders in {area}")
                         break
                     if not result:
                         return False
