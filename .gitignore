@@ -82,4 +82,3 @@ autohelper
 ############################
 !src/
 !src/data/
-!data/delivery_mapping.json
