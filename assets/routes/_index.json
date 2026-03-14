@@ -2,7 +2,7 @@
   "description": "Route index - each type has its own JSON file",
   "types": {
     "仓储节点": {
-      "file": "storage_nodes.json",
+      "file": "depot_nodes.json",
       "count": 4
     },
     "矿物": {
