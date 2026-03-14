@@ -112,7 +112,7 @@ class RouteStore:
             '采集物': 'collectibles',
             '矿物': 'minerals',
             '资源回收站': 'recycling_stations',
-            '仓储节点': 'storage_nodes',
+            '仓储节点': 'depot_nodes',
             '送货': 'deliveries',
         }
 
