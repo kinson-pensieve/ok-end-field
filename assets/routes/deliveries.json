@@ -1088,5 +1088,101 @@
         ]
       }
     ]
+  },
+  {
+    "id": "c37b25a0",
+    "name": "陆言",
+    "type": "送货",
+    "area": "矿脉源区",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.9
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 7611,
+            "angle_x": 1.1,
+            "angle_y": -4.13
+          },
+          {
+            "distance": 110,
+            "angle_x": 3.21,
+            "angle_y": -7.93
+          },
+          {
+            "distance": 66,
+            "angle_x": 3.21,
+            "angle_y": -10.04
+          },
+          {
+            "distance": 110,
+            "angle_x": -8.86,
+            "angle_y": 2.03
+          },
+          {
+            "distance": 99,
+            "angle_x": -10.38,
+            "angle_y": -6.67
+          },
+          {
+            "distance": 95,
+            "angle_x": -1.69,
+            "angle_y": -0.59
+          },
+          {
+            "distance": 86,
+            "angle_x": -19.24,
+            "angle_y": -14.18
+          },
+          {
+            "distance": 75,
+            "angle_x": -16.29,
+            "angle_y": 4.47
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1.22
+          },
+          {
+            "key": "a",
+            "duration": 3.02
+          },
+          {
+            "key": "a",
+            "duration": 0.9
+          },
+          {
+            "key": "s",
+            "duration": 0.62
+          },
+          {
+            "key": "a",
+            "duration": 0.68
+          },
+          {
+            "key": "s",
+            "duration": 0.51
+          },
+          {
+            "key": "a",
+            "duration": 0.06
+          }
+        ]
+      }
+    ]
   }
 ]
