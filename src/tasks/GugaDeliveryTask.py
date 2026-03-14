@@ -580,8 +580,8 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_error(f"failed to parse coordinates: {station.get('coordinates')}")
                 continue
 
-            # Click the station
-            box = self.box_of_screen(x, y, x, y)
+            # Click the station (create small box around coordinate)
+            box = self.box_of_screen(x - 0.02, y - 0.02, x + 0.02, y + 0.02)
             self.click(box, after_sleep=1)
 
             # Check if "追踪中的任务" appears (confirms this is the correct station)
