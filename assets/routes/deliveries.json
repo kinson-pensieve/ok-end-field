@@ -188,7 +188,7 @@
     "id": "6e15673d",
     "name": "莫莉",
     "type": "送货",
-    "area": "",
+    "area": "矿脉源区",
     "teleport": "",
     "steps": [
       {
@@ -329,7 +329,7 @@
     "id": "098e234a",
     "name": "里斯卡",
     "type": "送货",
-    "area": "",
+    "area": "供能高地",
     "teleport": "",
     "steps": [
       {
