@@ -20,16 +20,22 @@ class NavigationTask(BaseNavTask):
         self.teleporter = Teleporter(self)
 
         self.name_mapping = {}
+        self.area_options = self._build_area_options()
         display_names = self._build_display_names()
 
         self._route_editor = None  # 延迟创建
 
         self.default_config.update({
+            "地区": "全部",
             "目的地": display_names[0] if display_names else "",
             "单步调试": "关闭",
             "路线编辑器": "",  # 占位，用于 custom_widget
         })
 
+        self.config_type["地区"] = {
+            "type": "drop_down",
+            "options": self.area_options,
+        }
         self.config_type["目的地"] = {
             "type": "drop_down",
             "options": display_names,
@@ -45,14 +51,33 @@ class NavigationTask(BaseNavTask):
             "widget_factory": self._create_route_editor,
         }
 
-    def _build_display_names(self):
-        """从 store 构建下拉框选项列表和 name_mapping"""
+    def _build_area_options(self):
+        """构建地区筛选选项列表"""
+        areas = set()
+        for route in self.store.all():
+            area = route.get("area", "")
+            if area:
+                areas.add(area)
+        area_list = sorted(areas)
+        return ["全部"] + area_list
+
+    def _build_display_names(self, area_filter="全部"):
+        """从 store 构建下拉框选项列表和 name_mapping
+
+        Args:
+            area_filter: 地区筛选，"全部" 表示不筛选
+        """
         self.name_mapping.clear()
         display_names = []
         for route in self.store.all():
             name = route.get("name", "")
             route_type = route.get("type", "")
             map_name = route.get("area", "")
+
+            # 地区筛选
+            if area_filter != "全部" and map_name != area_filter:
+                continue
+
             display_name = f"[{map_name}]{name} ({route_type})"
             display_names.append(display_name)
             self.name_mapping[display_name] = {"name": name, "type": route_type}
@@ -74,13 +99,32 @@ class NavigationTask(BaseNavTask):
     def reload_routes(self):
         """重新加载路线数据并刷新下拉框选项"""
         self.store.reload()
-        display_names = self._build_display_names()
+        # 重新构建地区选项
+        self.area_options = self._build_area_options()
+        self.config_type["地区"]["options"] = self.area_options
+        # 根据当前选中的地区重新构建目的地选项
+        area_filter = self.config.get("地区", "全部")
+        display_names = self._build_display_names(area_filter)
         self.config_type["目的地"]["options"] = display_names
+        # 如果当前目的地不在新列表中，选择第一个或清空
+        if display_names and self.config.get("目的地") not in display_names:
+            self.config["目的地"] = display_names[0]
 
     def on_create(self):
         """load_config 之后，监听下拉框变化"""
+        self.config.add_listener("地区", self._on_area_changed)
         self.config.add_listener("目的地", self._load_route_for_dest)
         self.config.add_listener("单步调试", self._on_debug_changed)
+
+    def _on_area_changed(self, area):
+        """地区下拉框变化时刷新目的地列表"""
+        display_names = self._build_display_names(area)
+        self.config_type["目的地"]["options"] = display_names
+        if display_names:
+            self.config["目的地"] = display_names[0]
+        else:
+            self.config["目的地"] = ""
+        communicate.task.emit(self)
 
     def _on_debug_changed(self, value):
         """单步调试下拉框变化时立即更新 navigator 状态"""
