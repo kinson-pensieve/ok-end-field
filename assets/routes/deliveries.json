@@ -714,7 +714,11 @@
           },
           {
             "key": "s",
-            "duration": 1.93
+            "duration": 1.5
+          },
+          {
+            "key": "a",
+            "duration": 0.5
           }
         ]
       }
