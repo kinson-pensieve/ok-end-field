@@ -40,5 +40,12 @@
     "area": "矿脉源区",
     "direction": "bottom_right",
     "coordinates": "0.42,0.40"
+  },
+  {
+    "name": "天师府学院",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "center",
+    "coordinates": "0.30,0.32"
   }
 ]
