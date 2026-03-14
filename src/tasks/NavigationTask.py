@@ -64,6 +64,15 @@ class NavigationTask(BaseNavTask):
         "武陵城",
     ]
 
+    # 目的地类型固定顺序
+    _TYPE_ORDER = [
+        "仓储节点",
+        "送货",
+        "资源回收站",
+        "采集物",
+        "矿物",
+    ]
+
     def _build_area_options(self):
         """构建地区筛选选项列表（按游戏解锁顺序）"""
         areas_in_routes = {
@@ -83,15 +92,31 @@ class NavigationTask(BaseNavTask):
             area_filter: 地区筛选，"全部" 表示不筛选
         """
         self.name_mapping.clear()
-        display_names = []
+        # 先收集符合地区筛选条件的路线
+        filtered_routes = []
         for route in self.store.all():
+            map_name = route.get("area", "")
+            if area_filter != "全部" and map_name != area_filter:
+                continue
+            filtered_routes.append(route)
+
+        # 按类型顺序排序
+        def sort_key(route):
+            route_type = route.get("type", "")
+            try:
+                type_index = self._TYPE_ORDER.index(route_type)
+            except ValueError:
+                type_index = len(self._TYPE_ORDER)
+            return (type_index, route.get("name", ""))
+
+        filtered_routes.sort(key=sort_key)
+
+        # 构建显示名称
+        display_names = []
+        for route in filtered_routes:
             name = route.get("name", "")
             route_type = route.get("type", "")
             map_name = route.get("area", "")
-
-            # 地区筛选
-            if area_filter != "全部" and map_name != area_filter:
-                continue
 
             # 如果地区不是全部，则不显示重复的地区前缀
             if area_filter != "全部":
