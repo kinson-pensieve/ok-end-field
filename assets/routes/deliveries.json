@@ -1018,5 +1018,75 @@
         ]
       }
     ]
+  },
+  {
+    "id": "73b40f84",
+    "name": "齐纶",
+    "type": "送货",
+    "area": "武陵城",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.46
+          },
+          {
+            "key": "w",
+            "duration": 2.07
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 89,
+            "angle_x": 2.78,
+            "angle_y": -2.03
+          },
+          {
+            "distance": 109,
+            "angle_x": 0.93,
+            "angle_y": -4.89
+          },
+          {
+            "distance": 110,
+            "angle_x": -1.27,
+            "angle_y": -0.84
+          },
+          {
+            "distance": 102,
+            "angle_x": -15.53,
+            "angle_y": -6.08
+          },
+          {
+            "distance": 110,
+            "angle_x": 6.5,
+            "angle_y": -5.74
+          },
+          {
+            "distance": 56,
+            "angle_x": -1.86,
+            "angle_y": -12.91
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.64
+          },
+          {
+            "key": "a",
+            "duration": 1.24
+          }
+        ]
+      }
+    ]
   }
 ]
