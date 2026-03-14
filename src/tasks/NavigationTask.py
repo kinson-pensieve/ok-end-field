@@ -93,7 +93,11 @@ class NavigationTask(BaseNavTask):
             if area_filter != "全部" and map_name != area_filter:
                 continue
 
-            display_name = f"[{map_name}]{name} ({route_type})"
+            # 如果地区不是全部，则不显示重复的地区前缀
+            if area_filter != "全部":
+                display_name = f"{name} ({route_type})"
+            else:
+                display_name = f"[{map_name}]{name} ({route_type})"
             display_names.append(display_name)
             self.name_mapping[display_name] = {"name": name, "type": route_type}
         return display_names
