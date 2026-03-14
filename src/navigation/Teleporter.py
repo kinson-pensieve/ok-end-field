@@ -359,6 +359,8 @@ class Teleporter:
             task.send_key("esc", after_sleep=0.5)
             return False
 
+        # Close map after teleportation
+        task.send_key("esc", after_sleep=1)
         return True
 
     def _get_current_map_location(self):
