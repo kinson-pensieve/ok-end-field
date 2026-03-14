@@ -640,6 +640,7 @@ class GugaDeliveryTask(BaseNavTask):
         if not destination:
             self.log_error("unable to detect destination, task aborted")
             return False
+        self.back(after_sleep=1)  # close task panel, return to main world
 
         # navigate to destination and deliver
         dest_route = self.store.find(destination, dest_type="送货")
@@ -647,6 +648,7 @@ class GugaDeliveryTask(BaseNavTask):
             self.log_error(f"no route found for destination: {destination}, please record the route first")
             return False
         self.log_info(f"navigating to destination: {destination}")
+        self.press_key("m", after_sleep=1)  # open map before navigation
         if not self.navigator.navigate_to(destination, dest_type="送货"):
             self.log_error(f"navigation to destination failed: {destination}")
             return False
