@@ -104,9 +104,40 @@ class RouteStore:
     # ── 落盘 ──
 
     def flush(self):
-        """将内存数据写入 routes.json"""
-        with open(self._JSON_PATH, 'w', encoding='utf-8') as f:
-            json.dump(self._routes, f, ensure_ascii=False, indent=2)
+        """将内存数据写入拆分文件或 routes.json"""
+        routes_dir = os.path.join("assets", "routes")
+
+        # Mapping from Chinese type to English filename
+        type_to_filename = {
+            '采集物': 'collectibles',
+            '矿物': 'minerals',
+            '资源回收站': 'recycling_stations',
+            '仓储节点': 'storage_nodes',
+            '送货': 'deliveries',
+        }
+
+        # If split directory exists, write to split files
+        if os.path.isdir(routes_dir):
+            # Group by type
+            routes_by_type = {}
+            for route in self._routes:
+                route_type = route.get('type', 'unknown')
+                if route_type not in routes_by_type:
+                    routes_by_type[route_type] = []
+                routes_by_type[route_type].append(route)
+
+            # Write each type to its file
+            for route_type, type_routes in routes_by_type.items():
+                if not route_type or route_type == 'unknown':
+                    continue
+                filename = type_to_filename.get(route_type, route_type) + '.json'
+                filepath = os.path.join(routes_dir, filename)
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    json.dump(type_routes, f, ensure_ascii=False, indent=2)
+        else:
+            # Fallback: write to routes.json
+            with open(self._JSON_PATH, 'w', encoding='utf-8') as f:
+                json.dump(self._routes, f, ensure_ascii=False, indent=2)
 
     # ── 重载 ──
 
@@ -117,12 +148,30 @@ class RouteStore:
     # ── 内部方法 ──
 
     def _load(self):
-        """从文件加载路线，为无 id 的老数据自动补上 id"""
-        if os.path.exists(self._JSON_PATH):
+        """从文件加载路线，支持 routes.json 或 routes/ 目录拆分文件
+        为无 id 的老数据自动补上 id
+        """
+        self._routes = []
+
+        # Try loading from split routes/ directory first
+        routes_dir = os.path.join("assets", "routes")
+        if os.path.isdir(routes_dir):
+            for filename in sorted(os.listdir(routes_dir)):
+                if filename.startswith('_') or not filename.endswith('.json'):
+                    continue
+                filepath = os.path.join(routes_dir, filename)
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        type_routes = json.load(f)
+                        if isinstance(type_routes, list):
+                            self._routes.extend(type_routes)
+                except Exception as e:
+                    print(f"Warning: Failed to load {filepath}: {e}")
+
+        # Fallback to routes.json if split directory is empty or doesn't exist
+        if not self._routes and os.path.exists(self._JSON_PATH):
             with open(self._JSON_PATH, 'r', encoding='utf-8') as f:
                 self._routes = json.load(f)
-        else:
-            self._routes = []
 
         dirty = False
         for route in self._routes:
