@@ -1,9 +1,16 @@
 [
   {
-    "name": "资源回收站",
-    "region": "",
-    "area": "",
+    "name": "样本中心",
+    "region": "四号谷地",
+    "area": "源石研究园",
     "direction": "top_left",
-    "coordinates": "0.5,0.5"
+    "coordinates": "0.62,0.63"
+  },
+  {
+    "name": "总控中心",
+    "region": "四号谷地",
+    "area": "源石研究园",
+    "direction": "top_left",
+    "coordinates": "0.19,0.49"
   }
 ]
