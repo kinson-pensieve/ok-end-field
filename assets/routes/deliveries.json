@@ -859,5 +859,72 @@
         ]
       }
     ]
+  },
+  {
+    "id": "fd0f6092",
+    "name": "戈里昂",
+    "type": "送货",
+    "area": "供能高地",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.67
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 97,
+            "angle_x": -3.54,
+            "angle_y": -8.94
+          },
+          {
+            "distance": 72,
+            "angle_x": -5.65,
+            "angle_y": -17.97
+          },
+          {
+            "distance": 96,
+            "angle_x": 5.23,
+            "angle_y": -4.81
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 1.98
+          },
+          {
+            "key": "a",
+            "duration": 1.01
+          },
+          {
+            "key": "a",
+            "duration": 3.86
+          },
+          {
+            "key": "w",
+            "duration": 4.26
+          },
+          {
+            "key": "a",
+            "duration": 4.46
+          },
+          {
+            "key": "s",
+            "duration": 0.07
+          }
+        ]
+      }
+    ]
   }
 ]
