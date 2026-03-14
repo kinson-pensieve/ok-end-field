@@ -3977,11 +3977,11 @@
         "actions": [
           {
             "key": "a",
-            "duration": 1.78
+            "duration": 1.5
           },
           {
             "key": "s",
-            "duration": 0.52
+            "duration": 0.5
           }
         ]
       },
@@ -4028,11 +4028,11 @@
         "actions": [
           {
             "key": "a",
-            "duration": 1.2
+            "duration": 1.5
           },
           {
             "key": "s",
-            "duration": 0.44
+            "duration": 0.5
           }
         ]
       },
