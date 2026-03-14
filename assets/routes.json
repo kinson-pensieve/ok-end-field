@@ -3964,5 +3964,116 @@
         ]
       }
     ]
+  },
+  {
+    "id": "56f88682",
+    "name": "总控中心",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.78
+          },
+          {
+            "key": "s",
+            "duration": 0.52
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 69,
+            "angle_x": -11.81,
+            "angle_y": -13.0
+          },
+          {
+            "distance": 72,
+            "angle_x": 1.1,
+            "angle_y": 3.04
+          },
+          {
+            "distance": 108,
+            "angle_x": -5.65,
+            "angle_y": -5.74
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.42
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "8443f5db",
+    "name": "样本中心",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.2
+          },
+          {
+            "key": "s",
+            "duration": 0.44
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 53,
+            "angle_x": -0.25,
+            "angle_y": 1.86
+          },
+          {
+            "distance": 100,
+            "angle_x": -6.5,
+            "angle_y": -8.94
+          },
+          {
+            "distance": 62,
+            "angle_x": 3.63,
+            "angle_y": -8.52
+          },
+          {
+            "distance": 36,
+            "angle_x": -5.06,
+            "angle_y": 3.04
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 0.16
+          },
+          {
+            "key": "s",
+            "duration": 0.22
+          }
+        ]
+      }
+    ]
   }
 ]
