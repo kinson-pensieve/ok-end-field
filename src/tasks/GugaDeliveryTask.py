@@ -640,8 +640,8 @@ class GugaDeliveryTask(BaseNavTask):
         if not destination:
             self.log_error("unable to detect destination, task aborted")
             return False
-        self.back(after_sleep=2)  # close task panel, wait for UI response
-        self.ensure_main(time_out=10)  # confirm returned to main world
+        self.back()  # close task panel
+        self.ensure_main(time_out=10)  # confirm returned to main world (will press ESC repeatedly if needed)
 
         # navigate to destination and deliver
         dest_route = self.store.find(destination, dest_type="送货")
