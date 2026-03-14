@@ -585,7 +585,7 @@ class GugaDeliveryTask(BaseNavTask):
             coordinates = station.get("coordinates", "")
             if not coordinates:
                 self.log_error(f"no coordinates for station: {station_name}")
-                self.press_key("esc", after_sleep=0.5)  # Close map
+                self.press_key("esc", after_sleep=0.5)  # Close map back to task panel
                 continue
 
             self.log_debug(f"clicking coordinates: {coordinates}")
@@ -594,21 +594,18 @@ class GugaDeliveryTask(BaseNavTask):
                 self.click(x, y, after_sleep=0.5)
             except Exception as e:
                 self.log_error(f"failed to parse coordinates: {coordinates}, error: {e}")
-                self.press_key("esc", after_sleep=0.5)  # Close map
+                self.press_key("esc", after_sleep=0.5)  # Close map back to task panel
                 continue
 
             # Check if "追踪中任务" appears in bottom_right (confirms this is the correct station)
             tracking_box = self.wait_ocr(match="追踪中任务", box="bottom_right", time_out=2)
             if tracking_box:
                 self.log_info(f"confirmed recycling station: {station_name}")
-                self.press_key("esc", after_sleep=0.5)  # Close map
-                self.ensure_main(time_out=5)  # Ensure back to world
-                self.sleep(2)  # Wait for game to settle before next action
+                self.press_key("esc", after_sleep=0.5)  # Close map, keep task panel for caller to handle
                 return station_name
             else:
                 self.log_info(f"station {station_name} is not the target, closing map and retrying")
-                self.press_key("esc", after_sleep=0.5)  # Close map, back to world
-                self.ensure_main(time_out=5)  # Ensure back to world before next attempt
+                self.press_key("esc", after_sleep=0.5)  # Close map back to task panel
 
         self.log_error("failed to confirm any recycling station in area")
         return None
