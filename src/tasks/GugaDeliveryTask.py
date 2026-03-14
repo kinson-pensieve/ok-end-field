@@ -436,7 +436,8 @@ class GugaDeliveryTask(BaseNavTask):
         )
         if not results:
             self.log_error("task panel OCR returned no text")
-            self.back(after_sleep=1)
+            self.back()
+            self.ensure_main(time_out=10)
             return None
 
         area = None
@@ -445,7 +446,8 @@ class GugaDeliveryTask(BaseNavTask):
                 area = r.name.strip()
                 break
 
-        self.back(after_sleep=1)
+        self.back()
+        self.ensure_main(time_out=10)
 
         if not area:
             self.log_error("unable to detect area name from task panel")
@@ -475,7 +477,8 @@ class GugaDeliveryTask(BaseNavTask):
         )
         if not results:
             self.log_error("task panel OCR returned no text")
-            self.back(after_sleep=1)
+            self.back()
+            self.ensure_main(time_out=10)
             return None
 
         area = None
@@ -484,7 +487,8 @@ class GugaDeliveryTask(BaseNavTask):
                 area = r.name.strip()
                 break
 
-        self.back(after_sleep=1)
+        self.back()
+        self.ensure_main(time_out=10)
 
         if not area:
             self.log_error("unable to detect area name from task panel")
