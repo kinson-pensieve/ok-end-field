@@ -1240,11 +1240,7 @@
         "actions": [
           {
             "key": "a",
-            "duration": 1.13
-          },
-          {
-            "key": "a",
-            "duration": 0.6
+            "duration": 1.8
           }
         ]
       },
