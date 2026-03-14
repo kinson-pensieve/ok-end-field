@@ -59,16 +59,32 @@ class Interactor:
             task.log_error("未检测到取货")
 
     def _deliver(self, dest):
-        """送货交互：按 F → 跳过对话 → 点确认 → 领取奖励"""
+        """送货交互：区分 NPC 和资源回收站
+        - 资源回收站：检测"交货" → 按 F → 直接返回大世界
+        - NPC：按 F → 跳过对话 → 点确认 → 领取奖励 → 返回大世界
+        """
         task = self.task
         name = dest.get("name", "")
         task.log_info(f"执行送货交互: {name}")
-        task.press_key('f', after_sleep=2)
-        if not task.find_feature(feature_name="reward_ok"):
-            task.skip_dialog()
-            task.wait_click_ocr(match="确认", settle_time=2, after_sleep=2)
-        task.wait_pop_up(after_sleep=2)
-        task.log_info(f"已完成送货: {name}")
+
+        # Check if this is a recycling station by detecting "交货" text
+        delivery_text = task.wait_ocr(match="交货", time_out=2)
+        if delivery_text:
+            # Recycling station delivery
+            task.log_info(f"检测到资源回收站送货，目标: {name}")
+            task.press_key('f', after_sleep=2)
+            task.ensure_main()
+            task.log_info(f"已完成资源回收站送货: {name}")
+        else:
+            # NPC delivery
+            task.log_info(f"执行 NPC 送货，目标: {name}")
+            task.press_key('f', after_sleep=2)
+            if not task.find_feature(feature_name="reward_ok"):
+                task.skip_dialog()
+                task.wait_click_ocr(match="确认", settle_time=2, after_sleep=2)
+            task.wait_pop_up(after_sleep=2)
+            task.ensure_main()
+            task.log_info(f"已完成 NPC 送货: {name}")
 
     def _energy(self, dest):
         """能量淤积点交互"""
