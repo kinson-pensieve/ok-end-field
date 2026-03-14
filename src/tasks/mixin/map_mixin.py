@@ -1,7 +1,4 @@
-from src.tasks.BaseEfTask import BaseEfTask
-
-
-class MapMixin(BaseEfTask):
+class MapMixin:
     def task_to_transfer_point(self,test_target_box=None):
         """传送到运输委托的出发传送点
 

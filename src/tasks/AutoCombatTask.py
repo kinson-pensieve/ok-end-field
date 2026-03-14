@@ -3,6 +3,7 @@ from qfluentwidgets import FluentIcon
 from ok import TriggerTask, Logger
 
 from src.tasks.AutoCombatLogic import AutoCombatLogic
+from src.tasks.BaseEfTask import BaseEfTask
 from src.tasks.mixin.battle_mixin import BattleMixin
 
 logger = Logger.get_logger(__name__)
@@ -11,7 +12,7 @@ logger = Logger.get_logger(__name__)
 # 自动战斗主逻辑独立类
 
 # 原有任务类调用独立逻辑
-class AutoCombatTask(BattleMixin, TriggerTask):
+class AutoCombatTask(BattleMixin, TriggerTask, BaseEfTask):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.default_config = {'_enabled': False}

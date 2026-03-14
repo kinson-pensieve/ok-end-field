@@ -5,9 +5,10 @@ from src.data.world_map import stages_cost, higher_order_feature_dict
 from src.data.world_map_utils import get_stage_category
 from src.tasks.mixin.battle_mixin import BattleMixin
 from src.tasks.mixin.common import Common
+from src.tasks.mixin.zip_line_mixin import ZipLineMixin
 
 
-class DailyBattleMixin(BattleMixin,Common):
+class DailyBattleMixin(BattleMixin,ZipLineMixin,Common):
     def __init__(self, *args,**kwargs):
         super().__init__(*args,**kwargs)
         self.max_half_time = 0

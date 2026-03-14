@@ -1,14 +1,14 @@
-import re
-from pathlib import Path
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
 from typing import Final
 
 import pywintypes
 from qfluentwidgets import FluentIcon
+
 from src.data.FeatureList import FeatureList as fL
-from src.tasks.BaseEfTask import BaseEfTask
 from src.essence.weapon_data import load_weapon_data, match_weapon_requirements
+from src.tasks.BaseEfTask import BaseEfTask
 
 
 class LockState(str, Enum):
@@ -60,20 +60,23 @@ _DEFAULT_MAX_PAGES: Final = 200
 
 
 def _parse_xy(value, default: tuple[int, int]) -> tuple[int, int]:
+    dx, dy = int(default[0]), int(default[1])
+
     if isinstance(value, (list, tuple)) and len(value) >= 2:
         try:
             return int(value[0]), int(value[1])
-        except Exception:
-            return int(default[0]), int(default[1])
+        except (TypeError, ValueError):
+            return dx, dy
+
     if isinstance(value, str):
-        text = value.strip().lower().replace("x", ",")
-        parts = [p.strip() for p in text.split(",") if p.strip()]
+        parts = value.strip().lower().replace("x", ",").split(",")
         if len(parts) >= 2:
             try:
                 return int(parts[0]), int(parts[1])
-            except Exception:
-                return int(default[0]), int(default[1])
-    return int(default[0]), int(default[1])
+            except (TypeError, ValueError):
+                return dx, dy
+
+    return dx, dy
 
 
 @dataclass(frozen=True)
@@ -94,40 +97,38 @@ class EssenceScanSettings:
     @classmethod
     def from_task(cls, task: "EssenceScanTask") -> "EssenceScanSettings":
         config = getattr(task, "config", {}) or {}
-        weapon_csv = Path(str(config.get("_武器数据CSV", str(Path("assets") / "weapon_data.csv")))).expanduser()
+
+        def get_int(key, default):
+            try:
+                return int(config.get(key, default))
+            except (TypeError, ValueError):
+                return default
+
+        def get_float(key, default):
+            try:
+                return float(config.get(key, default))
+            except (TypeError, ValueError):
+                return default
+
+        weapon_csv = Path(
+            str(config.get("_武器数据CSV", Path("assets") / "weapon_data.csv"))
+        ).expanduser()
+
         ref_resolution = _parse_xy(config.get("_参考分辨率"), _DEFAULT_REF_RESOLUTION)
         grid_origin = _parse_xy(config.get("_网格起点"), _DEFAULT_GRID_ORIGIN)
         grid_step = _parse_xy(config.get("_网格步长"), _DEFAULT_GRID_STEP)
         icon_size = _parse_xy(config.get("_图标采样尺寸"), _DEFAULT_ICON_SIZE)
         lock_button = _parse_xy(config.get("_锁按钮坐标"), _DEFAULT_LOCK_BUTTON)
 
-        try:
-            grid_cols = int(config.get("_每行数量", _DEFAULT_GRID_COLS))
-        except Exception:
-            grid_cols = _DEFAULT_GRID_COLS
-        try:
-            grid_rows = int(config.get("_每屏行数", _DEFAULT_GRID_ROWS))
-        except Exception:
-            grid_rows = _DEFAULT_GRID_ROWS
+        grid_cols = get_int("_每行数量", _DEFAULT_GRID_COLS)
+        grid_rows = get_int("_每屏行数", _DEFAULT_GRID_ROWS)
 
-        try:
-            click_wait_sec = float(config.get("_点击等待秒", _DEFAULT_CLICK_WAIT_SEC))
-        except Exception:
-            click_wait_sec = _DEFAULT_CLICK_WAIT_SEC
-        try:
-            scroll_pixels = int(config.get("_滑动距离像素", _DEFAULT_SCROLL_PIXELS))
-        except Exception:
-            scroll_pixels = _DEFAULT_SCROLL_PIXELS
-        try:
-            scroll_wait_sec = float(config.get("_滑动后等待秒", _DEFAULT_SCROLL_WAIT_SEC))
-        except Exception:
-            scroll_wait_sec = _DEFAULT_SCROLL_WAIT_SEC
-        try:
-            max_pages = int(config.get("_最大翻页", _DEFAULT_MAX_PAGES))
-        except Exception:
-            max_pages = _DEFAULT_MAX_PAGES
+        click_wait_sec = get_float("_点击等待秒", _DEFAULT_CLICK_WAIT_SEC)
+        scroll_pixels = get_int("_滑动距离像素", _DEFAULT_SCROLL_PIXELS)
+        scroll_wait_sec = get_float("_滑动后等待秒", _DEFAULT_SCROLL_WAIT_SEC)
+        max_pages = get_int("_最大翻页", _DEFAULT_MAX_PAGES)
 
-        # 翻页滑动距离：如果过小会导致同一屏反复扫描。至少要跨过 rows-1 行。
+        # 翻页滑动距离至少跨 rows-1 行
         scroll_pixels = max(scroll_pixels, int(grid_step[1] * (grid_rows - 1)))
 
         return cls(
@@ -144,7 +145,6 @@ class EssenceScanSettings:
             scroll_wait_sec=scroll_wait_sec,
             max_pages=max_pages,
         )
-
 
 @dataclass
 class EssenceScanStats:
@@ -223,7 +223,7 @@ class EssenceScanTask(BaseEfTask):
 
     def _has_feature(self, feature_name: str, *, box=None, threshold: float = 0.0) -> bool:
         try:
-            return bool(self.find_one(feature_name, box=box, threshold=threshold))
+            return self.find_one(feature_name, box=box, threshold=threshold) is not None
         except Exception:
             return False
 
@@ -260,54 +260,62 @@ class EssenceScanTask(BaseEfTask):
             return LockState.LOCKED
         return LockState.UNKNOWN
 
-    def _try_lock(self, settings: EssenceScanSettings, lock_x: int, lock_y: int) -> tuple[bool, bool]:
+    def _toggle_lock(
+            self,
+            settings: EssenceScanSettings,
+            lock_x: int,
+            lock_y: int,
+            target: LockState,
+    ) -> tuple[bool, bool]:
         """
-        锁按钮是“切换”按钮：已锁再点会解锁。
+        切换锁状态
 
-        返回 (locked_ok, did_lock)
-        - locked_ok: 最终是否处于“锁定”状态（或认为已锁定）
-        - did_lock: 本次是否执行过“上锁点击”（仅用于计数）
+        target:
+            LockState.LOCKED   -> 尝试上锁
+            LockState.UNLOCKED -> 尝试解锁
+
+        返回:
+            (state_ok, did_toggle)
         """
+
         self.next_frame()
         state0 = self._lock_state(settings, lock_x, lock_y)
-        if state0 == LockState.LOCKED:
-            return True, False
-        if state0 == LockState.UNKNOWN:
-            # 判不清时不点击，避免“已锁 -> 解锁”的灾难性误触
+
+        # 已经是目标状态
+        if state0 == target:
             return True, False
 
-        # 明确未锁：点一次尝试上锁，并做一次确认（避免双击导致“上锁->解锁”）
+        # 不确定状态不操作
+        if state0 == LockState.UNKNOWN:
+            return True, False
+
+        # 点击切换
         self._click_ref(settings, lock_x, lock_y, after_sleep=_LOCK_CLICK_WAIT_SEC)
+
         self.next_frame()
         state1 = self._lock_state(settings, lock_x, lock_y)
-        if state1 == LockState.LOCKED:
+
+        if state1 == target:
             return True, True
 
-        # 若仍明确未锁（可能点击没生效），再尝试一次
-        if state1 == LockState.UNLOCKED:
+        # 如果仍是反状态，再试一次
+        opposite = LockState.UNLOCKED if target == LockState.LOCKED else LockState.LOCKED
+
+        if state1 == opposite:
             self._click_ref(settings, lock_x, lock_y, after_sleep=_LOCK_CLICK_WAIT_SEC)
+
             self.next_frame()
             state2 = self._lock_state(settings, lock_x, lock_y)
-            return state2 == LockState.LOCKED, True
+
+            return state2 == target, True
 
         return False, True
 
-    def _try_unlock(self, settings: EssenceScanSettings, lock_x: int, lock_y: int) -> tuple[bool, bool]:
-        """
-        取消上锁：已解锁则跳过，未知状态则不操作。
-        返回 (unlocked_ok, did_unlock)
-        """
-        self.next_frame()
-        state0 = self._lock_state(settings, lock_x, lock_y)
-        if state0 == LockState.UNLOCKED:
-            return True, False
-        if state0 == LockState.UNKNOWN:
-            return True, False
+    def _try_lock(self, settings, lock_x, lock_y):
+        return self._toggle_lock(settings, lock_x, lock_y, LockState.LOCKED)
 
-        self._click_ref(settings, lock_x, lock_y, after_sleep=_LOCK_CLICK_WAIT_SEC)
-        self.next_frame()
-        state1 = self._lock_state(settings, lock_x, lock_y)
-        return state1 == LockState.UNLOCKED, True
+    def _try_unlock(self, settings, lock_x, lock_y):
+        return self._toggle_lock(settings, lock_x, lock_y, LockState.UNLOCKED)
 
     def _try_throw_away(self) -> tuple[bool, bool]:
         """

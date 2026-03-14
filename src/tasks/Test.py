@@ -1,11 +1,12 @@
 import re
 
-from src.tasks.daily import DailyLiaisonMixin
+from src.tasks.BaseEfTask import BaseEfTask
+from src.tasks.daily.daily_liaison_mixin import DailyLiaisonMixin
 from src.data.FeatureList import FeatureList as fL
 from src.tasks.mixin.common import Common
 
 
-class Test(DailyLiaisonMixin,Common):
+class Test(DailyLiaisonMixin,Common,BaseEfTask):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.refresh_count=0

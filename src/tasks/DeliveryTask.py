@@ -2,10 +2,13 @@ import re
 import time
 from dataclasses import dataclass
 from typing import List, Tuple
+
 from ok import Box
+
 from src.data.FeatureList import FeatureList as fL
 from src.tasks.BaseEfTask import BaseEfTask
 from src.tasks.mixin.map_mixin import MapMixin
+from src.tasks.mixin.navigation_mixin import NavigationMixin
 from src.tasks.mixin.zip_line_mixin import ZipLineMixin
 
 secondary_objective_direction_dot = [fL.secondary_objective_direction_dot, fL.secondary_objective_direction_dot_light,
@@ -24,7 +27,7 @@ class DeliveryRow:
     box: Tuple[float, float, float, float]  # (x1, y1, x2, y2)
 
 
-class DeliveryTask(ZipLineMixin, MapMixin):
+class DeliveryTask(ZipLineMixin, MapMixin, NavigationMixin, BaseEfTask):
     """运输委托自动化任务类 - 处理游戏中的送货操作"""
 
     # 配置键名常量

@@ -1,10 +1,10 @@
 import re
 import time
+
 import cv2
 import numpy as np
 
 from src.tasks.AutoCombatLogic import AutoCombatLogic
-from src.tasks.BaseEfTask import BaseEfTask
 
 
 def _parse_skill_sequence(raw_config: str) -> list[str]:
@@ -20,7 +20,7 @@ def _parse_skill_sequence(raw_config: str) -> list[str]:
     return sequence if sequence else ['1', '2', '3']
 
 
-class BattleMixin(BaseEfTask):
+class BattleMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.last_no_number_action_time = None

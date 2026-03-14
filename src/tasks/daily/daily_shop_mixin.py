@@ -1,7 +1,6 @@
 import re
 
 from src.data.FeatureList import FeatureList as fL
-from src.tasks.BaseEfTask import BaseEfTask
 from src.tasks.mixin.common import Common
 
 

@@ -1,7 +1,7 @@
 from src.data.world_map import stages_list
 from qfluentwidgets import FluentIcon
 from src.tasks.BaseEfTask import BaseEfTask
-from src.tasks.daily.battle_mixin import DailyBattleMixin
+from src.tasks.daily.daily_battle_mixin import DailyBattleMixin
 import re
 class BattleTask(DailyBattleMixin,BaseEfTask):
     def __init__(self, *args, **kwargs):

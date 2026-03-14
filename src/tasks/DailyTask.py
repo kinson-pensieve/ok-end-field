@@ -1,18 +1,24 @@
-import re
-
 from qfluentwidgets import FluentIcon
 
-from src.data.characters import all_list
 from src.data.world_map import areas_list, stages_list
-from src.tasks.daily.battle_mixin import DailyBattleMixin
-from src.tasks.daily.liaison_mixin import DailyLiaisonMixin
-from src.tasks.daily.routine_mixin import DailyRoutineMixin
-from src.tasks.daily.shop_mixin import DailyShopMixin
-from src.tasks.daily.trade_mixin import DailyTradeMixin
+from src.tasks.BaseEfTask import BaseEfTask
+from src.tasks.daily.daily_battle_mixin import DailyBattleMixin
+from src.tasks.daily.daily_liaison_mixin import DailyLiaisonMixin
+from src.tasks.daily.daily_routine_mixin import DailyRoutineMixin
+from src.tasks.daily.daily_shop_mixin import DailyShopMixin
+from src.tasks.daily.daily_trade_mixin import DailyTradeMixin
 from src.tasks.mixin.common import Common
 
 
-class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin,DailyShopMixin,DailyBattleMixin,Common):
+class DailyTask(
+    DailyLiaisonMixin,
+    DailyTradeMixin,
+    DailyRoutineMixin,
+    DailyShopMixin,
+    DailyBattleMixin,
+    Common,
+    BaseEfTask
+):
     """日常任务聚合执行器。"""
 
     def __init__(self, *args, **kwargs):
@@ -53,7 +59,7 @@ class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin,DailyShopM
             "收信用": True,
             "尝试仅收培育室": False,
             "收集线索": True,
-            "买信用商店":False,
+            "买信用商店": False,
             "买卖货": True,
             "刷体力": True,
             "日常奖励": True,
@@ -87,7 +93,7 @@ class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin,DailyShopM
             ("造装备", self.make_weapon),
             ("收信用", self.collect_credit),
             ("收集线索", self.collect_clue),
-            ("买信用商店",self.credit_shop),
+            ("买信用商店", self.credit_shop),
             ("买卖货", self.buy_sell),
             ("刷体力", self.battle),
             ("日常奖励", self.claim_daily_rewards),
