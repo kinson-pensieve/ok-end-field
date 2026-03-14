@@ -1,9 +1,11 @@
-import datetime
-
-from src.tasks.BaseEfTask import BaseEfTask
 import re
+
 from src.data.FeatureList import FeatureList as fL
-class DailyShopMixin(BaseEfTask):
+from src.tasks.BaseEfTask import BaseEfTask
+from src.tasks.mixin.common import Common
+
+
+class DailyShopMixin(Common):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.refresh_count=0
@@ -44,9 +46,12 @@ class DailyShopMixin(BaseEfTask):
         return 0
     def buy_once(self,sum_credit):
         search_list=[fL.weapon_quota,fL.orobertyl,fL.discount_95_percent_icon]
-        results=[]
+        results = []
+
         for search in search_list:
-            results.extend(self.find_feature(feature_name=search, box=self.credit_good_search_box))
+            r = self.find_feature(feature_name=search, box=self.credit_good_search_box)
+            if r:
+                results.extend(r)
         for result in results:
             self.click(result,after_sleep=2)
             cost=self.get_cost()

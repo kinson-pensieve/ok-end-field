@@ -3,8 +3,7 @@ from qfluentwidgets import FluentIcon
 from ok import TriggerTask, Logger
 
 from src.tasks.AutoCombatLogic import AutoCombatLogic
-from src.tasks.BaseEfTask import BaseEfTask
-from src.tasks.battle_mixin import BattleMixin
+from src.tasks.mixin.battle_mixin import BattleMixin
 
 logger = Logger.get_logger(__name__)
 
@@ -33,12 +32,6 @@ class AutoCombatTask(BattleMixin, TriggerTask):
             "平A间隔": "平A点击间隔(秒), 越小越快, 建议 0.08~0.15",
             "无数字操作间隔": "战斗中周期触发锁敌+向前闪避的最小间隔(秒，最少6秒)",
         })
-        self.lv_regex = re.compile(r"(?i)lv|\d{2}")
-        self.last_op_time = 0
-        self.last_skill_time = 0
-        self.exit_check_count = 0
-        self._last_exit_fail_skill_count = None
-        self.last_no_number_action_time = 0
         self._combat_logic = AutoCombatLogic(self)
 
     def run(self):

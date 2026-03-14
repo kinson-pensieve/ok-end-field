@@ -19,7 +19,7 @@ class DailyRoutineMixin(BaseEfTask):
 
     def collect_credit(self):
         self.info_set("current_task", "collect_credit")
-        self.send_key("f5", after_sleep=2)
+        self.press_key("f5", after_sleep=2)
         self.wait_click_ocr(match=re.compile("信用交易所"), box=self.box.top, time_out=5, after_sleep=2)
         result = self.wait_click_ocr(match=[re.compile("收取信用"), re.compile("无待领取信用")],
                                      box=self.box.bottom_left,
@@ -63,15 +63,15 @@ class DailyRoutineMixin(BaseEfTask):
             scroll_count = 0
             while not result:
                 if is_first_time or scroll_count > 0:
-                    self.span_box = self.box_of_screen(3400 / 3840, 301 / 2160, 3692 / 3840, 1883 / 2160)
+                    span_box = self.box_of_screen(3400 / 3840, 301 / 2160, 3692 / 3840, 1883 / 2160)
                 else:
-                    self.span_box = self.box_of_screen(3400 / 3840, 615 / 2160, 3692 / 3840, 1883 / 2160)
+                    span_box = self.box_of_screen(3400 / 3840, 615 / 2160, 3692 / 3840, 1883 / 2160)
                 if time.time() - start_time > 40:
                     self.log_info("找不到可交流或助力的玩家")
                     return False
                 if left_exchange_time > 0:
                     result = self.find_feature(
-                        feature_name="can_exchange_info_icon", box=self.span_box
+                        feature_name="can_exchange_info_icon", box=span_box
                     )
                     if scroll_count >= 7:
                         self.back(after_sleep=2)
@@ -83,7 +83,7 @@ class DailyRoutineMixin(BaseEfTask):
                         continue
                 elif left_help_time > 0:
                     result = self.find_feature(
-                        feature_name="can_help_icon", box=self.span_box
+                        feature_name="can_help_icon", box=span_box
                     )
                 if not result:
                     scroll_count += 1
@@ -102,7 +102,7 @@ class DailyRoutineMixin(BaseEfTask):
             if left_help_time > 0:
                 actions.append("助力")
             self.log_info(f"已进入好友帝江号，准备进行{''.join(actions)}操作")
-            self.send_key("y", after_sleep=2)
+            self.press_key("y", after_sleep=2)
             if left_exchange_time > 0:
                 self.wait_click_ocr(match=re.compile("情报交流"), box=exchange_help_box, time_out=5, after_sleep=2)
                 left_exchange_time -= 1
@@ -256,8 +256,8 @@ class DailyRoutineMixin(BaseEfTask):
                         self.log_info(f"步骤 {match} 未找到，跳过本次活动")
                         break
                 self.ensure_main()
-                self.send_key("v", after_sleep=1)
-                self.send_key("j", after_sleep=1)
+                self.press_key("v", after_sleep=1)
+                self.press_key("j", after_sleep=1)
 
                 if not self.wait_click_ocr(
                         match=re.compile("转交运送委托"),
@@ -501,7 +501,7 @@ class DailyRoutineMixin(BaseEfTask):
         self.log_info("开始领取日常奖励任务")
 
         self.sleep(2)
-        self.send_key("f8", after_sleep=2)
+        self.press_key("f8", after_sleep=2)
         self.log_info("按下 F8 打开日常奖励界面")
 
         if not self.wait_click_ocr(
@@ -536,7 +536,7 @@ class DailyRoutineMixin(BaseEfTask):
     def collect_clue(self):
         self.info_set("current_task", "collect_clue")
         self.log_info("开始收集线索任务")
-        self.send_key("i", after_sleep=2)
+        self.press_key("i", after_sleep=2)
         exchange_help_box = self.box_of_screen(0.1, 561 / 861, 0.9, 0.9)
         if self.wait_click_ocr(match=re.compile("会客室"), time_out=4, box=exchange_help_box, after_sleep=2):
             self.logger.info("进入会客室,准备处理收集线索")

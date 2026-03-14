@@ -1,5 +1,5 @@
-import time
 import re
+import time
 import cv2
 import numpy as np
 
@@ -7,18 +7,26 @@ from src.tasks.AutoCombatLogic import AutoCombatLogic
 from src.tasks.BaseEfTask import BaseEfTask
 
 
+def _parse_skill_sequence(raw_config: str) -> list[str]:
+    """解析技能序列，只保留 '1','2','3','4'，为空返回默认 ['1','2','3']"""
+    if not raw_config:
+        return []
+    trimmed_config = raw_config.strip()
+    sequence = []
+    valid_skills = {'1', '2', '3', '4'}
+    for char in trimmed_config:
+        if char in valid_skills:
+            sequence.append(char)
+    return sequence if sequence else ['1', '2', '3']
+
+
 class BattleMixin(BaseEfTask):
-    def _parse_skill_sequence(self, raw_config: str) -> list[str]:
-        """解析技能序列，只保留 '1','2','3','4'，为空返回默认 ['1','2','3']"""
-        if not raw_config:
-            return []
-        trimmed_config = raw_config.strip()
-        sequence = []
-        valid_skills = {'1', '2', '3', '4'}
-        for char in trimmed_config:
-            if char in valid_skills:
-                sequence.append(char)
-        return sequence if sequence else ['1', '2', '3']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.last_no_number_action_time = None
+        self.exit_check_count = None
+        self.last_op_time = None
+        self.lv_regex = re.compile(r"(?i)lv|\d{2}")
 
     def use_ult(self):
         """尝试释放终极技"""
@@ -34,7 +42,6 @@ class BattleMixin(BaseEfTask):
         return False
 
     def use_link_skill(self):
-        """释放连携技（从配置中读取实际键位）"""
         if self.find_one("default_link_skill", threshold=0.7):
             self.send_key("e")
             self.last_op_time = time.time()
@@ -105,7 +112,8 @@ class BattleMixin(BaseEfTask):
             if len(center_area) > 0:
                 self.log_info(f"中间区域识别到数字: {[r.name for r in center_area]}")
             return len(center_area) > 0
-        except Exception:
+        except (ValueError, AttributeError, TypeError) as e:
+            self.log_error(f"OCR检测数字失败: {e}")
             return False
 
     def ocr_lv(self):
@@ -236,7 +244,7 @@ def has_rectangles(frame):
     min_width = (original_w * scale_factor) * 0.25
     for cnt in contours:
         x, y, w, h = cv2.boundingRect(cnt)
-        if w > min_width and w > h and h > 10:
+        if w > min_width and w > h > 10:
             return True
     return False
 

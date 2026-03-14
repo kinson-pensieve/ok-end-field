@@ -1,18 +1,15 @@
-import ctypes
 import re
 import time
 from dataclasses import dataclass
 from typing import List, Tuple
 from ok import Box
-from src.image.hsv_config import HSVRange as hR
-from src.tasks.BaseEfTask import BaseEfTask
 from src.data.FeatureList import FeatureList as fL
+from src.tasks.BaseEfTask import BaseEfTask
+from src.tasks.mixin.map_mixin import MapMixin
+from src.tasks.mixin.zip_line_mixin import ZipLineMixin
 
-on_zip_line_tip = ["向目标移动", "离开滑索架"]
-on_zip_line_stop = [re.compile(i) for i in on_zip_line_tip]
-continue_next = re.compile("下一连接点")
-secondary_objective_direction_dot = ["secondary_objective_direction_dot", "secondary_objective_direction_dot_light",
-                                     "secondary_objective_direction_dot_light_two"]
+secondary_objective_direction_dot = [fL.secondary_objective_direction_dot, fL.secondary_objective_direction_dot_light,
+                                     fL.secondary_objective_direction_dot_light_two]
 
 
 @dataclass
@@ -27,11 +24,11 @@ class DeliveryRow:
     box: Tuple[float, float, float, float]  # (x1, y1, x2, y2)
 
 
-class DeliveryTask(BaseEfTask):
+class DeliveryTask(ZipLineMixin, MapMixin):
     """运输委托自动化任务类 - 处理游戏中的送货操作"""
 
     # 配置键名常量
-    CFG_TARGET_TICKET_NUM="目标券数"
+    CFG_TARGET_TICKET_NUM = "目标券数"
     CFG_SCROLL_ENABLE = "是否启用滚动放大视角"
     CFG_TEST_TARGET = "选择测试对象"
     CFG_ONLY_ACCEPT = "仅接取"
@@ -79,8 +76,6 @@ class DeliveryTask(BaseEfTask):
             "type": "drop_down",
             "options": ["79800", "73100"],
         }
-        self.lv_regex = re.compile(r"(?i)lv|\d{2}")
-        self.last_target = None
         self.wuling_location = ["武陵城"]
         self.valley_location = ["供能高地", "矿脉源区", "源石研究园"]
         self._last_refresh_ts = 0
@@ -339,7 +334,7 @@ class DeliveryTask(BaseEfTask):
                                 "易损" in row.elems[2].name
                                 and "不易损" not in row.elems[2].name
                         ):
-                            target_num=self.config.get(self.CFG_TARGET_TICKET_NUM)
+                            target_num = self.config.get(self.CFG_TARGET_TICKET_NUM)
                             x, y, to_x, to_y = row.box
                             box = self.box_of_screen(
                                 x / self.width,
@@ -404,109 +399,6 @@ class DeliveryTask(BaseEfTask):
                     self.log_info("警告: 尚未定位到刷新按钮位置，无法刷新，重试...")
                     time.sleep(1.0)
 
-    def zip_line_list_go(self, zip_line_list):
-        """按顺序对齐滑索并执行滑行
-        
-        Args:
-            zip_line_list: 滑索序号列表
-        """
-        for zip_line in zip_line_list:
-            self.align_ocr_or_find_target_to_center(
-                re.compile(str(zip_line)),
-                is_num=True,
-                need_scroll=self.config.get(self.CFG_SCROLL_ENABLE),
-                ocr_frame_processor_list=[
-                    self.make_hsv_isolator(hR.GOLD_TEXT),
-                    self.make_hsv_isolator(hR.WHITE),
-                ],
-                max_time=100,
-                tolerance=20,
-            )
-            self.log_info(f"成功将滑索调整到{zip_line}的中心")
-            self.click(after_sleep=0.5)
-            start = time.time()
-            while True:
-                self.next_frame()
-                self.press_key("e")
-                self.sleep(0.1)
-                result = self.ocr(
-                    match=on_zip_line_stop,
-                    box="bottom",
-                    log=True,
-                )
-                if result:
-                    break
-                if time.time() - start > 60:
-                    raise Exception("滑索超时，强制退出")
-        self.sleep(1)
-        self.click(key="right")
-
-    def on_zip_line_start(self, delivery_to):
-        """进入滑索后，根据配置对齐并滑行至送货点
-        
-        Args:
-            delivery_to: 送货目标名称（用于获取配置中的滑索序号）
-        
-        Raises:
-            Exception: 滑索超时时抛出异常
-        """
-        start = time.time()
-        self.sleep(1)
-        self.next_frame()
-        while not self.ocr(match=on_zip_line_stop, frame=self.next_frame(), box="bottom", log=True):
-            self.sleep(0.1)
-            if time.time() - start > 60:
-                raise Exception("滑索超时，强制退出")
-        zip_line_list_str = self.config.get(delivery_to)
-        zip_line_list = [int(i) for i in zip_line_list_str.split(",")]
-        self.zip_line_list_go(zip_line_list)
-
-    def task_to_transfer_point(self):
-        """传送到运输委托的出发传送点
-        
-        Returns:
-            bool: 成功返回True，失败返回False
-        """
-        self.ensure_main()
-        self.send_key("j", after_sleep=2)
-
-        result = self.find_feature(
-            feature_name="one_task_to_map", threshold=0.8, box=self.box.bottom_right
-        )
-        if not result:
-            return False
-        self.click(result, after_sleep=2)
-
-        if not self.wait_click_ocr(
-                match="标记显示管理", box=self.box.bottom_left, time_out=10, log=True, after_sleep=2
-        ):
-            return False
-
-        if not self.wait_click_ocr(
-                match="清空选中", box=self.box.bottom_left, time_out=10, log=True, after_sleep=2
-        ):
-            return False
-
-        self.back(after_sleep=2)
-        result = None
-        for _ in range(8):
-            result = self.find_feature(feature_name="transfer_point", box=self.box.top,
-                                       threshold=0.8)
-            if result:
-                break
-            self.next_frame()
-            self.scroll_relative(0.5, 0.5, -5)
-        if not result:
-            return False
-        self.click(result, after_sleep=2)
-
-        result = self.wait_ocr(match="传送", box=self.box.bottom_right, time_out=10, log=True)
-        if not result:
-            return False
-
-        self.click(result, after_sleep=2)
-        return True
-
     def to_storage_point_and_back_zip_line(self, only_zip_line=False):
         """从仓储点出发，乘坐滑索到送货点
         
@@ -520,8 +412,8 @@ class DeliveryTask(BaseEfTask):
             if self.wait_ocr(match="工业", box=self.box.top_left, time_out=2, log=True):
                 self.press_key("tab", after_sleep=1)
             self.press_key('f', after_sleep=2)
-            self.zip_line_list_go([int(i) for i in self.config.get(self.CFG_TO_DELIVERY_POINT).split(
-                ",")])  # 需要在配置里指定出发点的滑索距离,这里默认是36m的滑索
+            self.zip_line_list_go([int(i) for i in self.config.get(self.CFG_TO_DELIVERY_POINT).split(",")],
+                                  need_scroll=self.config.get(self.CFG_SCROLL_ENABLE))  # 需要在配置里指定出发点的滑索距离,这里默认是36m的滑索
             if only_zip_line:
                 return True
             if self.wait_ocr(match="登上滑索架", box=self.box.bottom_right, time_out=2, log=True):
@@ -652,7 +544,7 @@ class DeliveryTask(BaseEfTask):
                         break
         elif self.config.get(self.CFG_TEST_TARGET) == self.TEST_FULL_CYCLE:
             for end in self.ends:
-                self.task_to_transfer_point()
+                self.task_to_transfer_point(self.box.bottom)
                 self.to_storage_point_and_back_zip_line(only_zip_line=True)
                 self.wait_ocr(match="登上滑索架", box=self.box.bottom_right, time_out=2, log=True)
                 self.press_key('f', after_sleep=2)
@@ -662,4 +554,4 @@ class DeliveryTask(BaseEfTask):
             zip_line_list_str = self.config.get(self.config.get(self.CFG_TEST_TARGET))
             if zip_line_list_str:
                 zip_line_list = [int(i) for i in zip_line_list_str.split(",")]
-                self.zip_line_list_go(zip_line_list)
+                self.zip_line_list_go(zip_line_list, need_scroll=self.config.get(self.CFG_SCROLL_ENABLE))

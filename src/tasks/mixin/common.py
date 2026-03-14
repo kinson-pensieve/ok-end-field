@@ -5,6 +5,8 @@ from typing import Optional
 
 from ok import Box
 
+from src.tasks.BaseEfTask import BaseEfTask
+
 
 def build_name_patterns(find_name: str):
     if len(find_name) >= 2:
@@ -33,3 +35,13 @@ class GoodsInfo:
     stock_quantity: int
     name_box: "Box"
     friend_name_box: Optional["Box"]
+class Common(BaseEfTask):
+    def detect_ticket_number(self):
+        result = self.wait_ocr(match=re.compile(r'^\d{1,4}/\d{1,3}$'),
+                               box=self.box_of_screen(1400 / 1920, 0, 1, 70 / 1080), log=True)
+        if result:
+            ticket = int(result[0].name.split("/")[0])
+            self.log_info(f"ticket:{ticket}")
+            return ticket
+        else:
+            return 200

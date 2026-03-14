@@ -5,11 +5,11 @@ from typing import List
 from src.data.FeatureList import FeatureList as fL
 from src.data.world_map import areas_list
 from src.image.hsv_config import HSVRange as hR
-from src.tasks.daily.common import GoodsInfo
-from src.tasks.BaseEfTask import BaseEfTask
+from src.tasks.mixin.common import GoodsInfo
+from src.tasks.mixin.navigation_mixin import NavigationMixin
 
 
-class DailyTradeMixin(BaseEfTask):
+class DailyTradeMixin(NavigationMixin):
     def collect_market_goods_info(self):
         def ocr_stock_quantity() -> int:
             stock_piece = self.ocr(
@@ -186,7 +186,7 @@ class DailyTradeMixin(BaseEfTask):
 
     def navigate_to_friend_exchange(self):
         self.log_info("前往物资调度终端")
-        self.send_key("m", after_sleep=2)
+        self.press_key("m", after_sleep=2)
         if not self.start_tracking_and_align_target(
                 fL.market_dispatch_terminal, fL.market_dispatch_terminal_out
         ):

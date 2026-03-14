@@ -3,26 +3,24 @@ import re
 from qfluentwidgets import FluentIcon
 
 from src.data.characters import all_list
-from src.data.characters_utils import get_contact_list_with_feature_list
 from src.data.world_map import areas_list, stages_list
-from src.tasks.daily.common import build_name_patterns
+from src.tasks.daily.battle_mixin import DailyBattleMixin
 from src.tasks.daily.liaison_mixin import DailyLiaisonMixin
 from src.tasks.daily.routine_mixin import DailyRoutineMixin
 from src.tasks.daily.shop_mixin import DailyShopMixin
 from src.tasks.daily.trade_mixin import DailyTradeMixin
+from src.tasks.mixin.common import Common
 
 
-class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin,DailyShopMixin):
+class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin,DailyShopMixin,DailyBattleMixin,Common):
     """日常任务聚合执行器。"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.span_box = None
         self.name = "日常任务"
         self.description = "一键收菜\n反复按esc请前往设置调整主界面单次动作后延迟，建议1.5秒以上"
         self.icon = FluentIcon.SYNC
         self.support_schedule_task = True
-        self.can_contact_dict = get_contact_list_with_feature_list()
         buy_sell = dict()
         for area in areas_list:
             buy_sell[f"{area}买入价"] = 900
@@ -61,21 +59,12 @@ class DailyTask(DailyLiaisonMixin, DailyTradeMixin, DailyRoutineMixin,DailyShopM
             "日常奖励": True,
         })
         self.config_type["体力本"] = {"type": "drop_down", "options": self.stages_list}
-        self.max_half_time = 3
-        self.lv_regex = re.compile(r"(?i)lv|\d{2}")
-        self.last_op_time = 0
-        self.last_skill_time = 0
-        self.exit_check_count = 0  # 退出验证计数器，需要連续捐捕 2 次
-        self._last_exit_fail_skill_count = None
-        self.last_no_number_action_time = 0
         self.config_type["优先送礼对象"] = {"type": "drop_down", "options": list(self.can_contact_dict.keys())}
         self.config_description.update({"尝试仅收培育室": '前置是启用收信用'})
         self.add_exit_after_config()
         self.config_description.update({
             "尝试仅收培育室": "在好友交流助力时，优先尝试仅收取培育室的助力,但每次至少助力一次舱室",
         })
-        self.contact_name_patterns = {name: build_name_patterns(name) for name in self.can_contact_dict.keys()}
-        self.all_name_pattern = [re.compile(i) for i in all_list]
         if self.debug:
             self.default_config.update({"重复测试的次数": 1})
 
