@@ -12,6 +12,7 @@ class AutoCombatLogic:
 
         if not task.in_combat(required_yellow=1):
             task.log_info("未检测到战斗状态,退出自动战斗")
+            task.sleep(0.5)
             return False
         if not no_battle:
             task.log_info("检测到进入战斗,开始自动战斗流程")
@@ -30,14 +31,12 @@ class AutoCombatLogic:
                 end_time = start_time + start_sleep
                 while time.time() < end_time:
                     task.click(key='left')
-                    task.click(key='middle')
                     task.perform_attack_weave()
             else:
-                wait_time = task.config.get("进入战斗后的初始等待时间", 1)
+                wait_time = task.config.get("进入战斗后的初始等待时间", 3)
                 end_time = start_time + wait_time
                 while time.time() < end_time:
                     task.click(key='left')
-                    task.click(key='middle')
                     task.perform_attack_weave()
 
             while True:
@@ -50,7 +49,6 @@ class AutoCombatLogic:
 
                 task.handle_no_damage_number_actions()
                 task.click(key='left')
-                task.click(key='middle')
                 task.perform_attack_weave()
 
                 if task.use_link_skill() or task.use_ult():

@@ -10,7 +10,7 @@ from src.tasks.mixin.navigation_mixin import NavigationMixin
 from src.tasks.mixin.zip_line_mixin import ZipLineMixin
 from src.tasks.mixin.battle_mixin import BattleMixin
 from src.data.world_map import stages_dict, stages_list
-gather_list = list(stages_dict["能量淤积点"])
+gather_list = stages_dict["能量淤积点"]
 class DailyBattleMixin(Common, MapMixin, ZipLineMixin,BattleMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
