@@ -920,65 +920,143 @@
     ]
   },
   {
-  "id": "ad660809",
-  "name": "联盟停车场",
-  "type": "送货",
-  "area": "供能高地",
-  "teleport": "",
-  "steps": [
-    {
-      "type": "walk",
-      "actions": [
-        {
-          "key": "a",
-          "duration": 1.58
-        }
-      ]
-    },
-    {
-      "type": "zipline",
-      "nodes": [
-        {
-          "distance": 92,
-          "angle_x": -0.51,
-          "angle_y": -0.84
-        },
-        {
-          "distance": 110,
-          "angle_x": -2.7,
-          "angle_y": -8.52
-        }
-      ]
-    },
-    {
-      "type": "walk",
-      "actions": [
-        {
-          "angle_x": 4.81,
-          "angle_y": -0.42
-        },
-        {
-          "angle_x": 0.0,
-          "angle_y": 0.08
-        },
-        {
-          "angle_x": 4.47,
-          "angle_y": -2.62
-        },
-        {
-          "angle_x": 0.17,
-          "angle_y": 0.17
-        },
-        {
-          "key": "w",
-          "duration": 4.29
-        },
-        {
-          "key": "d",
-          "duration": 0.71
-        }
-      ]
-    }
-  ]
-}
+    "id": "ad660809",
+    "name": "联盟停车场",
+    "type": "送货",
+    "area": "供能高地",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.58
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 92,
+            "angle_x": -0.51,
+            "angle_y": -0.84
+          },
+          {
+            "distance": 110,
+            "angle_x": -2.7,
+            "angle_y": -8.52
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 120.0,
+            "angle_y": 0.0,
+            "key": "w",
+            "duration": 4.4
+          },
+          {
+            "key": "d",
+            "duration": 0.7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5a872d7a",
+    "name": "疏散区",
+    "type": "送货",
+    "area": "",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.75
+          },
+          {
+            "key": "w",
+            "duration": 0.06
+          },
+          {
+            "angle_x": -0.76,
+            "angle_y": -0.08
+          },
+          {
+            "angle_x": -0.25,
+            "angle_y": 0.84
+          },
+          {
+            "angle_x": -2.19,
+            "angle_y": -1.18
+          },
+          {
+            "angle_x": -1.43,
+            "angle_y": -0.51
+          },
+          {
+            "angle_x": -3.88,
+            "angle_y": -2.7
+          },
+          {
+            "angle_x": -1.69,
+            "angle_y": -1.69
+          },
+          {
+            "angle_x": -1.86,
+            "angle_y": -4.98
+          },
+          {
+            "type": "click",
+            "button": "right"
+          },
+          {
+            "key": "s",
+            "duration": 0.16
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 97,
+            "angle_x": -0.34,
+            "angle_y": 2.78
+          },
+          {
+            "distance": 72,
+            "angle_x": -1.27,
+            "angle_y": -12.91
+          },
+          {
+            "distance": 96,
+            "angle_x": -2.45,
+            "angle_y": 3.12
+          },
+          {
+            "distance": 55,
+            "angle_x": -4.73,
+            "angle_y": 4.3
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 0.79
+          }
+        ]
+      }
+    ]
+  }
 ]
