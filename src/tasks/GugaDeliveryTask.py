@@ -737,7 +737,6 @@ class GugaDeliveryTask(BaseNavTask):
             self.log_error(f"no route found for destination: {destination}, please record the route first")
             return False
         self.log_info(f"navigating to destination: {destination}")
-        self.press_key("m", after_sleep=1)  # open map before navigation
         if not self.navigator.navigate_to(destination, dest_type="送货"):
             self.log_error(f"navigation to destination failed: {destination}")
             return False
