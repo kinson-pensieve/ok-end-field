@@ -120,10 +120,14 @@ class NavigationTask(BaseNavTask):
         """地区下拉框变化时刷新目的地列表"""
         display_names = self._build_display_names(area)
         self.config_type["目的地"]["options"] = display_names
+        # 暂时断开目的地监听器，避免 Qt combo box 信号重复触发导致的 crash
+        self.config.remove_listener("目的地", self._load_route_for_dest)
         if display_names:
             self.config["目的地"] = display_names[0]
         else:
             self.config["目的地"] = ""
+        # 重新连接监听器
+        self.config.add_listener("目的地", self._load_route_for_dest)
         communicate.task.emit(self)
 
     def _on_debug_changed(self, value):

@@ -14,6 +14,15 @@ def _config_add_listener(self, key, callback):
     self._listeners.setdefault(key, []).append(callback)
 
 
+def _config_remove_listener(self, key, callback):
+    """移除指定 key 的监听器"""
+    if hasattr(self, '_listeners') and key in self._listeners:
+        try:
+            self._listeners[key].remove(callback)
+        except ValueError:
+            pass
+
+
 _original_setitem = Config.__setitem__
 
 
@@ -30,6 +39,7 @@ def _config_setitem_with_listener(self, key, value):
 
 
 Config.add_listener = _config_add_listener
+Config.remove_listener = _config_remove_listener
 Config.__setitem__ = _config_setitem_with_listener
 
 # 让框架的 config_widget 支持 custom_widget 类型（ConfigCard 也会调用，不能只在 HomeTab 里拦截）
