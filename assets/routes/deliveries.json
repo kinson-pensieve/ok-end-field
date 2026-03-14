@@ -736,11 +736,11 @@
         "actions": [
           {
             "key": "a",
-            "duration": 1.52
+            "duration": 1.0
           },
           {
             "key": "s",
-            "duration": 0.96
+            "duration": 1.0
           }
         ]
       },
@@ -769,7 +769,7 @@
         "actions": [
           {
             "key": "d",
-            "duration": 3.86
+            "duration": 3.0
           },
           {
             "key": "w",
@@ -777,11 +777,23 @@
           },
           {
             "key": "d",
-            "duration": 1.04
+            "duration": 0.5
           },
           {
             "key": "w",
-            "duration": 1.22
+            "duration": 0.5
+          },
+          {
+            "key": "d",
+            "duration": 0.5
+          },
+          {
+            "key": "w",
+            "duration": 1.2
+          },
+          {
+            "key": "d",
+            "duration": 0.1
           }
         ]
       }
