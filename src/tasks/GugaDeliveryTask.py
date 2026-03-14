@@ -1,6 +1,9 @@
 import json
 import re
 import time
+import random
+import win32gui
+import win32api
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
@@ -537,8 +540,8 @@ class GugaDeliveryTask(BaseNavTask):
         return destination
 
     def _confirm_recycling_station(self, area: str) -> str | None:
-        """For recycling stations, iterate through all stations in the area and click
-        to confirm the correct one via "追踪中的任务" detection (detect but don't click).
+        """For recycling stations, iterate through all stations in the area.
+        Works like Teleporter: open map -> drag by direction -> click coordinates -> detect "追踪中的任务" in bottom_right.
         Returns the station name which is used to find the corresponding delivery route.
 
         Args:
@@ -559,42 +562,117 @@ class GugaDeliveryTask(BaseNavTask):
 
         self.log_info(f"found {len(area_stations)} recycling stations in {area}, iterating to confirm")
 
-        # Close task panel before clicking stations (need to see "追踪中的任务" text clearly)
+        # Close task panel before opening map
         self.back()
         self.ensure_main(time_out=5)
 
+        # Open map
+        self.press_key("m", after_sleep=1)
+        self.sleep(1)
+
         for station in area_stations:
             station_name = station.get("name")
-            self.log_info(f"clicking recycling station: {station_name}")
+            self.log_info(f"confirming recycling station: {station_name}")
 
-            # Parse coordinates
-            coord_str = station.get("coordinates", "").split(",")
-            if len(coord_str) != 2:
-                self.log_error(f"invalid coordinates for station: {station_name}")
+            # Drag map to direction (like Teleporter)
+            direction = station.get("direction", "")
+            if direction:
+                self.log_debug(f"dragging map to {direction}...")
+                self._drag_to_direction(direction)
+                self.sleep(0.5)
+
+            # Click the station coordinates on map
+            coordinates = station.get("coordinates", "")
+            if not coordinates:
+                self.log_error(f"no coordinates for station: {station_name}")
                 continue
 
+            self.log_debug(f"clicking coordinates: {coordinates}")
             try:
-                x = float(coord_str[0])
-                y = float(coord_str[1])
-            except ValueError:
-                self.log_error(f"failed to parse coordinates: {station.get('coordinates')}")
+                x, y = map(float, coordinates.split(","))
+                self.click(x, y, after_sleep=0.5)
+            except Exception as e:
+                self.log_error(f"failed to parse coordinates: {coordinates}, error: {e}")
                 continue
 
-            # Click the station (create small box around coordinate)
-            box = self.box_of_screen(x - 0.02, y - 0.02, x + 0.02, y + 0.02)
-            self.click(box, after_sleep=1)
-
-            # Check if "追踪中的任务" appears (confirms this is the correct station)
-            # Do NOT click it, just detect if it exists
-            tracking_box = self.wait_ocr(match="追踪中的任务", time_out=2)
+            # Check if "追踪中的任务" appears in bottom_right (confirms this is the correct station)
+            tracking_box = self.wait_ocr(match="追踪中的任务", box="bottom_right", time_out=2)
             if tracking_box:
                 self.log_info(f"confirmed recycling station: {station_name}")
+                self.press_key("esc", after_sleep=0.5)  # Close map
                 return station_name
             else:
                 self.log_info(f"station {station_name} is not the target, continuing")
 
+        self.press_key("esc", after_sleep=0.5)  # Close map
         self.log_error("failed to confirm any recycling station in area")
         return None
+
+    def _drag_to_direction(self, direction, drag_count=3):
+        """Drag map to specified direction (same as Teleporter)"""
+        center_x = int(self.width / 2)
+        center_y = int(self.height / 2)
+
+        direction_map = {
+            "right": (-self.width // 2, 0),
+            "left": (self.width // 2, 0),
+            "bottom": (0, -self.height // 2),
+            "top": (0, self.height // 2),
+            "bottom_right": (-self.width // 2, -self.height // 2),
+            "top_right": (-self.width // 2, self.height // 2),
+            "bottom_left": (self.width // 2, -self.height // 2),
+            "top_left": (self.width // 2, self.height // 2),
+        }
+
+        if direction == "center":
+            self.log_debug("executing center drag: bottom_right then drag back...")
+            self._drag_to_direction("bottom_right")
+            self.sleep(0.15)
+            self._move_mouse_to(center_x, center_y)
+            self.sleep(0.05)
+            self.drag_mouse(int(self.width / 2), int(self.height / 2))
+            self._move_mouse_to(center_x, center_y)
+            return
+
+        offset = direction_map.get(direction)
+        if offset:
+            for i in range(drag_count):
+                if drag_count > 1:
+                    self.log_debug(f"dragging {i+1}/{drag_count}...")
+
+                self._move_mouse_to(
+                    center_x + random.randint(-50, 50),
+                    center_y + random.randint(-50, 50))
+                self.sleep(0.05)
+                self.drag_mouse(offset[0], offset[1])
+
+                if i < drag_count - 1:
+                    self.sleep(0.15)
+
+            self._move_mouse_to(center_x, center_y)
+        else:
+            self.log_error(f"unknown direction: {direction}")
+
+    def _move_mouse_to(self, x, y):
+        """Move mouse to position without clicking (same as Teleporter)"""
+        if isinstance(x, float) and 0 <= x <= 1:
+            abs_x = int(x * self.width)
+        else:
+            abs_x = int(x)
+
+        if isinstance(y, float) and 0 <= y <= 1:
+            abs_y = int(y * self.height)
+        else:
+            abs_y = int(y)
+
+        hwnd = self.hwnd.hwnd
+        rect = win32gui.GetWindowRect(hwnd)
+        window_x, window_y = rect[0], rect[1]
+
+        screen_x = window_x + abs_x
+        screen_y = window_y + abs_y
+
+        win32api.SetCursorPos((screen_x, screen_y))
 
     # ── main flow ──
 
