@@ -559,6 +559,10 @@ class GugaDeliveryTask(BaseNavTask):
 
         self.log_info(f"found {len(area_stations)} recycling stations in {area}, iterating to confirm")
 
+        # Close task panel before clicking stations (need to see "追踪中的任务" text clearly)
+        self.back()
+        self.ensure_main(time_out=5)
+
         for station in area_stations:
             station_name = station.get("name")
             self.log_info(f"clicking recycling station: {station_name}")
