@@ -597,8 +597,8 @@ class GugaDeliveryTask(BaseNavTask):
                 self.press_key("esc", after_sleep=0.5)  # Close map
                 continue
 
-            # Check if "追踪中的任务" appears in bottom_right (confirms this is the correct station)
-            tracking_box = self.wait_ocr(match="追踪中的任务", box="bottom_right", time_out=2)
+            # Check if "追踪中任务" appears in bottom_right (confirms this is the correct station)
+            tracking_box = self.wait_ocr(match="追踪中任务", box="bottom_right", time_out=2)
             if tracking_box:
                 self.log_info(f"confirmed recycling station: {station_name}")
                 self.press_key("esc", after_sleep=0.5)  # Close map
