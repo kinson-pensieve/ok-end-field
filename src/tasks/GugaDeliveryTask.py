@@ -562,17 +562,17 @@ class GugaDeliveryTask(BaseNavTask):
 
         self.log_info(f"found {len(area_stations)} recycling stations in {area}, iterating to confirm")
 
-        # Close task panel before opening map
+        # Close task panel before confirming stations
         self.back()
         self.ensure_main(time_out=5)
-
-        # Open map
-        self.press_key("m", after_sleep=1)
-        self.sleep(1)
 
         for station in area_stations:
             station_name = station.get("name")
             self.log_info(f"confirming recycling station: {station_name}")
+
+            # Open map for this station
+            self.press_key("m", after_sleep=1)
+            self.sleep(1)
 
             # Drag map to direction (like Teleporter)
             direction = station.get("direction", "")
@@ -585,6 +585,7 @@ class GugaDeliveryTask(BaseNavTask):
             coordinates = station.get("coordinates", "")
             if not coordinates:
                 self.log_error(f"no coordinates for station: {station_name}")
+                self.press_key("esc", after_sleep=0.5)  # Close map
                 continue
 
             self.log_debug(f"clicking coordinates: {coordinates}")
@@ -593,6 +594,7 @@ class GugaDeliveryTask(BaseNavTask):
                 self.click(x, y, after_sleep=0.5)
             except Exception as e:
                 self.log_error(f"failed to parse coordinates: {coordinates}, error: {e}")
+                self.press_key("esc", after_sleep=0.5)  # Close map
                 continue
 
             # Check if "追踪中的任务" appears in bottom_right (confirms this is the correct station)
@@ -602,9 +604,9 @@ class GugaDeliveryTask(BaseNavTask):
                 self.press_key("esc", after_sleep=0.5)  # Close map
                 return station_name
             else:
-                self.log_info(f"station {station_name} is not the target, continuing")
+                self.log_info(f"station {station_name} is not the target, closing map and retrying")
+                self.press_key("esc", after_sleep=0.5)  # Close map, back to world
 
-        self.press_key("esc", after_sleep=0.5)  # Close map
         self.log_error("failed to confirm any recycling station in area")
         return None
 
