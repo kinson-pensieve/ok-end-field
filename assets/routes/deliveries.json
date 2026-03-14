@@ -1109,9 +1109,7 @@
         "type": "zipline",
         "nodes": [
           {
-            "distance": 7611,
-            "angle_x": 1.1,
-            "angle_y": -4.13
+            "distance": 76
           },
           {
             "distance": 110,
@@ -1155,31 +1153,15 @@
         "actions": [
           {
             "key": "s",
-            "duration": 1.22
+            "duration": 2.5
           },
           {
             "key": "a",
-            "duration": 3.02
-          },
-          {
-            "key": "a",
-            "duration": 0.9
+            "duration": 4.5
           },
           {
             "key": "s",
-            "duration": 0.62
-          },
-          {
-            "key": "a",
-            "duration": 0.68
-          },
-          {
-            "key": "s",
-            "duration": 0.51
-          },
-          {
-            "key": "a",
-            "duration": 0.06
+            "duration": 0.1
           }
         ]
       }
