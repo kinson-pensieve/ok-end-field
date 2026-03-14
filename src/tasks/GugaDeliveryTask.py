@@ -603,6 +603,7 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_info(f"confirmed recycling station: {station_name}")
                 self.press_key("esc", after_sleep=0.5)  # Close map
                 self.ensure_main(time_out=5)  # Ensure back to world
+                self.sleep(2)  # Wait for game to settle before next action
                 return station_name
             else:
                 self.log_info(f"station {station_name} is not the target, closing map and retrying")
