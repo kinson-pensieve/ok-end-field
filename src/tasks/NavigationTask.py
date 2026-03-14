@@ -1,3 +1,4 @@
+from PySide6.QtCore import QTimer
 from qfluentwidgets import FluentIcon
 
 from ok.gui.Communicate import communicate
@@ -118,16 +119,21 @@ class NavigationTask(BaseNavTask):
 
     def _on_area_changed(self, area):
         """地区下拉框变化时刷新目的地列表"""
+        # 延迟执行选项更新，避免 Qt combo box 信号冲突
+        QTimer.singleShot(0, lambda: self._update_destinations_for_area(area))
+
+    def _update_destinations_for_area(self, area):
+        """更新指定地区的目的地选项"""
         display_names = self._build_display_names(area)
         self.config_type["目的地"]["options"] = display_names
-        # 暂时断开目的地监听器，避免 Qt combo box 信号重复触发导致的 crash
-        self.config.remove_listener("目的地", self._load_route_for_dest)
+        # 设置新的目的地值
+        old_dest = self.config.get("目的地")
         if display_names:
-            self.config["目的地"] = display_names[0]
+            new_dest = display_names[0] if old_dest not in display_names else old_dest
+            self.config["目的地"] = new_dest
         else:
             self.config["目的地"] = ""
-        # 重新连接监听器
-        self.config.add_listener("目的地", self._load_route_for_dest)
+        # 发送信号刷新 UI
         communicate.task.emit(self)
 
     def _on_debug_changed(self, value):
