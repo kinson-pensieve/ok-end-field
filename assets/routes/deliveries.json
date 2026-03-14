@@ -370,6 +370,10 @@
           {
             "key": "s",
             "duration": 0.98
+          },
+          {
+            "key": "a",
+            "duration": 0.1
           }
         ]
       }
