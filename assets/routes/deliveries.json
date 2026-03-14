@@ -802,5 +802,66 @@
         ]
       }
     ]
+  },
+  {
+    "id": "235fc03c",
+    "name": "库济米尼奇娜",
+    "type": "送货",
+    "area": "",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.47
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 92
+          },
+          {
+            "distance": 109,
+            "angle_x": 0.42,
+            "angle_y": -11.73
+          },
+          {
+            "distance": 69,
+            "angle_x": 0.0,
+            "angle_y": 5.91
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 1.19
+          },
+          {
+            "key": "w",
+            "duration": 3.71
+          },
+          {
+            "key": "d",
+            "duration": 1.42
+          },
+          {
+            "key": "d",
+            "duration": 0.18
+          },
+          {
+            "key": "w",
+            "duration": 0.66
+          }
+        ]
+      }
+    ]
   }
 ]
