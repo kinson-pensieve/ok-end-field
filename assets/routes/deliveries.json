@@ -918,5 +918,67 @@
         ]
       }
     ]
-  }
+  },
+  {
+  "id": "ad660809",
+  "name": "联盟停车场",
+  "type": "送货",
+  "area": "供能高地",
+  "teleport": "",
+  "steps": [
+    {
+      "type": "walk",
+      "actions": [
+        {
+          "key": "a",
+          "duration": 1.58
+        }
+      ]
+    },
+    {
+      "type": "zipline",
+      "nodes": [
+        {
+          "distance": 92,
+          "angle_x": -0.51,
+          "angle_y": -0.84
+        },
+        {
+          "distance": 110,
+          "angle_x": -2.7,
+          "angle_y": -8.52
+        }
+      ]
+    },
+    {
+      "type": "walk",
+      "actions": [
+        {
+          "angle_x": 4.81,
+          "angle_y": -0.42
+        },
+        {
+          "angle_x": 0.0,
+          "angle_y": 0.08
+        },
+        {
+          "angle_x": 4.47,
+          "angle_y": -2.62
+        },
+        {
+          "angle_x": 0.17,
+          "angle_y": 0.17
+        },
+        {
+          "key": "w",
+          "duration": 4.29
+        },
+        {
+          "key": "d",
+          "duration": 0.71
+        }
+      ]
+    }
+  ]
+}
 ]
