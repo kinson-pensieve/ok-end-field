@@ -602,10 +602,12 @@ class GugaDeliveryTask(BaseNavTask):
             if tracking_box:
                 self.log_info(f"confirmed recycling station: {station_name}")
                 self.press_key("esc", after_sleep=0.5)  # Close map
+                self.ensure_main(time_out=5)  # Ensure back to world
                 return station_name
             else:
                 self.log_info(f"station {station_name} is not the target, closing map and retrying")
                 self.press_key("esc", after_sleep=0.5)  # Close map, back to world
+                self.ensure_main(time_out=5)  # Ensure back to world before next attempt
 
         self.log_error("failed to confirm any recycling station in area")
         return None
