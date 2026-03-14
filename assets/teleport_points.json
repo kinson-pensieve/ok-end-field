@@ -227,16 +227,16 @@
     "name": "界石坪",
     "region": "武陵",
     "area": "武陵城",
-    "direction": "bottom_right",
-    "coordinates": "0.17,0.02",
+    "direction": "center",
+    "coordinates": "0.29,0.16",
     "world": "塔卫二"
   },
   {
     "name": "方兴衢",
     "region": "武陵",
     "area": "武陵城",
-    "direction": "bottom_right",
-    "coordinates": "0.38,0.11",
+    "direction": "center",
+    "coordinates": "0.50,0.28",
     "world": "塔卫二"
   },
   {
@@ -244,7 +244,7 @@
     "region": "武陵",
     "area": "武陵城",
     "direction": "bottom_right",
-    "coordinates": "0.20,0.34",
+    "coordinates": "0.28,0.10",
     "world": "塔卫二"
   },
   {
@@ -252,7 +252,7 @@
     "region": "武陵",
     "area": "武陵城",
     "direction": "bottom_right",
-    "coordinates": "0.38,0.61",
+    "coordinates": "0.46,0.38",
     "world": "塔卫二"
   },
   {
@@ -260,7 +260,7 @@
     "region": "武陵",
     "area": "武陵城",
     "direction": "bottom_right",
-    "coordinates": "0.55,0.57",
+    "coordinates": "0.63,0.34",
     "world": "塔卫二"
   },
   {
@@ -268,15 +268,15 @@
     "region": "武陵",
     "area": "武陵城",
     "direction": "bottom_right",
-    "coordinates": "0.63,0.41",
+    "coordinates": "0.71,0.17",
     "world": "塔卫二"
   },
   {
     "name": "待修缮区",
     "region": "武陵",
     "area": "武陵城",
-    "direction": "bottom_right",
-    "coordinates": "0.60,0.04",
+    "direction": "center",
+    "coordinates": "0.72,0.20",
     "world": "塔卫二"
   },
   {
@@ -284,7 +284,15 @@
     "region": "武陵",
     "area": "武陵城",
     "direction": "top_left",
-    "coordinates": "0.81,0.49",
+    "coordinates": "0.73,0.57",
+    "world": "塔卫二"
+  },
+  {
+    "name": "三区交界",
+    "region": "武陵",
+    "area": "武陵城",
+    "direction": "bottom_right",
+    "coordinates": "0.74,0.50",
     "world": "塔卫二"
   },
   {
