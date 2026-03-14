@@ -732,12 +732,17 @@ class GugaDeliveryTask(BaseNavTask):
         self.ensure_main(time_out=10)  # confirm returned to main world (will press ESC repeatedly if needed)
 
         # navigate to destination and deliver
-        dest_route = self.store.find(destination, dest_type="送货")
+        # Determine destination type (recycling station vs normal delivery)
+        dest_type = "送货"
+        if any(s.get("name") == destination for s in self.recycling_stations):
+            dest_type = "资源回收站"
+
+        dest_route = self.store.find(destination, dest_type=dest_type)
         if not dest_route:
             self.log_error(f"no route found for destination: {destination}, please record the route first")
             return False
-        self.log_info(f"navigating to destination: {destination}")
-        if not self.navigator.navigate_to(destination, dest_type="送货"):
+        self.log_info(f"navigating to destination: {destination} (type: {dest_type})")
+        if not self.navigator.navigate_to(destination, dest_type=dest_type):
             self.log_error(f"navigation to destination failed: {destination}")
             return False
 
