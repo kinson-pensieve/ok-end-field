@@ -52,15 +52,29 @@ class NavigationTask(BaseNavTask):
             "widget_factory": self._create_route_editor,
         }
 
+    # 地区固定顺序（按游戏主线解锁顺序）
+    _AREA_ORDER = [
+        "枢纽区",
+        "谷地通道",
+        "阿伯莉采石场",
+        "源石研究园",
+        "供能高地",
+        "矿脉源区",
+        "景玉谷",
+        "武陵城",
+    ]
+
     def _build_area_options(self):
-        """构建地区筛选选项列表"""
-        areas = set()
-        for route in self.store.all():
-            area = route.get("area", "")
-            if area:
-                areas.add(area)
-        area_list = sorted(areas)
-        return ["全部"] + area_list
+        """构建地区筛选选项列表（按游戏解锁顺序）"""
+        areas_in_routes = {
+            route.get("area", "")
+            for route in self.store.all()
+            if route.get("area")
+        }
+        # 先按固定顺序排列已知地区，剩余的按字母顺序追加
+        ordered = [a for a in self._AREA_ORDER if a in areas_in_routes]
+        remaining = sorted(areas_in_routes - set(self._AREA_ORDER))
+        return ["全部"] + ordered + remaining
 
     def _build_display_names(self, area_filter="全部"):
         """从 store 构建下拉框选项列表和 name_mapping
