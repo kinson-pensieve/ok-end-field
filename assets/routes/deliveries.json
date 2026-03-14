@@ -565,5 +565,222 @@
         ]
       }
     ]
+  },
+  {
+    "id": "2b65109e",
+    "name": "法比安柯林斯",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.07
+          },
+          {
+            "key": "s",
+            "duration": 0.96
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 69,
+            "angle_x": -6.67,
+            "angle_y": -9.11
+          },
+          {
+            "distance": 47,
+            "angle_x": -6.67,
+            "angle_y": 7.68
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 2.43
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "a",
+            "duration": 0.39
+          },
+          {
+            "key": "s",
+            "duration": 0.63
+          },
+          {
+            "key": "d",
+            "duration": 0.18
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "4d3809f3",
+    "name": "基特",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.15
+          },
+          {
+            "key": "s",
+            "duration": 1.07
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 53,
+            "angle_x": -0.08,
+            "angle_y": -0.34
+          },
+          {
+            "distance": 100,
+            "angle_x": -4.22,
+            "angle_y": -5.57
+          },
+          {
+            "distance": 62,
+            "angle_x": 5.57,
+            "angle_y": -6.41
+          },
+          {
+            "distance": 36,
+            "angle_x": -4.22,
+            "angle_y": 4.98
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 3.34
+          },
+          {
+            "key": "w",
+            "duration": 2.62
+          },
+          {
+            "key": "a",
+            "duration": 2.62
+          },
+          {
+            "key": "w",
+            "duration": 1.78
+          },
+          {
+            "key": "a",
+            "duration": 5.18
+          },
+          {
+            "key": "s",
+            "duration": 1.05
+          },
+          {
+            "key": "a",
+            "duration": 5.15
+          },
+          {
+            "key": "s",
+            "duration": 1.67
+          },
+          {
+            "key": "a",
+            "duration": 1.17
+          },
+          {
+            "key": "s",
+            "duration": 1.93
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "037185e6",
+    "name": "英格",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.52
+          },
+          {
+            "key": "s",
+            "duration": 0.96
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 53,
+            "angle_x": 0.84,
+            "angle_y": -0.84
+          },
+          {
+            "distance": 100,
+            "angle_x": -10.38,
+            "angle_y": -13.25
+          },
+          {
+            "distance": 89,
+            "angle_x": 1.27,
+            "angle_y": 4.13
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 3.86
+          },
+          {
+            "key": "w",
+            "duration": 1.93
+          },
+          {
+            "key": "d",
+            "duration": 1.04
+          },
+          {
+            "key": "w",
+            "duration": 1.22
+          }
+        ]
+      }
+    ]
   }
 ]
