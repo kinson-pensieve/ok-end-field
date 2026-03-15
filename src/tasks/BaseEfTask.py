@@ -8,6 +8,7 @@ from typing import List
 import cv2
 import imagehash
 import numpy as np
+import win32gui
 from PIL import Image
 from ok import BaseTask, Box
 from skimage.metrics import structural_similarity as ssim
@@ -18,10 +19,19 @@ from src.essence.essence_recognizer import EssenceInfo, read_essence_info
 from src.image.frame_processes import isolate_by_hsv_ranges
 from src.interaction.Key import move_keys
 from src.interaction.KeyConfig import KeyConfigManager
-from src.interaction.Mouse import active_and_send_mouse_delta, move_to_target_once, run_at_window_pos
+from src.interaction.Mouse import active_and_send_mouse_delta, move_to_target_once, run_at_window_pos, run_in_window
 from src.interaction.ScreenPosition import ScreenPosition
+from src.data.world_map import areas_list
 
 
+def back_window(prev):
+    current = win32gui.GetForegroundWindow()
+
+    if prev and win32gui.IsWindow(prev) and current != prev:
+        try:
+            win32gui.SetForegroundWindow(prev)
+        except:
+            pass
 
 
 class BaseEfTask(BaseTask):
@@ -32,7 +42,8 @@ class BaseEfTask(BaseTask):
         self._logged_in = False  # 记录是否已登录游戏
         self.box = ScreenPosition(self)  # 屏幕位置辅助对象，提供top/bottom/left/right等边界
         self.key_config = self.get_global_config('Game Hotkey Config')  # 获取全局热键配置
-        self.once_sleep_time = self.get_global_config('Ensure Main Once Action Sleep').get("SingleActionWithDelay", 1.5)  # 获取全局配置的单次动作睡眠时间
+        self.once_sleep_time = self.get_global_config('Ensure Main Once Action Sleep').get("SingleActionWithDelay",
+                                                                                           1.5)  # 获取全局配置的单次动作睡眠时间
         self.key_manager = KeyConfigManager(self.key_config)  # 初始化热键管理器
         self._detector = None
         self._detector_loading = False
@@ -74,78 +85,48 @@ class BaseEfTask(BaseTask):
 
         return self._detector
 
-    def press_key(self, key: str, down_time: float = 0.02, after_sleep: float = 0, interval: int = -1):
-        """发送通用部分的游戏热键。
-        
-        先从配置中查询是否有该键的自定义映射，如果没有则直接使用传入的键值。
-        
-        Args:
-            key: 按键值（如 'q', 'e', 'f1' 等），系统会先检查配置中是否有映射
-            down_time: 按键按下持续时间（秒）
-            after_sleep: 发送后额外等待时间（秒）
-            interval: 按键间隔
-            
-        Returns:
-            send_key 的返回值
-            
-        Example:
-            self.press_key('m', after_sleep=0.5)           # 地图键
-            self.press_key('b')                            # 背包键
-            self.press_key('f8', after_sleep=1)            # 行动手册键
-        """
-        actual_key = self.key_manager.resolve_common_key(key)
+    def press_game_key(
+        self,
+        key: str,
+        key_type: str = "common",
+        down_time: float = 0.02,
+        after_sleep: float = 0,
+        interval: int = -1
+    ):
+
+        if key_type == "common":
+            actual_key = self.key_manager.resolve_common_key(key)
+        elif key_type == "industry":
+            actual_key = self.key_manager.resolve_industry_key(key)
+        elif key_type == "combat":
+            actual_key = self.key_manager.resolve_combat_key(key)
+        else:
+            raise ValueError(f"未知 key_type: {key_type}")
+
         return self.send_key(actual_key, interval=interval, down_time=down_time, after_sleep=after_sleep)
 
-    def press_industry_key(self, key: str, down_time: float = 0.02, after_sleep: float = 0, interval: int = -1):
-        """发送集成工业部分的游戏热键。
-        
-        先从配置中查询是否有该键的自定义映射，如果没有则直接使用传入的键值。
-        
-        Args:
-            key: 按键值（如 'q', 'e', 'capslock' 等），系统会先检查配置中是否有映射
-            down_time: 按键按下持续时间（秒）
-            after_sleep: 发送后额外等待时间（秒）
-            interval: 按键间隔
-            
-        Returns:
-            send_key 的返回值
-            
-        Example:
-            self.press_industry_key('q', after_sleep=0.5)     # 放置管道
-            self.press_industry_key('e')                      # 放置传送带
-            self.press_industry_key('capslock', after_sleep=1) # 俯瞰模式
-        """
-        actual_key = self.key_manager.resolve_industry_key(key)
-        return self.send_key(actual_key, interval=interval, down_time=down_time, after_sleep=after_sleep)
+    def press_key(self, key, **kwargs):
+        return self.press_game_key(key, "common", **kwargs)
 
-    def press_combat_key(self, key: str, down_time: float = 0.02, after_sleep: float = 0, interval: int = -1):
-        """发送战斗专用部分的游戏热键。
-        
-        先从配置中查询是否有该键的自定义映射，如果没有则直接使用传入的键值。
-        
-        Args:
-            key: 按键值（如 'e' 等），系统会先检查配置中是否有映射
-            down_time: 按键按下持续时间（秒）
-            after_sleep: 发送后额外等待时间（秒）
-            interval: 按键间隔
-            
-        Returns:
-            send_key 的返回值
-            
-        Example:
-            self.press_combat_key('e', after_sleep=0.5)  # 释放连携技
-        """
-        actual_key = self.key_manager.resolve_combat_key(key)
-        return self.send_key(actual_key, interval=interval, down_time=down_time, after_sleep=after_sleep)
+    def press_industry_key(self, key, **kwargs):
+        return self.press_game_key(key, "industry", **kwargs)
 
-    def move_keys(self, keys, duration):
+    def press_combat_key(self, key, **kwargs):
+        return self.press_game_key(key, "combat", **kwargs)
+
+    def move_keys(self, keys, duration, need_back=False):
         """向当前窗口发送按键移动指令
         
         Args:
             keys: 按键或按键列表，例如 "w" 或 ["w", "a"]
             duration: 按键持续时间（秒），例如 0.5
+            need_back: 是否需要回到之前的窗口
         """
+        if need_back:
+            prev = win32gui.GetForegroundWindow()
         move_keys(self.hwnd.hwnd, keys, duration)
+        if need_back:
+            back_window(prev)
 
     def _dodge_with_direction(self, direction_key: str, pre_hold: float = 0.004,
                               dodge_down_time: float = 0.003, after_sleep: float = 0.005):
@@ -421,35 +402,66 @@ class BaseEfTask(BaseTask):
             area: 区域名称（如'地区建设'、'仓储'等）
             model: 模块名称（如'仓储节点'、'据点管理'等）
         """
-        self.press_key("y", after_sleep=2)
-        if not self.wait_click_ocr(
-                match="更换", box=self.box.left, time_out=2, after_sleep=2
-        ):
-            return
-        if not self.wait_click_ocr(
-                match=re.compile(area),
-                box=self.box_of_screen(
-                    648 / 1920, 196 / 1080, 648 / 1920 + 628 / 1920, 196 / 1080 + 192 / 1080
-                ),
-                time_out=2,
-                after_sleep=2,
-        ):
-            return
-        if not self.wait_click_ocr(
-                match="确认",
-                box=self.box.bottom_right,
-                time_out=2,
-                after_sleep=2,
-        ):
-            return
+        need_change = True
+        success = False
+
+        for _ in range(3):
+            self.press_key("y", after_sleep=2)
+
+            result = self.wait_ocr(match=[re.compile(area) for area in areas_list], box=self.box.left, time_out=5)
+
+            if result:
+                success = True
+                break
+
+            # 没识别到区域，检测左上角是否有“建设”
+            check = self.wait_ocr(match=re.compile("建设"), box=self.box.top_left, time_out=2)
+
+            if check:
+                # 界面已经在，只是没识别到区域
+                success = True
+                break
+            else:
+                # 没有建设，说明界面没打开，继续下一轮重新按 y
+                self.log_info("未识别到区域且未检测到建设，重新尝试打开界面")
+
+        if not success:
+            self.log_error("未能识别到区域列表")
+            return False
+        for i in result:
+            if area in i.name:
+                need_change = False
+                break
+        if need_change:
+            if not self.wait_click_ocr(
+                    match=re.compile("更换"), box=self.box.left, time_out=2, after_sleep=2, log=True
+            ):
+                return False
+            if not self.wait_click_ocr(
+                    match=re.compile(area),
+                    box=self.box_of_screen(
+                        648 / 1920, 196 / 1080, 648 / 1920 + 628 / 1920, 196 / 1080 + 192 / 1080
+                    ),
+                    time_out=2,
+                    after_sleep=2,
+            ):
+                return False
+            if not self.wait_click_ocr(
+                    match=re.compile("确认"),
+                    box=self.box.bottom_right,
+                    time_out=2,
+                    after_sleep=2,
+            ):
+                return False
         box = self.wait_ocr(
             match=re.compile(f"{model}"), box=self.box.right, time_out=5
         )
         if box:
             self.click(box[0], move_back=True, after_sleep=0.5)
+            return True
         else:
             self.log_error(f"未找到‘{model}’按钮，任务中止。")
-            return
+            return False
 
     def skip_dialog(self, end_list=re.compile("确认"), end_box=None):
         """跳过对话框，自动点击"确认"或"跳过"按钮

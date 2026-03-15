@@ -27,7 +27,7 @@ class DeliveryRow:
     box: Tuple[float, float, float, float]  # (x1, y1, x2, y2)
 
 
-class DeliveryTask(ZipLineMixin, MapMixin, NavigationMixin, BaseEfTask):
+class DeliveryTask(ZipLineMixin, MapMixin):
     """运输委托自动化任务类 - 处理游戏中的送货操作"""
 
     # 配置键名常量
@@ -526,7 +526,15 @@ class DeliveryTask(ZipLineMixin, MapMixin, NavigationMixin, BaseEfTask):
                         return
                     if not self.to_storage_point_and_back_zip_line():
                         return
-                    ends_list_pattern_dict = {re.compile(end): end for end in self.ends}
+                    ends_list_pattern_dict = {}
+
+                    for end in self.ends:
+                        if end == "常沄":
+                            pattern = re.compile(r"常[沄云汶运法]")
+                        else:
+                            pattern = re.compile(end)
+
+                        ends_list_pattern_dict[pattern] = end
                     results = self.wait_ocr(
                         match=list(ends_list_pattern_dict.keys()), box=self.box.left, time_out=10, log=True
                     )

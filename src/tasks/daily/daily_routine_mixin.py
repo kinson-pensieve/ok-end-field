@@ -325,7 +325,7 @@ class DailyRoutineMixin(BaseEfTask):
             re.compile(i) for i in get_goods_by_outpost_name(outpost_name)
         ]
 
-        max_attempts = 5
+        max_attempts = 7
         skip_goods = set()
 
         for attempt in range(1, max_attempts + 1):
@@ -350,7 +350,7 @@ class DailyRoutineMixin(BaseEfTask):
             for good in goods:
                 standard_name = next(
                     (
-                        kw for kw in can_exchange_goods
+                        kw for kw in sorted(can_exchange_goods, key=len, reverse=True)
                         if (kw in good.name or good.name in kw)
                            and len(good.name) >= max(2, len(kw) - 1)
                     ),

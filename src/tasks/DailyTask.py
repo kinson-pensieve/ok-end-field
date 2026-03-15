@@ -15,9 +15,7 @@ class DailyTask(
     DailyTradeMixin,
     DailyRoutineMixin,
     DailyShopMixin,
-    DailyBattleMixin,
-    Common,
-    BaseEfTask
+    DailyBattleMixin
 ):
     """日常任务聚合执行器。"""
 
