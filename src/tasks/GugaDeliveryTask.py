@@ -571,7 +571,7 @@ class GugaDeliveryTask(BaseNavTask):
             self.log_info(f"confirming recycling station: {station_name}")
 
             # Open map for this station
-            self.press_key("m", after_sleep=1)
+            self.press_key("m", after_sleep=2)
             self.sleep(1)
 
             # Drag map to direction (like Teleporter)
