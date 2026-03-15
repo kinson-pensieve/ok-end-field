@@ -211,10 +211,10 @@ class GugaDeliveryTask(BaseNavTask):
             self.sleep(0.2)
         self.wait_ui_stable(refresh_interval=1)
 
-        # check if first row has "查看任务" button
-        self.log_info("checking if first row has '查看任务'...")
+        # check if first row has "查看任务" button (only check once at the beginning)
+        self.log_info("waiting for first row to check if has '查看任务'...")
         check_task_box = self.box_of_screen(0.79, 0.29, 0.97, 0.34)
-        check_task_results = self.ocr(match="查看任务", box=check_task_box, raise_if_not_found=False)
+        check_task_results = self.wait_ocr(match="查看任务", box=check_task_box, time_out=5)
         if check_task_results:
             self.log_info("first row has '查看任务' - clicking to open task panel")
             self.click(check_task_results[0], after_sleep=2)
@@ -242,6 +242,7 @@ class GugaDeliveryTask(BaseNavTask):
         scroll_step = 0
         scroll_direction = -1
         refresh_not_found_count = 0
+        first_row_checked = True  # flag to ensure we only check first row once
 
         while True:
             if not self.enabled:
@@ -307,7 +308,7 @@ class GugaDeliveryTask(BaseNavTask):
                         self.sleep(1.0)
 
                         delivery_text = self.wait_ocr(
-                            match="点击屏幕继续", time_out=1, raise_if_not_found=False
+                            match="点击屏幕继续", time_out=1
                         )
                         if delivery_text:
                             self.log_info(f"accept succeeded (attempt {attempt})")
