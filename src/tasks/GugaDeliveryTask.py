@@ -192,11 +192,46 @@ class GugaDeliveryTask(BaseNavTask):
 
         return None
 
+    def _check_daily_commission_count(self) -> bool:
+        """Check if today's accepted commission count is 3 (limit reached).
+
+        Uses color detection for red (FF8080) numbers at box (0.80, 0.90, 0.83, 0.95).
+
+        Returns:
+            bool: True if count is 3 (limit reached), False otherwise
+        """
+        try:
+            self.log_info("checking daily commission count...")
+            box = self.box_of_screen(0.80, 0.90, 0.83, 0.95)
+
+            # Use OCR to extract the number in the red box
+            ocr_results = self.ocr(box=box)
+            if not ocr_results:
+                self.log_debug("no OCR results found in commission count box")
+                return False
+
+            # Extract the count number
+            for text_obj in ocr_results:
+                text = text_obj.text.strip()
+                if text.isdigit():
+                    count = int(text)
+                    self.log_info(f"daily commission count: {count}/3")
+                    if count >= 3:
+                        self.log_info("commission limit reached (3/3)")
+                        return True
+                    return False
+
+            self.log_debug("could not parse commission count from OCR results")
+            return False
+        except Exception as e:
+            self.log_error(f"error checking commission count: {e}")
+            return False
+
     def _accept_commission_order(self):
         """Open commission panel and accept a matching commission using TakeDeliveryTask approach.
 
         Returns:
-            bool: True if order accepted successfully
+            bool: True if order accepted successfully, None if limit reached
         """
         self.ensure_main(time_out=120)
         self.log_info("opening commission panel")
@@ -225,6 +260,13 @@ class GugaDeliveryTask(BaseNavTask):
             self.log_info("returned to main world via task panel")
             self.ensure_main(time_out=10)
             return True
+
+        # After first row check, check daily commission count limit
+        self.log_info("checking daily commission count...")
+        if self._check_daily_commission_count():
+            self.log_info("daily commission limit reached, aborting")
+            self.ensure_main(time_out=10)
+            return None  # Return None to indicate limit reached, not failure
 
         # no "查看任务" in first row, scroll down and start accepting
         self.log_info("first row clean, scrolling down to find commissions")
@@ -804,7 +846,10 @@ class GugaDeliveryTask(BaseNavTask):
         # accept order
         pickup_route = None
         if order_type == ORDER_COMMISSION:
-            if not self._accept_commission_order():
+            result = self._accept_commission_order()
+            if result is None:
+                return None  # daily limit reached (3/3 commissions)
+            elif not result:
                 self.log_error("failed to accept commission order")
                 return False
         elif order_type == ORDER_LOCAL:
@@ -891,7 +936,16 @@ class GugaDeliveryTask(BaseNavTask):
             self.ensure_main()
             return True
         else:
-            return self._run_single_delivery(ORDER_COMMISSION)
+            # Loop accepting commission orders until daily limit reached
+            while True:
+                result = self._run_single_delivery(ORDER_COMMISSION)
+                if result is None:
+                    # Limit reached (3/3 commissions today)
+                    self.log_info("daily commission limit reached, stopping loop")
+                    return True
+                if not result:
+                    # Error during delivery
+                    return False
 
     def run(self):
         return self.execute()
