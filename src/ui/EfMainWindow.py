@@ -32,6 +32,7 @@ class EfMainWindow(MainWindow):
         self.exit_event = exit_event
         self.onetime_tab = None
         self.trigger_tab = None
+        self.schedule_tab = None
         self.version = version
         self.emulator_starting_dialog = None
         self.do_not_quit = False
@@ -55,6 +56,13 @@ class EfMainWindow(MainWindow):
                 tab_obj = init_class_by_name(tab[0], tab[1])
                 tab_obj.executor = executor
                 self.addSubInterface(tab_obj, tab_obj.icon, tab_obj.name, position=tab_obj.position)
+
+        # 计划任务Tab
+        any_support_schedule = any(task.support_schedule_task for task in executor.onetime_tasks)
+        if any_support_schedule:
+            from ok.gui.tasks.ScheduleTaskTab import ScheduleTaskTab
+            self.schedule_tab = ScheduleTaskTab(config=self.config)
+            self.addSubInterface(self.schedule_tab, FluentIcon.CALENDAR, self.tr('Schedule'))
 
         # debug tabs
         if debug:
