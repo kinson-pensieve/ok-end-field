@@ -29,6 +29,20 @@ AREA_ALL = "全部"
 AREA_WULING = "武陵"
 AREA_VALLEY = "四号谷地"
 
+# Commission filter configuration per area
+COMMISSION_CONFIG = {
+    AREA_WULING: {
+        "ticket_types": ["ticket_wuling"],
+        "filter_min": 7.9,
+        "filter_max": 7.99,
+    },
+    AREA_VALLEY: {
+        "ticket_types": ["ticket_valley"],
+        "filter_min": 30.0,
+        "filter_max": 32.0,
+    },
+}
+
 
 class GugaDeliveryTask(BaseNavTask):
     """Guga delivery task - uses Navigator route system for automated delivery"""
@@ -227,15 +241,31 @@ class GugaDeliveryTask(BaseNavTask):
             self.log_error(f"error checking commission count: {e}")
             return False
 
-    def _accept_commission_order(self):
+    def _accept_commission_order(self, area=None):
         """Open commission panel and accept a matching commission using TakeDeliveryTask approach.
+
+        Args:
+            area: Target area (AREA_WULING or AREA_VALLEY), defaults to AREA_WULING
 
         Returns:
             bool: True if order accepted successfully, None if limit reached
         """
+        if area is None:
+            area = AREA_WULING
+
+        # Get commission filter config for the area
+        if area not in COMMISSION_CONFIG:
+            self.log_error(f"unknown area: {area}")
+            return False
+
+        area_config = COMMISSION_CONFIG[area]
+        ticket_types = area_config["ticket_types"]
+        filter_min = area_config["filter_min"]
+        filter_max = area_config["filter_max"]
+
         self.ensure_main(time_out=120)
-        self.log_info("opening commission panel")
-        self.to_model_area("武陵", "仓储节点")
+        self.log_info(f"opening commission panel for {area}")
+        self.to_model_area(area, "仓储节点")
         delivery_box = self.wait_ocr(match="运送委托列表", time_out=5)
         if delivery_box:
             self.click(delivery_box[0], move_back=True, after_sleep=0.5)
@@ -279,11 +309,6 @@ class GugaDeliveryTask(BaseNavTask):
 
         reward_regex = r"(\d+\.?\d*)万"
         reward_pattern = re.compile(reward_regex, re.I)
-
-        # only accept wuling commissions in range [7.9, 7.99]万
-        ticket_types = ["ticket_wuling"]
-        filter_min = 7.9
-        filter_max = 7.99
 
         scroll_step = 0
         scroll_direction = -1
@@ -846,7 +871,7 @@ class GugaDeliveryTask(BaseNavTask):
         # accept order
         pickup_route = None
         if order_type == ORDER_COMMISSION:
-            result = self._accept_commission_order()
+            result = self._accept_commission_order(area=area)
             if result is None:
                 return None  # daily limit reached (3/3 commissions)
             elif not result:
@@ -915,13 +940,13 @@ class GugaDeliveryTask(BaseNavTask):
         if area_filter is None:
             area_filter = self.config.get(CFG_AREA, AREA_ALL)
 
-        if order_type == ORDER_LOCAL:
-            # Determine which areas to process based on filter
-            if area_filter == AREA_ALL:
-                areas = [AREA_WULING, AREA_VALLEY]
-            else:
-                areas = [area_filter]
+        # Determine which areas to process based on filter
+        if area_filter == AREA_ALL:
+            areas = [AREA_WULING, AREA_VALLEY]
+        else:
+            areas = [area_filter]
 
+        if order_type == ORDER_LOCAL:
             # Loop through each area until no more orders found
             for area in areas:
                 while True:
@@ -937,15 +962,25 @@ class GugaDeliveryTask(BaseNavTask):
             return True
         else:
             # Loop accepting commission orders until daily limit reached
+            # Note: For commissions, we cycle through areas unless a specific area is selected
+            current_area_idx = 0
             while True:
-                result = self._run_single_delivery(ORDER_COMMISSION)
+                area = areas[current_area_idx % len(areas)]
+                result = self._run_single_delivery(ORDER_COMMISSION, area=area)
                 if result is None:
                     # Limit reached (3/3 commissions today)
                     self.log_info("daily commission limit reached, stopping loop")
                     return True
                 if not result:
-                    # Error during delivery
-                    return False
+                    # Error during delivery, try next area
+                    current_area_idx += 1
+                    if current_area_idx >= len(areas):
+                        # Tried all areas, all failed
+                        return False
+                else:
+                    # Success, continue with same area or move to next
+                    # Keep trying same area as long as we keep getting commissions
+                    pass
 
     def run(self):
         return self.execute()
