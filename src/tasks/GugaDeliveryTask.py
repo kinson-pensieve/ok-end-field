@@ -209,14 +209,14 @@ class GugaDeliveryTask(BaseNavTask):
     def _check_daily_commission_count(self) -> bool:
         """Check if today's accepted commission count is 3 (limit reached).
 
-        Uses color detection for red (FF8080) numbers at box (0.80, 0.90, 0.83, 0.95).
+        Uses OCR to detect the number at box (0.80, 0.90, 0.83, 0.95).
 
         Returns:
             bool: True if count is 3 (limit reached), False otherwise
         """
         try:
             self.log_info("checking daily commission count...")
-            box = self.box_of_screen(0.80, 0.90, 0.83, 0.96)
+            box = self.box_of_screen(0.80, 0.90, 0.83, 0.95)
 
             # Use OCR to extract the number in the red box
             ocr_results = self.ocr(box=box)
@@ -224,18 +224,22 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_debug("no OCR results found in commission count box")
                 return False
 
-            # Extract the count number
+            self.log_debug(f"OCR results in commission count box: {[t.text for t in ocr_results]}")
+
+            # Extract the count number - look for any digit in results
             for text_obj in ocr_results:
                 text = text_obj.text.strip()
-                if text.isdigit():
-                    count = int(text)
-                    self.log_info(f"daily commission count: {count}/3")
-                    if count >= 3:
-                        self.log_info("commission limit reached (3/3)")
-                        return True
-                    return False
+                # Try to parse as integer, handling both "3" and "3/3" format
+                for char in text:
+                    if char.isdigit():
+                        count = int(char)
+                        self.log_info(f"daily commission count: {count}/3")
+                        if count >= 3:
+                            self.log_info("commission limit reached (3/3)")
+                            return True
+                        return False
 
-            self.log_debug("could not parse commission count from OCR results")
+            self.log_debug("could not find any digit in commission count box OCR results")
             return False
         except Exception as e:
             self.log_error(f"error checking commission count: {e}")
