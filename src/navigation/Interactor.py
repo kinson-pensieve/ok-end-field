@@ -73,6 +73,8 @@ class Interactor:
             # Recycling station delivery
             task.log_info(f"检测到资源回收站送货，目标: {name}")
             task.press_key('f', after_sleep=2)
+            # Click at (0.50, 0.80) to close the delivery UI and return to main world
+            task.click(0.50, 0.80, after_sleep=2)
             task.ensure_main()
             task.log_info(f"已完成资源回收站送货: {name}")
         else:
