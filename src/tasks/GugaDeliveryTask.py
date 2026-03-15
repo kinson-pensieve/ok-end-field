@@ -204,17 +204,12 @@ class GugaDeliveryTask(BaseNavTask):
         delivery_box = self.wait_ocr(match="运送委托列表", time_out=5)
         if delivery_box:
             self.click(delivery_box[0], move_back=True, after_sleep=0.5)
-        cx = int(self.width * 0.5)
-        cy = int(self.height * 0.5)
-        for _ in range(6):
-            self.scroll(cx, cy, -8)
-            self.sleep(0.2)
         self.wait_ui_stable(refresh_interval=1)
 
         # check if first row has "查看任务" button (only check once at the beginning)
-        self.log_info("waiting for first row to check if has '查看任务'...")
+        self.log_info("checking first row for '查看任务'...")
         check_task_box = self.box_of_screen(0.79, 0.29, 0.97, 0.34)
-        check_task_results = self.wait_ocr(match="查看任务", box=check_task_box, time_out=5)
+        check_task_results = self.wait_ocr(match="查看任务", box=check_task_box, time_out=3)
         if check_task_results:
             self.log_info("first row has '查看任务' - clicking to open task panel")
             self.click(check_task_results[0], after_sleep=2)
@@ -231,6 +226,15 @@ class GugaDeliveryTask(BaseNavTask):
             self.ensure_main(time_out=10)
             return True
 
+        # no "查看任务" in first row, scroll down and start accepting
+        self.log_info("first row clean, scrolling down to find commissions")
+        cx = int(self.width * 0.5)
+        cy = int(self.height * 0.5)
+        for _ in range(6):
+            self.scroll(cx, cy, -8)
+            self.sleep(0.2)
+        self.wait_ui_stable(refresh_interval=1)
+
         reward_regex = r"(\d+\.?\d*)万"
         reward_pattern = re.compile(reward_regex, re.I)
 
@@ -242,7 +246,6 @@ class GugaDeliveryTask(BaseNavTask):
         scroll_step = 0
         scroll_direction = -1
         refresh_not_found_count = 0
-        first_row_checked = True  # flag to ensure we only check first row once
 
         while True:
             if not self.enabled:
