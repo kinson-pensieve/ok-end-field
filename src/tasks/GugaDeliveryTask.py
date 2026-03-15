@@ -224,11 +224,11 @@ class GugaDeliveryTask(BaseNavTask):
                 self.log_debug("no OCR results found in commission count box")
                 return False
 
-            self.log_debug(f"OCR results in commission count box: {[t.text for t in ocr_results]}")
+            self.log_debug(f"OCR results in commission count box: {[t.name for t in ocr_results]}")
 
             # Extract the count number - look for any digit in results
             for text_obj in ocr_results:
-                text = text_obj.text.strip()
+                text = text_obj.name.strip()
                 # Try to parse as integer, handling both "3" and "3/3" format
                 for char in text:
                     if char.isdigit():
