@@ -258,6 +258,7 @@ class GugaDeliveryTask(BaseNavTask):
                 )
 
                 if refresh_btn:
+                    self.last_refresh_box = refresh_btn
                     refresh_not_found_count = 0
 
                 # sort rewards by Y coordinate (top to bottom)
