@@ -1,432 +1,400 @@
-2026-03-15 17:53:44,357 INFO MainThread ok:ok-script init dev, ['C:\\Users\\lqs42\\Documents\\GitHub\\kinson\\ok-end-field/main_debug.py'], pid=61952 config: {'debug': True, 'use_gui': True, 'config_folder': 'configs', 'screenshot_processor': <function make_bottom_left_black at 0x000001AE253A1080>, 'gui_icon': 'icons/icon.png', 'global_configs': [<ok.util.config.ConfigOption object at 0x000001AE253616D0>, <ok.util.config.ConfigOption object at 0x000001AE2514AEA0>], 'wait_until_before_delay': 0, 'wait_until_check_delay': 0, 'wait_until_settle_time': 0, 'ocr': {'lib': 'onnxocr', 'params': {'use_openvino': True, 'use_dml': False}}, 'windows': {'exe': ['Endfield.exe'], 'interaction': <class 'src.interaction.EfInteraction.EfInteraction'>, 'capture_method': ['WGC', 'BitBlt_RenderFull'], 'check_hdr': True, 'force_no_hdr': False, 'require_bg': True}, 'start_timeout': 60, 'window_size': {'width': 1200, 'height': 800, 'min_width': 600, 'min_height': 450}, 'supported_resolution': {'ratio': '16:9', 'min_size': (1280, 720)}, 'links': {'default': {'github': 'https://github.com/ok-oldking/ok-end-field', 'discord': 'https://discord.gg/vVyCatEBgA', 'sponsor': 'https://www.paypal.com/ncp/payment/JWQBH7JZKNGCQ', 'qq_group': 'https://qm.qq.com/q/NcWHQU6q8k', 'share': 'https://1drv.ms/f/c/0c7567d06cc5b5f3/IgAudOtrzHPVT6sJgWeWSiByAZNvwAzcehIdj3hEcprRlP0?e=nsEBmm', 'faq': 'https://github.com/ok-oldking/ok-end-field', 'qq_channel': 'https://pd.qq.com/s/djmm6l44y'}, 'zh_CN': {'github': 'https://github.com/ok-oldking/ok-end-field', 'discord': 'https://discord.gg/vVyCatEBgA', 'sponsor': 'https://afdian.com/a/AliceJump', 'share': 'https://1drv.ms/f/c/0c7567d06cc5b5f3/IgAudOtrzHPVT6sJgWeWSiByAZNvwAzcehIdj3hEcprRlP0?e=nsEBmm', 'faq': 'https://cnb.cool/ok-oldking/ok-ef-update/-/blob/main/README.md', 'qq_group': 'https://qm.qq.com/q/NcWHQU6q8k', 'qq_channel': 'https://pd.qq.com/s/djmm6l44y'}}, 'screenshots_folder': 'screenshots', 'yolo': {'model_path': 'assets/models/yolo/best.onnx'}, 'gui_title': 'ok-ef', 'template_matching': {'coco_feature_json': 'assets\\coco_detection.json', 'default_horizontal_variance': 0.002, 'default_vertical_variance': 0.002, 'default_threshold': 0.8, 'hcenter_features': ['default_link_skill', 'pick_f', 'skip_dialog_confirm'], 'vcenter_features': ['default_link_skill', 'skip_dialog_confirm']}, 'version': 'dev', 'my_app': ['src.globals', 'Globals'], 'onetime_tasks': [['src.tasks.DailyTask', 'DailyTask'], ['src.tasks.TakeDeliveryTask', 'TakeDeliveryTask'], ['src.tasks.WarehouseTransferTask', 'WarehouseTransferTask'], ['src.tasks.DeliveryTask', 'DeliveryTask'], ['src.tasks.GugaDeliveryTask', 'GugaDeliveryTask'], ['src.tasks.NavigationTask', 'NavigationTask'], ['src.tasks.RecordTask', 'RecordTask'], ['src.tasks.EssenceScanTask', 'EssenceScanTask'], ['src.tasks.BattleTask', 'BattleTask'], ['src.tasks.Test', 'Test'], ['src.tasks.PeriodicScreenshotTask', 'PeriodicScreenshotTask'], ['ok.task.DiagnosisTask', 'DiagnosisTask']], 'trigger_tasks': [['src.tasks.AutoCombatTask', 'AutoCombatTask'], ['src.tasks.AutoSkipDialogTask', 'AutoSkipDialogTask'], ['src.tasks.AutoPickTask', 'AutoPickTask'], ['src.tasks.AutoLoginTask', 'AutoLoginTask']]}
-2026-03-15 17:53:44,362 INFO MainThread ok:pyappify  app_version:None, app_profile:None, pyappify_version:None pyappify_upgradeable:False, pyappify_executable:None
-2026-03-15 17:53:44,375 DEBUG MainThread Config:init self.config = {'Dodge Key': 'lshift', 'Jump Key': 'space', 'Interact Key': 'f', 'Valuables Key': 'n', 'Team Key': 'u', 'Mission Key': 'j', 'Track Key': 'v', 'Map Key': 'm', 'Baker Key': 'h', 'Mail Key': 'k', 'Handbook Key': 'f8', 'Recruitment Key': 'f9', 'Quick Tool Key': 'r', 'Industry Plan Key': 't', 'Place Belt Key': 'e', 'Place Pipeline Key': 'q', 'Equipment List Key': 'z', 'Overview Mode Key': 'capslock', 'Storage Mode Key': 'x', 'Area Build Key': 'y', 'Blueprint Key': 'f1', 'Product Icon Toggle Key': 'f4'}
-2026-03-15 17:53:44,376 DEBUG MainThread Config:init self.config = {'SingleActionWithDelay': 1.5}
-2026-03-15 17:53:44,376 INFO MainThread capture:check available WINDOWS_BUILD_NUMBER:26200 >= 20348 True
-2026-03-15 17:53:44,400 DEBUG MainThread Config:init self.config = {'Auto Start Game When App Starts': False, 'Minimize Window to System Tray when Closing': False, 'Mute Game while in Background': False, 'Auto Resize Game Window': True, 'Exit App when Game Exits': False, 'Use DirectML': 'Yes', 'Trigger Interval': 1, 'Start/Stop': 'F9', 'Kill Launcher after Start': False, 'Launch with DX11': False, 'Windows Capture': 'WGC'}
-2026-03-15 17:53:44,400 INFO MainThread ok:use_dml result is True
-2026-03-15 17:53:44,401 INFO MainThread ok:SetProcessDpiAwareness 0
-2026-03-15 17:53:44,401 INFO MainThread ok:do_init, config: {'debug': True, 'use_gui': True, 'config_folder': 'configs', 'screenshot_processor': <function make_bottom_left_black at 0x000001AE253A1080>, 'gui_icon': 'icons/icon.png', 'global_configs': [<ok.util.config.ConfigOption object at 0x000001AE253616D0>, <ok.util.config.ConfigOption object at 0x000001AE2514AEA0>], 'wait_until_before_delay': 0, 'wait_until_check_delay': 0, 'wait_until_settle_time': 0, 'ocr': {'lib': 'onnxocr', 'params': {'use_openvino': True, 'use_dml': False}}, 'windows': {'exe': ['Endfield.exe'], 'interaction': <class 'src.interaction.EfInteraction.EfInteraction'>, 'capture_method': ['WGC', 'BitBlt_RenderFull'], 'check_hdr': True, 'force_no_hdr': False, 'require_bg': True}, 'start_timeout': 60, 'window_size': {'width': 1200, 'height': 800, 'min_width': 600, 'min_height': 450}, 'supported_resolution': {'ratio': '16:9', 'min_size': (1280, 720)}, 'links': {'default': {'github': 'https://github.com/ok-oldking/ok-end-field', 'discord': 'https://discord.gg/vVyCatEBgA', 'sponsor': 'https://www.paypal.com/ncp/payment/JWQBH7JZKNGCQ', 'qq_group': 'https://qm.qq.com/q/NcWHQU6q8k', 'share': 'https://1drv.ms/f/c/0c7567d06cc5b5f3/IgAudOtrzHPVT6sJgWeWSiByAZNvwAzcehIdj3hEcprRlP0?e=nsEBmm', 'faq': 'https://github.com/ok-oldking/ok-end-field', 'qq_channel': 'https://pd.qq.com/s/djmm6l44y'}, 'zh_CN': {'github': 'https://github.com/ok-oldking/ok-end-field', 'discord': 'https://discord.gg/vVyCatEBgA', 'sponsor': 'https://afdian.com/a/AliceJump', 'share': 'https://1drv.ms/f/c/0c7567d06cc5b5f3/IgAudOtrzHPVT6sJgWeWSiByAZNvwAzcehIdj3hEcprRlP0?e=nsEBmm', 'faq': 'https://cnb.cool/ok-oldking/ok-ef-update/-/blob/main/README.md', 'qq_group': 'https://qm.qq.com/q/NcWHQU6q8k', 'qq_channel': 'https://pd.qq.com/s/djmm6l44y'}}, 'screenshots_folder': 'screenshots', 'yolo': {'model_path': 'assets/models/yolo/best.onnx'}, 'gui_title': 'ok-ef', 'template_matching': {'coco_feature_json': 'assets\\coco_detection.json', 'default_horizontal_variance': 0.002, 'default_vertical_variance': 0.002, 'default_threshold': 0.8, 'hcenter_features': ['default_link_skill', 'pick_f', 'skip_dialog_confirm'], 'vcenter_features': ['default_link_skill', 'skip_dialog_confirm']}, 'version': 'dev', 'my_app': ['src.globals', 'Globals'], 'onetime_tasks': [['src.tasks.DailyTask', 'DailyTask'], ['src.tasks.TakeDeliveryTask', 'TakeDeliveryTask'], ['src.tasks.WarehouseTransferTask', 'WarehouseTransferTask'], ['src.tasks.DeliveryTask', 'DeliveryTask'], ['src.tasks.GugaDeliveryTask', 'GugaDeliveryTask'], ['src.tasks.NavigationTask', 'NavigationTask'], ['src.tasks.RecordTask', 'RecordTask'], ['src.tasks.EssenceScanTask', 'EssenceScanTask'], ['src.tasks.BattleTask', 'BattleTask'], ['src.tasks.Test', 'Test'], ['src.tasks.PeriodicScreenshotTask', 'PeriodicScreenshotTask'], ['ok.task.DiagnosisTask', 'DiagnosisTask']], 'trigger_tasks': [['src.tasks.AutoCombatTask', 'AutoCombatTask'], ['src.tasks.AutoSkipDialogTask', 'AutoSkipDialogTask'], ['src.tasks.AutoPickTask', 'AutoPickTask'], ['src.tasks.AutoLoginTask', 'AutoLoginTask']]}
-2026-03-15 17:53:44,401 INFO MainThread DeviceManager:__init__ start
-2026-03-15 17:53:44,404 DEBUG MainThread Config:init self.config = {'preferred': 'pc', 'pc_full_path': 'F:\\Endfield Game\\Endfield.exe', 'capture': 'windows', 'selected_exe': '', 'selected_hwnd': 0}
-2026-03-15 17:53:44,405 INFO MainThread capture:HwndWindow init title:None player_id:-1 exe_name:['Endfield.exe'] hwnd_class:None
-2026-03-15 17:53:44,405 DEBUG MainThread capture:update_frame_size:0x0 to 0x0
-2026-03-15 17:53:44,409 DEBUG MainThread capture:find_hwnd results 1 [(4854008, 'F:\\Endfield Game\\Endfield.exe', 1920, 1080, 9, 34, 'Endfield')]
-2026-03-15 17:53:44,409 INFO MainThread capture:do_update_window_size find_hwnd 4854008 F:\Endfield Game\Endfield.exe UnityWndClass real:0,0,0,0
-2026-03-15 17:53:44,409 INFO MainThread capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
-2026-03-15 17:53:44,409 INFO MainThread DeviceManager:__init__ end
-2026-03-15 17:53:44,421 DEBUG MainThread Screenshot:init Screenshot C:\Users\lqs42\Documents\GitHub\kinson\ok-end-field\screenshots None
-2026-03-15 17:53:44,422 DEBUG MainThread Screenshot:load font C:\WINDOWS\Fonts\msyh.ttc
-2026-03-15 17:53:44,427 INFO MainThread Screenshot:clear C:\Users\lqs42\Documents\GitHub\kinson\ok-end-field\screenshots
-2026-03-15 17:53:44,428 DEBUG MainThread FeatureSet:Loading features from C:\Users\lqs42\Documents\GitHub\kinson\ok-end-field\assets\coco_detection.json
-2026-03-15 17:53:44,434 ERROR MainThread TaskExecutor:install ocr translations error for zh_CN 
-2026-03-15 17:53:44,438 DEBUG MainThread app:resources.qt_resource_name b'\x00\x03\x00\x00x\xa3\x00q\x00s\x00s\x00\x04\x00\x06\xc4\xee\x00i\x001\x008\x00n\x00\x08\t:h\xfd\x00e\x00s\x00_\x00E\x00S\x00.\x00q\x00m\x00\x08\x0eI\xb5}\x00z\x00h\x00_\x00T\x00W\x00.\x00q\x00m\x00\x08\x05@[=\x00k\x00o\x00_\x00K\x00R\x00.\x00q\x00m\x00\x08\x0e8\x05}\x00z\x00h\x00_\x00C\x00N\x00.\x00q\x00m\x00\x08\x07?;}\x00j\x00a\x00_\x00J\x00P\x00.\x00q\x00m\x00\x04\x00\x06\xa8\x8b\x00d\x00a\x00r\x00k\x00\x05\x00r\xfd\xf4\x00l\x00i\x00g\x00h\x00t\x00\x12\x0c\xf9E\xe3\x00m\x00e\x00s\x00s\x00a\x00g\x00e\x00_\x00w\x00i\x00n\x00d\x00o\x00w\x00.\x00q\x00s\x00s\x00\x0b\x06QI\x87\x00d\x00i\x00s\x00c\x00o\x00r\x00d\x00.\x00s\x00v\x00g\x00\x0e\r\x92\xd4\xa3\x00s\x00t\x00a\x00t\x00u\x00s\x00_\x00b\x00a\x00r\x00.\x00q\x00s\x00s\x00\x08\x08\x87U\x83\x00c\x00a\x00r\x00d\x00.\x00q\x00s\x00s\x00\t\x08\x97\x87\xa7\x00h\x00e\x00a\x00r\x00t\x00.\x00s\x00v\x00g\x00\x08\x0bcU\x87\x00s\x00t\x00o\x00p\x00.\x00s\x00v\x00g\x00\x07\nuXC\x00t\x00a\x00b\x00.\x00q\x00s\x00s' cfg.themeMode
-2026-03-15 17:53:44,469 INFO MainThread app:translator install success <PySide6.QtCore.QLocale(Chinese, Simplified Han, China) at 0x000001AE26060480>, 开发工具
-2026-03-15 17:53:44,472 DEBUG MainThread Config:init self.config = {'window_x': 1941, 'window_y': 2, 'window_width': 1496, 'window_height': 1185, 'window_maximized': False}
-2026-03-15 17:53:44,473 DEBUG MainThread ok:locale name zh_CN
-2026-03-15 17:53:44,481 DEBUG MainThread ok:init overlay
-2026-03-15 17:53:44,491 DEBUG MainThread ok:init app end
-2026-03-15 17:53:44,852 DEBUG MainThread AutoCombatTask:ExecutorOperation init None
-2026-03-15 17:53:44,894 DEBUG MainThread Config:init self.config = {'_enabled': False, '技能释放': '123', '启动技能点数': 2, '后台结束战斗通知': True, '平A间隔': 0.12, '无数字操作间隔': 6, '进入战斗后的初始等待时间': 2}
-2026-03-15 17:53:44,895 DEBUG MainThread AutoSkipDialogTask:ExecutorOperation init None
-2026-03-15 17:53:44,897 DEBUG MainThread Config:init self.config = {'_enabled': False}
-2026-03-15 17:53:44,898 DEBUG MainThread AutoPickTask:ExecutorOperation init None
-2026-03-15 17:53:44,903 DEBUG MainThread Config:init self.config = {'_enabled': False}
-2026-03-15 17:53:44,903 DEBUG MainThread AutoLoginTask:ExecutorOperation init None
-2026-03-15 17:53:44,907 DEBUG MainThread Config:init self.config = {'_enabled': False}
-2026-03-15 17:53:44,949 DEBUG MainThread DailyTask:ExecutorOperation init None
-2026-03-15 17:53:44,984 DEBUG MainThread Config:init self.config = {'体力本': '清波寨', '技能释放': '123', '启动技能点数': 2, '后台结束战斗通知': True, '无数字操作间隔': 6, '进入战斗后的初始等待时间': 3, '仅站桩': False, '枢纽区': '', '源石研究园': '', '矿脉源区': '', '供能高地': '', '武陵城': '', '清波寨': '', '武陵买入价': 900, '武陵卖出价': 4500, '武陵': True, '四号谷地买入价': 900, '四号谷地卖出价': 4500, '四号谷地': True, '优先送礼对象': '洁尔佩塔', '送礼任务最多尝试次数': 2, '送礼': True, '据点兑换': True, '转交运送委托': True, '转交委托奖励领取': True, '造装备': True, '收信用': True, '尝试仅收培育室': False, '收集线索': True, '买信用商店': False, '买卖货': True, '刷体力': True, '日常奖励': True, 'Exit After Task': False, '重复测试的次数': 1}
-2026-03-15 17:53:44,986 DEBUG MainThread TakeDeliveryTask:ExecutorOperation init None
-2026-03-15 17:53:44,992 DEBUG MainThread Config:init self.config = {'接取谷地券': False, '接取谷地券最低金额(万)': 5.0, '接取谷地券最高金额(万)': 40.0, '接取武陵券': True, '接取武陵券最低金额(万)': 5.0, '接取武陵券最高金额(万)': 15.0}
-2026-03-15 17:53:44,995 DEBUG MainThread WarehouseTransferTask:ExecutorOperation init None
-2026-03-15 17:53:45,003 DEBUG MainThread Config:init self.config = {'发货仓库': 'valley4', '收货仓库': 'wuling', '物品': '蓝铁矿', '转移轮次': 10}
-2026-03-15 17:53:45,009 DEBUG MainThread DeliveryTask:ExecutorOperation init None
-2026-03-15 17:53:45,031 DEBUG MainThread Config:init self.config = {'_enabled': True, '教程': 'https://www.bilibili.com/video/BV1LLc7zFEF9', '目标券数': '79800', '通向送货点': '36,14', '常沄': '14,108,64,109,60', '资源': '14,108,64,109', '彦宁': '14,108,64,108,59', '齐纶': '14,108,106', '是否启用滚动放大视角': False, '仅接取': False, '仅送货': False, '选择测试对象': '无', 'Exit After Task': False}
-2026-03-15 17:53:45,238 DEBUG MainThread GugaDeliveryTask:ExecutorOperation init None
-2026-03-15 17:53:45,286 DEBUG MainThread Config:init self.config = {'_enabled': True, '接单方式': '运送委托', '送货区域': '武陵'}
-2026-03-15 17:53:45,292 DEBUG MainThread NavigationTask:ExecutorOperation init None
-2026-03-15 17:53:45,303 DEBUG MainThread Config:init self.config = {'地区': '武陵城', '目的地': '齐纶 (送货)', '单步调试': '关闭', '路线编辑器': ''}
-2026-03-15 17:53:45,307 DEBUG MainThread RecordTask:ExecutorOperation init None
-2026-03-15 17:53:45,320 DEBUG MainThread Config:init self.config = {'目的地名称': '测试', '目的地类型': '仓储节点', '传送点': '无'}
-2026-03-15 17:53:45,340 DEBUG MainThread EssenceScanTask:ExecutorOperation init None
-2026-03-15 17:53:45,362 DEBUG MainThread Config:init self.config = {'上锁毕业基质': True, '非毕业基质取消上锁': False, '非毕业基质弃置': False, '_武器数据CSV': 'assets\\weapon_data.csv', '_参考分辨率': ['2560', '1440'], '_网格起点': ['190', '256'], '_网格步长': ['204', '208'], '_每行数量': 9, '_每屏行数': 5, '_图标采样尺寸': ['238', '236'], '_锁按钮坐标': ['2444', '372'], '_点击等待秒': 0.35, '_滑动距离像素': 140, '_滑动后等待秒': 1.5, '_最大翻页': 200}
-2026-03-15 17:53:45,371 DEBUG MainThread BattleTask:ExecutorOperation init None
-2026-03-15 17:53:45,402 DEBUG MainThread Config:init self.config = {'体力本': '干员经验', '技能释放': '123', '启动技能点数': 2, '后台结束战斗通知': True, '无数字操作间隔': 6, '进入战斗后的初始等待时间': 3, '仅站桩': False, '枢纽区': '', '源石研究园': '', '矿脉源区': '', '供能高地': '', '武陵城': '', '清波寨': ''}
-2026-03-15 17:53:45,405 DEBUG MainThread Test:ExecutorOperation init None
-2026-03-15 17:53:45,473 DEBUG MainThread Config:init self.config = {}
-2026-03-15 17:53:45,493 DEBUG MainThread PeriodicScreenshotTask:ExecutorOperation init None
-2026-03-15 17:53:45,620 DEBUG MainThread Config:init self.config = {'间隔秒数': 5, '保存目录': 'screenshots/periodic'}
-2026-03-15 17:53:45,623 DEBUG MainThread DiagnosisTask:ExecutorOperation init None
-2026-03-15 17:53:45,625 DEBUG MainThread Config:init self.config = {}
-2026-03-15 17:53:45,626 INFO MainThread ok:do_init, end
-2026-03-15 17:53:45,627 INFO MainThread ok:OK start id:1847038128016 pid:61952
-2026-03-15 17:53:45,815 INFO Thread-12 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:45,815 INFO Thread-11 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:45,815 INFO Thread-9 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:45,904 INFO MainThread EfMainWindow:EfMainWindow __init__
-2026-03-15 17:53:45,906 DEBUG MainThread Config:init self.config = {'last_version': 'dev'}
-2026-03-15 17:53:45,969 INFO MainThread Loaded 0 tasks from cache
-2026-03-15 17:53:45,982 INFO Thread-17 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,007 INFO MainThread Windows Task Scheduler COM service initialized, root=\ok-ef
-2026-03-15 17:53:46,008 INFO MainThread ScheduleTaskTab:Loaded 0 tasks
-2026-03-15 17:53:46,279 INFO Thread-14 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,279 INFO Thread-16 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,282 INFO Thread-13 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,283 INFO Thread-10 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,283 INFO Thread-8 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,283 INFO Thread-7 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,283 INFO Thread-20 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,283 INFO Thread-15 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,289 INFO Thread-19 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,289 INFO Thread-18 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,292 INFO Thread-21 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
-2026-03-15 17:53:46,322 DEBUG MainThread Config:init self.config = {'target_task': 'DailyTask', 'target_images': [], 'target_function': ''}
-2026-03-15 17:53:46,327 DEBUG MainThread Config:init self.config = {'width': 800, 'height': 300, 'x': 0, 'y': 0, 'keyword': '', 'level': 'ALL', 'show': False}
-2026-03-15 17:53:46,367 DEBUG DebugTab DebugTab:bind_hot_keys
-2026-03-15 17:53:46,371 DEBUG MainThread Config:init self.config = {'code': ''}
-2026-03-15 17:53:46,467 INFO MainThread ok:translation installed for zh_CN
-2026-03-15 17:53:46,625 INFO MainThread EfMainWindow:EfMainWindow __init__ done
-2026-03-15 17:53:46,625 DEBUG MainThread ok:dpi_scaling: 1.0
-2026-03-15 17:53:46,632 DEBUG MainThread handler:removing duplicate task <bound method MainWindow.update_ok_config of <src.ui.EfMainWindow.EfMainWindow(0x1ae554f00c0) at 0x000001AE3DD57FC0>>
-2026-03-15 17:53:46,641 DEBUG MainThread StartCard:basic_options.start/stop: F9
-2026-03-15 17:53:46,706 INFO MainThread MainWindow:Window has fully displayed {'task': 0, 'exit': False}
-2026-03-15 17:53:46,738 DEBUG MainThread ok:show_main_window end
-2026-03-15 17:53:46,738 DEBUG MainThread ok:start app.exec()
-2026-03-15 17:53:46,739 INFO MainThread ok:app.exec()
-2026-03-15 17:53:47,644 INFO global MainWindow:Window geometry updated in ok_config {'window_x': 1941, 'window_y': 2, 'window_width': 1496, 'window_height': 1185, 'window_maximized': False}
-2026-03-15 17:54:11,809 INFO ok.gui.StartController StartController:do_start: call do_refresh
-2026-03-15 17:54:11,817 DEBUG ok.gui.StartController capture:find_hwnd results 1 [(4854008, 'F:\\Endfield Game\\Endfield.exe', 1920, 1080, 9, 34, 'Endfield')]
-2026-03-15 17:54:11,817 INFO ok.gui.StartController DeviceManager:start update_pc_device {'exe': ['Endfield.exe'], 'interaction': <class 'src.interaction.EfInteraction.EfInteraction'>, 'capture_method': ['WGC', 'BitBlt_RenderFull'], 'check_hdr': True, 'force_no_hdr': False, 'require_bg': True}, pc_device: {'address': '', 'imei': 'pc', 'device': 'windows', 'model': '', 'nick': 'Endfield', 'width': 0, 'height': 0, 'hwnd': 'Endfield', 'capture': 'windows', 'connected': True, 'full_path': 'F:\\Endfield Game\\Endfield.exe'}
-2026-03-15 17:54:11,818 DEBUG ok.gui.StartController DeviceManager:do_start
-2026-03-15 17:54:11,818 DEBUG ok.gui.StartController capture:update_frame_size:0x0 to 0x0
-2026-03-15 17:54:11,838 DEBUG ok.gui.StartController capture:find_hwnd results 1 [(4854008, 'F:\\Endfield Game\\Endfield.exe', 1920, 1080, 9, 34, 'Endfield')]
-2026-03-15 17:54:11,838 INFO ok.gui.StartController capture:do_update_window_size find_hwnd 4854008 F:\Endfield Game\Endfield.exe UnityWndClass real:0,0,0,0
-2026-03-15 17:54:11,838 INFO ok.gui.StartController capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
-2026-03-15 17:54:11,839 INFO ok.gui.StartController capture:check available WINDOWS_BUILD_NUMBER:26200 >= 20348 True
-2026-03-15 17:54:11,839 DEBUG MainThread OverlayWindow:update_overlay: False, 9, 34, 1920, 1080, 1.0
-2026-03-15 17:54:11,839 INFO ok.gui.StartController capture:start_or_stop start WGC capture
-2026-03-15 17:54:12,069 INFO ok.gui.StartController capture:use WGC capture
-2026-03-15 17:54:12,071 INFO ok.gui.StartController DeviceManager:capture method <class 'ok.device.capture.WindowsGraphicsCaptureMethod'>
-2026-03-15 17:54:12,071 DEBUG ok.gui.StartController DeviceManager:refresh {'pc': {'address': '', 'imei': 'pc', 'device': 'windows', 'model': '', 'nick': 'Endfield', 'width': 0, 'height': 0, 'hwnd': 'Endfield', 'capture': 'windows', 'connected': True, 'full_path': 'F:\\Endfield Game\\Endfield.exe'}}
-2026-03-15 17:54:12,071 INFO ok.gui.StartController StartController:start_device: {'address': '', 'imei': 'pc', 'device': 'windows', 'model': '', 'nick': 'Endfield', 'width': 0, 'height': 0, 'hwnd': 'Endfield', 'capture': 'windows', 'connected': True, 'full_path': 'F:\\Endfield Game\\Endfield.exe'}
-2026-03-15 17:54:12,071 INFO ok.gui.StartController StartController:test check_device_error msg: Endfield未连接，请选择正确的游戏窗口。
-2026-03-15 17:54:12,072 INFO ok.gui.StartController StartController:hdr_enabled F:\Endfield Game\Endfield.exe None
-2026-03-15 17:54:12,083 INFO ok.gui.StartController StartController:check_device_error: capturing frame (1920, 1080)
-2026-03-15 17:54:12,083 INFO ok.gui.StartController StartController:check_device_error: checking feature_set size
-2026-03-15 17:54:12,083 INFO ok.gui.StartController FeatureSet:FeatureSet: Width and height changed from 0x0 to 1920x1080
-2026-03-15 17:54:12,086 INFO ok.gui.StartController FeatureSet:read_from_json C:\Users\lqs42\Documents\GitHub\kinson\ok-end-field\assets C:\Users\lqs42\Documents\GitHub\kinson\ok-end-field\assets\coco_detection.json
-2026-03-15 17:54:12,145 DEBUG ok.gui.StartController FeatureSet:loaded logout resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,160 DEBUG ok.gui.StartController FeatureSet:loaded one_task_to_map resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,172 DEBUG ok.gui.StartController FeatureSet:loaded transfer_point resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,185 DEBUG ok.gui.StartController FeatureSet:loaded plus_button resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,199 DEBUG ok.gui.StartController FeatureSet:loaded operator_liaison_station resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,254 DEBUG ok.gui.StartController FeatureSet:loaded price_up resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,255 DEBUG ok.gui.StartController FeatureSet:loaded price_down resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,268 DEBUG ok.gui.StartController FeatureSet:loaded operator_liaison_station_out_map resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,282 DEBUG ok.gui.StartController FeatureSet:loaded claim_gift resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,336 DEBUG ok.gui.StartController FeatureSet:loaded pick_recycle resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,395 DEBUG ok.gui.StartController FeatureSet:loaded pick_f resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,396 DEBUG ok.gui.StartController FeatureSet:loaded esc resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,397 DEBUG ok.gui.StartController FeatureSet:loaded b resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,397 DEBUG ok.gui.StartController FeatureSet:loaded c resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,451 DEBUG ok.gui.StartController FeatureSet:loaded one_click_claim resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,452 DEBUG ok.gui.StartController FeatureSet:loaded check_in_close resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,508 DEBUG ok.gui.StartController FeatureSet:loaded monthly_card resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,564 DEBUG ok.gui.StartController FeatureSet:loaded assist_friend resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,619 DEBUG ok.gui.StartController FeatureSet:loaded q resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,620 DEBUG ok.gui.StartController FeatureSet:loaded e resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,675 DEBUG ok.gui.StartController FeatureSet:loaded close resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,713 DEBUG ok.gui.StartController FeatureSet:loaded skip_dialog_esc resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,727 DEBUG ok.gui.StartController FeatureSet:loaded chat_icon_dark resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,742 DEBUG ok.gui.StartController FeatureSet:loaded chat_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,755 DEBUG ok.gui.StartController FeatureSet:loaded minerals_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,755 DEBUG ok.gui.StartController FeatureSet:loaded plants_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,755 DEBUG ok.gui.StartController FeatureSet:loaded products_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,755 DEBUG ok.gui.StartController FeatureSet:loaded gathering_materials_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,756 DEBUG ok.gui.StartController FeatureSet:loaded cultivation_materials_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,756 DEBUG ok.gui.StartController FeatureSet:loaded consumables_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,756 DEBUG ok.gui.StartController FeatureSet:loaded industrial_equipment_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,776 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_31w_2k resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:12,792 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_31w_dark_2k resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:12,846 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_31w_dark_4k resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,884 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_31w_4k resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:12,904 DEBUG ok.gui.StartController FeatureSet:loaded ticket_wuling resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:12,904 DEBUG ok.gui.StartController FeatureSet:loaded ticket_valley resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:12,920 DEBUG ok.gui.StartController FeatureSet:loaded ember_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,920 DEBUG ok.gui.StartController FeatureSet:loaded pogranichnik_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,920 DEBUG ok.gui.StartController FeatureSet:loaded gilberta_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,921 DEBUG ok.gui.StartController FeatureSet:loaded lifeng_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,921 DEBUG ok.gui.StartController FeatureSet:loaded last_rite_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,921 DEBUG ok.gui.StartController FeatureSet:loaded ardelia_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,921 DEBUG ok.gui.StartController FeatureSet:loaded avywenna_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,921 DEBUG ok.gui.StartController FeatureSet:loaded alesh_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,922 DEBUG ok.gui.StartController FeatureSet:loaded da_pan_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,922 DEBUG ok.gui.StartController FeatureSet:loaded wulfgard_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,922 DEBUG ok.gui.StartController FeatureSet:loaded chen_qianyu_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,922 DEBUG ok.gui.StartController FeatureSet:loaded perlica_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,936 DEBUG ok.gui.StartController FeatureSet:loaded xaihi_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,936 DEBUG ok.gui.StartController FeatureSet:loaded snowshine_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,936 DEBUG ok.gui.StartController FeatureSet:loaded arclight_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,937 DEBUG ok.gui.StartController FeatureSet:loaded fluorite_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,937 DEBUG ok.gui.StartController FeatureSet:loaded antal_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,937 DEBUG ok.gui.StartController FeatureSet:loaded estella_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,937 DEBUG ok.gui.StartController FeatureSet:loaded akekuri_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,951 DEBUG ok.gui.StartController FeatureSet:loaded wuling_6_65w resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,965 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_31w resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,978 DEBUG ok.gui.StartController FeatureSet:loaded secondary_objective_direction_dot resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:12,991 DEBUG ok.gui.StartController FeatureSet:loaded secondary_objective_direction_dot_light resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,005 DEBUG ok.gui.StartController FeatureSet:loaded secondary_objective_direction_dot_light_two resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,014 DEBUG ok.gui.StartController FeatureSet:loaded chat_icon_2 resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,026 DEBUG ok.gui.StartController FeatureSet:loaded visit_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,040 DEBUG ok.gui.StartController FeatureSet:loaded market_dispatch_terminal resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,053 DEBUG ok.gui.StartController FeatureSet:loaded market_dispatch_terminal_out resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,068 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_31w_dark resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,082 DEBUG ok.gui.StartController FeatureSet:loaded market_good_icon resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,095 DEBUG ok.gui.StartController FeatureSet:loaded high_capacity_valley_battery resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,110 DEBUG ok.gui.StartController FeatureSet:loaded bluesteel_ore resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,110 DEBUG ok.gui.StartController FeatureSet:loaded source_ore resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,123 DEBUG ok.gui.StartController FeatureSet:loaded market_plus_button resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,123 DEBUG ok.gui.StartController FeatureSet:loaded market_minus_button resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,136 DEBUG ok.gui.StartController FeatureSet:loaded laevatain_contact resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,150 DEBUG ok.gui.StartController FeatureSet:loaded higher_order_d96 resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,151 DEBUG ok.gui.StartController FeatureSet:loaded higher_order_reflection_tube resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,151 DEBUG ok.gui.StartController FeatureSet:loaded higher_order_lattice resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,165 DEBUG ok.gui.StartController FeatureSet:loaded higher_order_quadrant_liquid resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,165 DEBUG ok.gui.StartController FeatureSet:loaded higher_order_three_photos resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,181 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_98w resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,193 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_98w_dark resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,207 DEBUG ok.gui.StartController FeatureSet:loaded gather_icon_out_map resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,220 DEBUG ok.gui.StartController FeatureSet:loaded gather_icon_out_map2 resized width 1920 / original_width:1920,scale_x:1.0
-2026-03-15 17:54:13,240 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_98w_2k resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,258 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_98w_dark_2k resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,311 DEBUG ok.gui.StartController FeatureSet:loaded can_exchange_info_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,312 DEBUG ok.gui.StartController FeatureSet:loaded can_help_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,312 DEBUG ok.gui.StartController FeatureSet:loaded friend_chat_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,367 DEBUG ok.gui.StartController FeatureSet:loaded clue_7_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,367 DEBUG ok.gui.StartController FeatureSet:loaded clue_2_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,367 DEBUG ok.gui.StartController FeatureSet:loaded clue_1_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,367 DEBUG ok.gui.StartController FeatureSet:loaded clue_3_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,368 DEBUG ok.gui.StartController FeatureSet:loaded clue_6_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,368 DEBUG ok.gui.StartController FeatureSet:loaded clue_4_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,368 DEBUG ok.gui.StartController FeatureSet:loaded clue_5_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,423 DEBUG ok.gui.StartController FeatureSet:loaded discount_95_percent_icon resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,480 DEBUG ok.gui.StartController FeatureSet:loaded orobertyl resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,536 DEBUG ok.gui.StartController FeatureSet:loaded weapon_quota resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,537 DEBUG ok.gui.StartController FeatureSet:loaded credit_can_buy resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,574 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_98w_dark_4k resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,611 DEBUG ok.gui.StartController FeatureSet:loaded wuling_7_98w_4k resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,665 DEBUG ok.gui.StartController FeatureSet:loaded reward_ok resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,703 DEBUG ok.gui.StartController FeatureSet:loaded skip_dialog_confirm resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,703 DEBUG ok.gui.StartController FeatureSet:loaded skip_dialog_cancel resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,723 DEBUG ok.gui.StartController FeatureSet:loaded essence_ui_marker resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,723 DEBUG ok.gui.StartController FeatureSet:loaded essence_locked resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,723 DEBUG ok.gui.StartController FeatureSet:loaded essence_quality_gold_1 resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,723 DEBUG ok.gui.StartController FeatureSet:loaded essence_quality_gold_2 resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,723 DEBUG ok.gui.StartController FeatureSet:loaded essence_quality_gold_3 resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,725 DEBUG ok.gui.StartController FeatureSet:loaded essence_throw_away resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,742 DEBUG ok.gui.StartController FeatureSet:loaded essence_unlocked resized width 1920 / original_width:2560,scale_x:0.75
-2026-03-15 17:54:13,797 DEBUG ok.gui.StartController FeatureSet:loaded default_link_skill resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,797 DEBUG ok.gui.StartController FeatureSet:loaded ult_1 resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,797 DEBUG ok.gui.StartController FeatureSet:loaded ult_2 resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,797 DEBUG ok.gui.StartController FeatureSet:loaded ult_3 resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,798 DEBUG ok.gui.StartController FeatureSet:loaded ult_4 resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,798 DEBUG ok.gui.StartController FeatureSet:loaded skill_1 resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,798 DEBUG ok.gui.StartController FeatureSet:loaded skill_2 resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,799 DEBUG ok.gui.StartController FeatureSet:loaded skill_3 resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,799 DEBUG ok.gui.StartController FeatureSet:loaded skill_4 resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,799 DEBUG ok.gui.StartController FeatureSet:loaded switch_q resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,799 DEBUG ok.gui.StartController FeatureSet:loaded top_left_tab resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,856 DEBUG ok.gui.StartController FeatureSet:loaded essence_throw_confirm resized width 1920 / original_width:3840,scale_x:0.5
-2026-03-15 17:54:13,857 INFO ok.gui.StartController StartController:check_device_error: checking resolution
-2026-03-15 17:54:13,857 INFO ok.gui.StartController TaskExecutor:start check_frame_and_resolution
-2026-03-15 17:54:13,959 INFO ok.gui.StartController task:enabled task <src.tasks.GugaDeliveryTask.GugaDeliveryTask object at 0x000001AE3F11DA30>
-2026-03-15 17:54:13,962 INFO TaskExecutor TaskExecutor:start execute
-2026-03-15 17:54:13,963 INFO TaskExecutor TaskExecutor:get one enabled onetime_task 咕嘎物流
-2026-03-15 17:54:13,963 DEBUG TaskExecutor TaskExecutor:start running onetime_task 咕嘎物流
-2026-03-15 17:54:13,963 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
-2026-03-15 17:54:14,033 DEBUG MainThread EfMainWindow:navigate_tab None
-2026-03-15 17:54:14,160 INFO TaskExecutor TaskExecutor:init onnxocr {'use_openvino': True, 'use_dml': False}
-2026-03-15 17:54:14,164 INFO TaskExecutor TaskExecutor:use_openvino: True
-2026-03-15 17:54:14,165 INFO TaskExecutor TaskExecutor:use_npu: True
-2026-03-15 17:54:14,165 INFO TaskExecutor TaskExecutor:use_angle_cls: False
-2026-03-15 17:54:14,165 INFO TaskExecutor TaskExecutor:det_model_dir: C:\Users\lqs42\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\onnxocr\models\ppocrv5\det\det.onnx
-2026-03-15 17:54:14,165 INFO TaskExecutor TaskExecutor:rec_model_dir: C:\Users\lqs42\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\onnxocr\models\ppocrv5\rec\rec.onnx
-2026-03-15 17:54:14,166 INFO TaskExecutor TaskExecutor:rec_image_shape: 3, 48, 320
-2026-03-15 17:54:14,173 INFO TaskExecutor TaskExecutor:openvino core.available_devices ['CPU', 'GPU']
-2026-03-15 17:54:14,424 INFO TaskExecutor TaskExecutor:openvino core.available_devices ['CPU', 'GPU']
-2026-03-15 17:54:14,710 INFO TaskExecutor TaskExecutor:ocr_lib init <onnxocr.onnx_paddleocr.ONNXPaddleOcr object at 0x000001AEE1D40650> onnxocr
-2026-03-15 17:54:15,350 DEBUG TaskExecutor intercation:Sending key esc
-2026-03-15 17:54:17,165 DEBUG TaskExecutor intercation:Sending key esc
-2026-03-15 17:54:18,693 DEBUG TaskExecutor TaskExecutor:found result True 4.728
-2026-03-15 17:54:20,694 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
-2026-03-15 17:54:20,694 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
-2026-03-15 17:54:20,704 DEBUG TaskExecutor TaskExecutor:found result True 0.009
-2026-03-15 17:54:22,704 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
-2026-03-15 17:54:22,704 INFO TaskExecutor GugaDeliveryTask:opening commission panel
-2026-03-15 17:54:22,705 DEBUG TaskExecutor intercation:Sending key y
-2026-03-15 17:54:24,955 DEBUG TaskExecutor TaskExecutor:found result Box(name='更换', x=74, y=421, width=62, height=37, confidence=91) 0.229
-2026-03-15 17:54:25,068 INFO TaskExecutor GugaDeliveryTask:left_click 更换 (105, 440) after_sleep 2
-2026-03-15 17:54:27,134 DEBUG TaskExecutor TaskExecutor:found result Box(name='武陵', x=1072, y=330, width=50, height=25, confidence=100) 0.066
-2026-03-15 17:54:27,248 INFO TaskExecutor GugaDeliveryTask:left_click 武陵 (1097, 343) after_sleep 2
-2026-03-15 17:54:29,347 DEBUG TaskExecutor TaskExecutor:found result Box(name='确认', x=1154, y=630, width=58, height=39, confidence=100) 0.099
-2026-03-15 17:54:29,460 INFO TaskExecutor GugaDeliveryTask:left_click 确认 (1183, 650) after_sleep 2
-2026-03-15 17:54:31,660 DEBUG TaskExecutor TaskExecutor:found result Box(name='仓储节点', x=1562, y=508, width=128, height=39, confidence=100) 0.200
-2026-03-15 17:54:31,773 INFO TaskExecutor GugaDeliveryTask:left_click 仓储节点 (1626, 528) after_sleep 0.5
-2026-03-15 17:54:32,575 DEBUG TaskExecutor TaskExecutor:found result Box(name='运送委托列表', x=410, y=103, width=158, height=32, confidence=100) 0.301
-2026-03-15 17:54:32,688 INFO TaskExecutor GugaDeliveryTask:left_click 运送委托列表 (489, 119) after_sleep 0.5
-2026-03-15 17:54:36,885 INFO TaskExecutor GugaDeliveryTask:checking first row for '查看任务'...
-2026-03-15 17:54:39,892 INFO TaskExecutor TaskExecutor:wait_until timeout <cyfunction wait_ocr.<locals>.<lambda> at 0x000001AEE1F187A0> 3 seconds
-2026-03-15 17:54:39,892 INFO TaskExecutor GugaDeliveryTask:first row clean, scrolling down to find commissions
-2026-03-15 17:54:40,394 DEBUG TaskExecutor intercation:scroll 960, 540, -8
-2026-03-15 17:54:41,596 DEBUG TaskExecutor intercation:scroll 960, 540, -8
-2026-03-15 17:54:42,797 DEBUG TaskExecutor intercation:scroll 960, 540, -8
-2026-03-15 17:54:43,999 DEBUG TaskExecutor intercation:scroll 960, 540, -8
-2026-03-15 17:54:45,200 DEBUG TaskExecutor intercation:scroll 960, 540, -8
-2026-03-15 17:54:46,402 DEBUG TaskExecutor intercation:scroll 960, 540, -8
-2026-03-15 17:54:48,656 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:54:48,656 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:48,658 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:54:48,658 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:48,658 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:54:48,658 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
-2026-03-15 17:54:49,159 DEBUG TaskExecutor intercation:scroll 960, 540, -3
-2026-03-15 17:54:51,063 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:54:51,063 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:51,063 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:54:51,063 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:51,063 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:54:51,064 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:54:51,064 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:54:51,064 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:54:52,463 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:54:52,463 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:52,463 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:54:52,465 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:52,465 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:54:52,465 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:54:52,465 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:54:52,465 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:54:53,883 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:54:53,884 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:53,884 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:54:53,884 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:53,884 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:54:53,884 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:54:53,884 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:54:53,885 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:54:55,323 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:54:55,323 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:55,323 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:54:55,323 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:55,323 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:54:55,323 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:54:55,323 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:54:55,324 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:54:56,725 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:54:56,725 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:56,725 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:54:56,726 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:56,726 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:54:56,726 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:54:56,726 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:54:56,726 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:54:58,129 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:54:58,129 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:58,130 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:54:58,130 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:58,131 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:54:58,131 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:54:58,131 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:54:58,131 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:54:59,531 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:54:59,532 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:59,532 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:54:59,532 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:54:59,532 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:54:59,533 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:54:59,533 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:54:59,533 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:00,930 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:00,930 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:00,930 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:00,931 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:00,931 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:00,931 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:00,931 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:00,931 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:02,333 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:02,333 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:02,333 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:02,335 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:02,335 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:02,335 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:02,335 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:02,335 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:03,736 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:03,736 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:03,737 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:03,737 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:03,737 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:03,737 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:03,737 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:03,737 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:05,138 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:05,139 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:05,139 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:05,139 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:05,139 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:05,140 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:05,140 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:05,140 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:06,558 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:06,558 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:06,558 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:06,558 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:06,558 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:06,558 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:06,559 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:06,559 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:07,965 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:07,966 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:07,966 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:07,966 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:07,966 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:07,966 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:07,967 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:07,967 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:09,368 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:09,368 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:09,368 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:09,368 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:09,368 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:09,369 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:09,369 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:09,369 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:10,765 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:10,766 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:10,766 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:10,766 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:10,766 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:10,767 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:10,767 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:10,767 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:12,169 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:12,169 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:12,169 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:12,169 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:12,169 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:12,169 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:12,169 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:12,171 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:13,582 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (28.8), filtered
-2026-03-15 17:55:13,582 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:13,582 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (16.1), filtered
-2026-03-15 17:55:13,582 DEBUG TaskExecutor GugaDeliveryTask:reward amount too large (17.7), filtered
-2026-03-15 17:55:13,582 INFO TaskExecutor GugaDeliveryTask:no matching commission found
-2026-03-15 17:55:13,583 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
-2026-03-15 17:55:13,583 INFO TaskExecutor GugaDeliveryTask:refresh button not located yet (1/10)
-2026-03-15 17:55:13,583 INFO TaskExecutor GugaDeliveryTask:waiting 1s before retry...
-2026-03-15 17:55:14,386 INFO TaskExecutor TaskExecutor:<src.tasks.GugaDeliveryTask.GugaDeliveryTask object at 0x000001AE3F11DA30> is disabled, raise Exception
-2026-03-15 17:55:14,387 ERROR TaskExecutor GugaDeliveryTask:commission accept error:  
-2026-03-15 17:55:16,388 ERROR TaskExecutor GugaDeliveryTask:failed to accept commission order 
-2026-03-15 17:55:16,388 DEBUG TaskExecutor TaskExecutor:end running onetime_task 咕嘎物流
+2026-03-15 18:04:15,158 INFO MainThread ok:ok-script init dev, ['C:\\Users\\lqs42\\Documents\\GitHub\\kinson\\ok-end-field/main.py'], pid=56600 config: {'debug': False, 'use_gui': True, 'config_folder': 'configs', 'screenshot_processor': <function make_bottom_left_black at 0x000001C6838A0FE0>, 'gui_icon': 'icons/icon.png', 'global_configs': [<ok.util.config.ConfigOption object at 0x000001C68389AB40>, <ok.util.config.ConfigOption object at 0x000001C68389A900>], 'wait_until_before_delay': 0, 'wait_until_check_delay': 0, 'wait_until_settle_time': 0, 'ocr': {'lib': 'onnxocr', 'params': {'use_openvino': True, 'use_dml': False}}, 'windows': {'exe': ['Endfield.exe'], 'interaction': <class 'src.interaction.EfInteraction.EfInteraction'>, 'capture_method': ['WGC', 'BitBlt_RenderFull'], 'check_hdr': True, 'force_no_hdr': False, 'require_bg': True}, 'start_timeout': 60, 'window_size': {'width': 1200, 'height': 800, 'min_width': 600, 'min_height': 450}, 'supported_resolution': {'ratio': '16:9', 'min_size': (1280, 720)}, 'links': {'default': {'github': 'https://github.com/ok-oldking/ok-end-field', 'discord': 'https://discord.gg/vVyCatEBgA', 'sponsor': 'https://www.paypal.com/ncp/payment/JWQBH7JZKNGCQ', 'qq_group': 'https://qm.qq.com/q/NcWHQU6q8k', 'share': 'https://1drv.ms/f/c/0c7567d06cc5b5f3/IgAudOtrzHPVT6sJgWeWSiByAZNvwAzcehIdj3hEcprRlP0?e=nsEBmm', 'faq': 'https://github.com/ok-oldking/ok-end-field', 'qq_channel': 'https://pd.qq.com/s/djmm6l44y'}, 'zh_CN': {'github': 'https://github.com/ok-oldking/ok-end-field', 'discord': 'https://discord.gg/vVyCatEBgA', 'sponsor': 'https://afdian.com/a/AliceJump', 'share': 'https://1drv.ms/f/c/0c7567d06cc5b5f3/IgAudOtrzHPVT6sJgWeWSiByAZNvwAzcehIdj3hEcprRlP0?e=nsEBmm', 'faq': 'https://cnb.cool/ok-oldking/ok-ef-update/-/blob/main/README.md', 'qq_group': 'https://qm.qq.com/q/NcWHQU6q8k', 'qq_channel': 'https://pd.qq.com/s/djmm6l44y'}}, 'screenshots_folder': 'screenshots', 'yolo': {'model_path': 'assets/models/yolo/best.onnx'}, 'gui_title': 'ok-ef', 'template_matching': {'coco_feature_json': 'assets\\coco_detection.json', 'default_horizontal_variance': 0.002, 'default_vertical_variance': 0.002, 'default_threshold': 0.8, 'hcenter_features': ['default_link_skill', 'pick_f', 'skip_dialog_confirm'], 'vcenter_features': ['default_link_skill', 'skip_dialog_confirm']}, 'version': 'dev', 'my_app': ['src.globals', 'Globals'], 'onetime_tasks': [['src.tasks.DailyTask', 'DailyTask'], ['src.tasks.TakeDeliveryTask', 'TakeDeliveryTask'], ['src.tasks.WarehouseTransferTask', 'WarehouseTransferTask'], ['src.tasks.DeliveryTask', 'DeliveryTask'], ['src.tasks.GugaDeliveryTask', 'GugaDeliveryTask'], ['src.tasks.NavigationTask', 'NavigationTask'], ['src.tasks.RecordTask', 'RecordTask'], ['src.tasks.EssenceScanTask', 'EssenceScanTask'], ['src.tasks.BattleTask', 'BattleTask'], ['src.tasks.Test', 'Test'], ['src.tasks.PeriodicScreenshotTask', 'PeriodicScreenshotTask'], ['ok.task.DiagnosisTask', 'DiagnosisTask']], 'trigger_tasks': [['src.tasks.AutoCombatTask', 'AutoCombatTask'], ['src.tasks.AutoSkipDialogTask', 'AutoSkipDialogTask'], ['src.tasks.AutoPickTask', 'AutoPickTask'], ['src.tasks.AutoLoginTask', 'AutoLoginTask']]}
+2026-03-15 18:04:15,162 INFO MainThread ok:pyappify  app_version:None, app_profile:None, pyappify_version:None pyappify_upgradeable:False, pyappify_executable:None
+2026-03-15 18:04:15,178 INFO MainThread capture:check available WINDOWS_BUILD_NUMBER:26200 >= 20348 True
+2026-03-15 18:04:15,200 INFO MainThread ok:use_dml result is True
+2026-03-15 18:04:15,201 INFO MainThread ok:SetProcessDpiAwareness 0
+2026-03-15 18:04:15,201 INFO MainThread ok:do_init, config: {'debug': False, 'use_gui': True, 'config_folder': 'configs', 'screenshot_processor': <function make_bottom_left_black at 0x000001C6838A0FE0>, 'gui_icon': 'icons/icon.png', 'global_configs': [<ok.util.config.ConfigOption object at 0x000001C68389AB40>, <ok.util.config.ConfigOption object at 0x000001C68389A900>], 'wait_until_before_delay': 0, 'wait_until_check_delay': 0, 'wait_until_settle_time': 0, 'ocr': {'lib': 'onnxocr', 'params': {'use_openvino': True, 'use_dml': False}}, 'windows': {'exe': ['Endfield.exe'], 'interaction': <class 'src.interaction.EfInteraction.EfInteraction'>, 'capture_method': ['WGC', 'BitBlt_RenderFull'], 'check_hdr': True, 'force_no_hdr': False, 'require_bg': True}, 'start_timeout': 60, 'window_size': {'width': 1200, 'height': 800, 'min_width': 600, 'min_height': 450}, 'supported_resolution': {'ratio': '16:9', 'min_size': (1280, 720)}, 'links': {'default': {'github': 'https://github.com/ok-oldking/ok-end-field', 'discord': 'https://discord.gg/vVyCatEBgA', 'sponsor': 'https://www.paypal.com/ncp/payment/JWQBH7JZKNGCQ', 'qq_group': 'https://qm.qq.com/q/NcWHQU6q8k', 'share': 'https://1drv.ms/f/c/0c7567d06cc5b5f3/IgAudOtrzHPVT6sJgWeWSiByAZNvwAzcehIdj3hEcprRlP0?e=nsEBmm', 'faq': 'https://github.com/ok-oldking/ok-end-field', 'qq_channel': 'https://pd.qq.com/s/djmm6l44y'}, 'zh_CN': {'github': 'https://github.com/ok-oldking/ok-end-field', 'discord': 'https://discord.gg/vVyCatEBgA', 'sponsor': 'https://afdian.com/a/AliceJump', 'share': 'https://1drv.ms/f/c/0c7567d06cc5b5f3/IgAudOtrzHPVT6sJgWeWSiByAZNvwAzcehIdj3hEcprRlP0?e=nsEBmm', 'faq': 'https://cnb.cool/ok-oldking/ok-ef-update/-/blob/main/README.md', 'qq_group': 'https://qm.qq.com/q/NcWHQU6q8k', 'qq_channel': 'https://pd.qq.com/s/djmm6l44y'}}, 'screenshots_folder': 'screenshots', 'yolo': {'model_path': 'assets/models/yolo/best.onnx'}, 'gui_title': 'ok-ef', 'template_matching': {'coco_feature_json': 'assets\\coco_detection.json', 'default_horizontal_variance': 0.002, 'default_vertical_variance': 0.002, 'default_threshold': 0.8, 'hcenter_features': ['default_link_skill', 'pick_f', 'skip_dialog_confirm'], 'vcenter_features': ['default_link_skill', 'skip_dialog_confirm']}, 'version': 'dev', 'my_app': ['src.globals', 'Globals'], 'onetime_tasks': [['src.tasks.DailyTask', 'DailyTask'], ['src.tasks.TakeDeliveryTask', 'TakeDeliveryTask'], ['src.tasks.WarehouseTransferTask', 'WarehouseTransferTask'], ['src.tasks.DeliveryTask', 'DeliveryTask'], ['src.tasks.GugaDeliveryTask', 'GugaDeliveryTask'], ['src.tasks.NavigationTask', 'NavigationTask'], ['src.tasks.RecordTask', 'RecordTask'], ['src.tasks.EssenceScanTask', 'EssenceScanTask'], ['src.tasks.BattleTask', 'BattleTask'], ['src.tasks.Test', 'Test'], ['src.tasks.PeriodicScreenshotTask', 'PeriodicScreenshotTask'], ['ok.task.DiagnosisTask', 'DiagnosisTask']], 'trigger_tasks': [['src.tasks.AutoCombatTask', 'AutoCombatTask'], ['src.tasks.AutoSkipDialogTask', 'AutoSkipDialogTask'], ['src.tasks.AutoPickTask', 'AutoPickTask'], ['src.tasks.AutoLoginTask', 'AutoLoginTask']]}
+2026-03-15 18:04:15,202 INFO MainThread DeviceManager:__init__ start
+2026-03-15 18:04:15,205 INFO MainThread capture:HwndWindow init title:None player_id:-1 exe_name:['Endfield.exe'] hwnd_class:None
+2026-03-15 18:04:15,211 INFO MainThread capture:do_update_window_size find_hwnd 4854008 F:\Endfield Game\Endfield.exe UnityWndClass real:0,0,0,0
+2026-03-15 18:04:15,211 INFO MainThread capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:04:15,212 INFO MainThread DeviceManager:__init__ end
+2026-03-15 18:04:15,228 INFO MainThread Screenshot:remove_old_files C:\Users\lqs42\Documents\GitHub\kinson\ok-end-field\screenshots
+2026-03-15 18:04:15,232 ERROR MainThread TaskExecutor:install ocr translations error for zh_CN 
+2026-03-15 18:04:15,268 INFO MainThread app:translator install success <PySide6.QtCore.QLocale(Chinese, Simplified Han, China) at 0x000001C684570400>, 开发工具
+2026-03-15 18:04:16,183 INFO MainThread ok:do_init, end
+2026-03-15 18:04:16,211 INFO MainThread ok:OK start id:1953846145296 pid:56600
+2026-03-15 18:04:16,597 INFO Thread-11 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:16,598 INFO Thread-7 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:16,611 INFO MainThread EfMainWindow:EfMainWindow __init__
+2026-03-15 18:04:16,640 INFO Thread-8 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:16,683 INFO Thread-12 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:16,692 INFO MainThread Loaded 0 tasks from cache
+2026-03-15 18:04:16,725 INFO Thread-15 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:16,731 INFO MainThread Windows Task Scheduler COM service initialized, root=\ok-ef
+2026-03-15 18:04:16,733 INFO MainThread ScheduleTaskTab:Loaded 0 tasks
+2026-03-15 18:04:17,051 INFO Thread-18 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-9 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-19 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-20 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-21 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-16 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-10 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-13 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-14 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,051 INFO Thread-17 (load_model) OpenVinoYolo8Detect:OpenVINO model compiled successfully for CPU 640x640.
+2026-03-15 18:04:17,158 INFO MainThread ok:translation installed for zh_CN
+2026-03-15 18:04:17,337 INFO MainThread EfMainWindow:EfMainWindow __init__ done
+2026-03-15 18:04:17,427 INFO MainThread MainWindow:Window has fully displayed {'task': 0, 'exit': False}
+2026-03-15 18:04:17,466 INFO MainThread ok:app.exec()
+2026-03-15 18:04:18,347 INFO global MainWindow:Window geometry updated in ok_config {'window_x': 1941, 'window_y': 2, 'window_width': 1496, 'window_height': 1185, 'window_maximized': False}
+2026-03-15 18:04:31,451 INFO ok.gui.StartController StartController:do_start: call do_refresh
+2026-03-15 18:04:31,460 INFO ok.gui.StartController DeviceManager:start update_pc_device {'exe': ['Endfield.exe'], 'interaction': <class 'src.interaction.EfInteraction.EfInteraction'>, 'capture_method': ['WGC', 'BitBlt_RenderFull'], 'check_hdr': True, 'force_no_hdr': False, 'require_bg': True}, pc_device: {'address': '', 'imei': 'pc', 'device': 'windows', 'model': '', 'nick': 'Endfield', 'width': 0, 'height': 0, 'hwnd': 'Endfield', 'capture': 'windows', 'connected': True, 'full_path': 'F:\\Endfield Game\\Endfield.exe'}
+2026-03-15 18:04:31,479 INFO ok.gui.StartController capture:do_update_window_size find_hwnd 4854008 F:\Endfield Game\Endfield.exe UnityWndClass real:0,0,0,0
+2026-03-15 18:04:31,480 INFO ok.gui.StartController capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:04:31,482 INFO ok.gui.StartController capture:check available WINDOWS_BUILD_NUMBER:26200 >= 20348 True
+2026-03-15 18:04:31,482 INFO ok.gui.StartController capture:start_or_stop start WGC capture
+2026-03-15 18:04:31,741 INFO ok.gui.StartController capture:use WGC capture
+2026-03-15 18:04:31,741 INFO ok.gui.StartController DeviceManager:capture method <class 'ok.device.capture.WindowsGraphicsCaptureMethod'>
+2026-03-15 18:04:31,741 INFO ok.gui.StartController StartController:start_device: {'address': '', 'imei': 'pc', 'device': 'windows', 'model': '', 'nick': 'Endfield', 'width': 0, 'height': 0, 'hwnd': 'Endfield', 'capture': 'windows', 'connected': True, 'full_path': 'F:\\Endfield Game\\Endfield.exe'}
+2026-03-15 18:04:31,741 INFO ok.gui.StartController StartController:test check_device_error msg: Endfield未连接，请选择正确的游戏窗口。
+2026-03-15 18:04:31,742 INFO ok.gui.StartController StartController:hdr_enabled F:\Endfield Game\Endfield.exe None
+2026-03-15 18:04:31,755 INFO ok.gui.StartController StartController:check_device_error: capturing frame (1920, 1080)
+2026-03-15 18:04:31,755 INFO ok.gui.StartController StartController:check_device_error: checking feature_set size
+2026-03-15 18:04:31,755 INFO ok.gui.StartController FeatureSet:FeatureSet: Width and height changed from 0x0 to 1920x1080
+2026-03-15 18:04:31,756 INFO ok.gui.StartController FeatureSet:read_from_json C:\Users\lqs42\Documents\GitHub\kinson\ok-end-field\assets C:\Users\lqs42\Documents\GitHub\kinson\ok-end-field\assets\coco_detection.json
+2026-03-15 18:04:33,502 INFO ok.gui.StartController StartController:check_device_error: checking resolution
+2026-03-15 18:04:33,503 INFO ok.gui.StartController TaskExecutor:start check_frame_and_resolution
+2026-03-15 18:04:33,604 INFO ok.gui.StartController task:enabled task <src.tasks.GugaDeliveryTask.GugaDeliveryTask object at 0x000001C69D78DA30>
+2026-03-15 18:04:33,608 INFO TaskExecutor TaskExecutor:start execute
+2026-03-15 18:04:33,608 INFO TaskExecutor TaskExecutor:get one enabled onetime_task 咕嘎物流
+2026-03-15 18:04:33,609 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:04:35,689 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:04:35,689 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:04:37,693 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:04:37,693 INFO TaskExecutor GugaDeliveryTask:opening commission panel
+2026-03-15 18:04:39,778 INFO TaskExecutor TaskExecutor:init onnxocr {'use_openvino': True, 'use_dml': False}
+2026-03-15 18:04:39,782 INFO TaskExecutor TaskExecutor:use_openvino: True
+2026-03-15 18:04:39,783 INFO TaskExecutor TaskExecutor:use_npu: True
+2026-03-15 18:04:39,783 INFO TaskExecutor TaskExecutor:use_angle_cls: False
+2026-03-15 18:04:39,783 INFO TaskExecutor TaskExecutor:det_model_dir: C:\Users\lqs42\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\onnxocr\models\ppocrv5\det\det.onnx
+2026-03-15 18:04:39,783 INFO TaskExecutor TaskExecutor:rec_model_dir: C:\Users\lqs42\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\onnxocr\models\ppocrv5\rec\rec.onnx
+2026-03-15 18:04:39,783 INFO TaskExecutor TaskExecutor:rec_image_shape: 3, 48, 320
+2026-03-15 18:04:39,789 INFO TaskExecutor TaskExecutor:openvino core.available_devices ['CPU', 'GPU']
+2026-03-15 18:04:40,020 INFO TaskExecutor TaskExecutor:openvino core.available_devices ['CPU', 'GPU']
+2026-03-15 18:04:40,272 INFO TaskExecutor TaskExecutor:ocr_lib init <onnxocr.onnx_paddleocr.ONNXPaddleOcr object at 0x000001C7603EC200> onnxocr
+2026-03-15 18:04:40,639 INFO TaskExecutor GugaDeliveryTask:left_click 更换 (105, 440) after_sleep 2
+2026-03-15 18:04:42,830 INFO TaskExecutor GugaDeliveryTask:left_click 武陵 (1097, 343) after_sleep 2
+2026-03-15 18:04:45,067 INFO TaskExecutor GugaDeliveryTask:left_click 确认 (1183, 650) after_sleep 2
+2026-03-15 18:04:47,389 INFO TaskExecutor GugaDeliveryTask:left_click 仓储节点 (1626, 528) after_sleep 0.5
+2026-03-15 18:04:48,316 INFO TaskExecutor GugaDeliveryTask:left_click 运送委托列表 (490, 119) after_sleep 0.5
+2026-03-15 18:04:52,859 INFO TaskExecutor GugaDeliveryTask:checking first row for '查看任务'...
+2026-03-15 18:04:55,876 INFO TaskExecutor TaskExecutor:wait_until timeout <cyfunction wait_ocr.<locals>.<lambda> at 0x000001C7621714A0> 3 seconds
+2026-03-15 18:04:55,876 INFO TaskExecutor GugaDeliveryTask:first row clean, scrolling down to find commissions
+2026-03-15 18:05:04,684 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:05:04,685 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:05:07,133 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:05:07,133 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:05:07,133 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:05:07,245 INFO TaskExecutor GugaDeliveryTask:left_click 刷新 (1663, 1002) after_sleep 0
+2026-03-15 18:05:08,622 INFO TaskExecutor GugaDeliveryTask:matched: amount=7.98万, type=ticket_wuling
+2026-03-15 18:05:08,623 INFO TaskExecutor GugaDeliveryTask:accepting commission: amount=7.98万, type=ticket_wuling
+2026-03-15 18:05:08,623 INFO TaskExecutor GugaDeliveryTask:accept attempt 1/3
+2026-03-15 18:05:08,736 INFO TaskExecutor GugaDeliveryTask:left_click 接取运送委托 (1694, 763) after_sleep 0
+2026-03-15 18:05:10,291 INFO TaskExecutor GugaDeliveryTask:accept succeeded (attempt 1)
+2026-03-15 18:05:12,417 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:05:14,429 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:05:16,495 INFO TaskExecutor task:ocr_zone Box(name='0.32 0.07 0.0 0.0', x=614, y=76, width=250, height=97, confidence=100) found result: [送货任务_1.00, 武陵城_1.00]) time: 0.05 scale_factor: 1.00 target_height:0 resized_shape:(97, 250, 3) all_boxes: [送货任务_1.00, 武陵城_1.00]
+2026-03-15 18:05:16,506 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:05:20,210 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:05:20,210 INFO TaskExecutor GugaDeliveryTask:detected delivery area: 武陵城
+2026-03-15 18:05:20,210 INFO TaskExecutor GugaDeliveryTask:navigating to storage node: 武陵城仓储节点
+2026-03-15 18:05:20,210 INFO TaskExecutor GugaDeliveryTask:开始导航到: 武陵城仓储节点 (类型: 仓储节点, 地图: 武陵城)
+2026-03-15 18:05:20,216 INFO TaskExecutor GugaDeliveryTask:传送到: 天井院
+2026-03-15 18:05:20,217 INFO TaskExecutor GugaDeliveryTask:开始传送到: 天井院
+2026-03-15 18:05:22,312 INFO TaskExecutor GugaDeliveryTask:当前位置 - 世界: 塔卫二, 区域: 武陵, 地区: 武陵城
+2026-03-15 18:05:24,034 INFO update_window_size capture:do_update_window_size changed,visible:True,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:05:26,851 INFO TaskExecutor GugaDeliveryTask:left_click 协议传送点 (1461, 650) after_sleep 1
+2026-03-15 18:05:28,055 ERROR TaskExecutor task:ocr result negative box 4 0.549126386642456 0x23 pos:[[194.0, 338.0], [205.0, 347.0], [194.0, 361.0], [183.0, 352.0]] 
+2026-03-15 18:05:28,169 INFO TaskExecutor GugaDeliveryTask:left_click 传送 (1779, 992) after_sleep 1
+2026-03-15 18:05:30,190 INFO TaskExecutor GugaDeliveryTask:传送完成!
+2026-03-15 18:05:30,190 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:05:33,935 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:05:33,935 INFO TaskExecutor GugaDeliveryTask:执行步骤 1/3: walk
+2026-03-15 18:05:35,539 INFO TaskExecutor GugaDeliveryTask:执行步骤 2/3: zipline
+2026-03-15 18:05:35,709 INFO TaskExecutor task:ocr_zone Box(name='0.5 0.5 0.0 0.0', x=960, y=540, width=960, height=540, confidence=100) found result: [登上滑索架_1.00]) time: 0.17 scale_factor: 1.00 target_height:0 resized_shape:(540, 960, 3) all_boxes: [长距滑_0.98, O_0.61, 长距滑索架_1.00, 登上滑索架_1.00, 设备详情_1.00]
+2026-03-15 18:05:35,710 INFO TaskExecutor GugaDeliveryTask:检测到滑索架，按F登上
+2026-03-15 18:05:37,907 INFO TaskExecutor GugaDeliveryTask:已成功登上滑索架
+2026-03-15 18:05:37,907 INFO TaskExecutor GugaDeliveryTask:滑索 1/1: 对齐距离 89
+2026-03-15 18:05:38,261 ERROR TaskExecutor task:ocr result negative box 1息壤中品 0.7513009905815125 170x-19 pos:[[835.0, 926.0], [984.0, 859.0], [1005.0, 907.0], [856.0, 973.0]] 
+2026-03-15 18:05:38,263 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 未找到目标，系统扫描 30°
+2026-03-15 18:05:38,894 INFO TaskExecutor GugaDeliveryTask:对齐第2轮: 未找到目标，系统扫描 30°
+2026-03-15 18:05:39,514 INFO TaskExecutor GugaDeliveryTask:对齐第3轮: 白色命中, 像素=(-646,-173)
+2026-03-15 18:05:43,060 ERROR TaskExecutor task:ocr result negative box ……………" 0.5295095443725586 64x-9 pos:[[17.0, 139.0], [77.0, 118.0], [81.0, 130.0], [21.0, 151.0]] 
+2026-03-15 18:05:44,109 INFO TaskExecutor GugaDeliveryTask:进入阶段3: 纯金色位置确认
+2026-03-15 18:05:44,881 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段3): 像素=(0,-8), 轮次=3
+2026-03-15 18:05:50,910 INFO TaskExecutor GugaDeliveryTask:滑索序列完成，共滑行 1 段
+2026-03-15 18:05:52,932 INFO TaskExecutor GugaDeliveryTask:已离开滑索架
+2026-03-15 18:05:52,932 INFO TaskExecutor GugaDeliveryTask:执行步骤 3/3: walk
+2026-03-15 18:05:57,037 INFO TaskExecutor GugaDeliveryTask:开始交互: 仓储节点
+2026-03-15 18:05:57,037 INFO TaskExecutor GugaDeliveryTask:执行仓储节点交互
+2026-03-15 18:05:57,912 INFO TaskExecutor GugaDeliveryTask:已取货
+2026-03-15 18:05:57,912 INFO TaskExecutor GugaDeliveryTask:已到达目的地: 武陵城仓储节点
+2026-03-15 18:05:59,966 INFO TaskExecutor task:ocr_zone Box(name='0.36 0.25 0.0 0.0', x=691, y=270, width=1171, height=43, confidence=100) found result: [资源回收站_1.00]) time: 0.03 scale_factor: 1.00 target_height:0 resized_shape:(43, 1171, 3) all_boxes: [资源回收站_1.00]
+2026-03-15 18:05:59,966 INFO TaskExecutor GugaDeliveryTask:detected destination: 资源回收站
+2026-03-15 18:05:59,966 INFO TaskExecutor GugaDeliveryTask:found 1 recycling stations in 武陵城, iterating to confirm
+2026-03-15 18:05:59,977 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:06:03,716 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:06:03,716 INFO TaskExecutor GugaDeliveryTask:confirming recycling station: 天师府学院
+2026-03-15 18:06:03,716 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:06:05,732 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:06:12,333 INFO TaskExecutor GugaDeliveryTask:confirmed recycling station: 天师府学院
+2026-03-15 18:06:12,866 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:06:16,885 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:06:16,885 INFO TaskExecutor GugaDeliveryTask:navigating to destination: 天师府学院
+2026-03-15 18:06:16,885 INFO TaskExecutor GugaDeliveryTask:开始导航到: 天师府学院 (类型: 送货, 地图: 武陵城)
+2026-03-15 18:06:16,892 INFO TaskExecutor GugaDeliveryTask:执行步骤 1/3: walk
+2026-03-15 18:06:19,944 INFO TaskExecutor GugaDeliveryTask:执行步骤 2/3: zipline
+2026-03-15 18:06:20,114 INFO TaskExecutor task:ocr_zone Box(name='0.5 0.5 0.0 0.0', x=960, y=540, width=960, height=540, confidence=100) found result: [登上滑索架_1.00]) time: 0.17 scale_factor: 1.00 target_height:0 resized_shape:(540, 960, 3) all_boxes: [二_0.56, 氏距福系架_0.66, O_0.62, 长距滑索架_1.00, 登上滑索架_1.00, 设备详情_1.00]
+2026-03-15 18:06:20,114 INFO TaskExecutor GugaDeliveryTask:检测到滑索架，按F登上
+2026-03-15 18:06:22,266 INFO TaskExecutor GugaDeliveryTask:已成功登上滑索架
+2026-03-15 18:06:22,267 INFO TaskExecutor GugaDeliveryTask:滑索 1/8: 调整视角 1.52°/-2.7° → 18px/-32px
+2026-03-15 18:06:22,829 INFO TaskExecutor GugaDeliveryTask:滑索 1/8: 对齐距离 109
+2026-03-15 18:06:23,407 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 白色命中, 像素=(719,-17)
+2026-03-15 18:06:23,882 INFO TaskExecutor GugaDeliveryTask:白色仍在，跳过精调继续搜索
+2026-03-15 18:06:24,258 INFO TaskExecutor GugaDeliveryTask:对齐第2轮: 白色命中, 像素=(643,-56)
+2026-03-15 18:06:24,740 INFO TaskExecutor GugaDeliveryTask:白色仍在，跳过精调继续搜索
+2026-03-15 18:06:24,878 INFO TaskExecutor GugaDeliveryTask:对齐第3轮: 金色命中, 像素=(-227,-32)
+2026-03-15 18:06:26,057 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段2): 像素=(-10,-4), 轮次=3
+2026-03-15 18:06:33,526 INFO TaskExecutor GugaDeliveryTask:滑索 2/8: 调整视角 1.43°/2.7° → 17px/32px
+2026-03-15 18:06:34,088 INFO TaskExecutor GugaDeliveryTask:滑索 2/8: 对齐距离 109
+2026-03-15 18:06:34,229 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 金色命中, 像素=(532,163)
+2026-03-15 18:06:36,396 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段2): 像素=(5,8), 轮次=1
+2026-03-15 18:06:43,775 INFO TaskExecutor GugaDeliveryTask:滑索 3/8: 调整视角 -0.34°/-2.28° → -4px/-27px
+2026-03-15 18:06:44,339 INFO TaskExecutor GugaDeliveryTask:滑索 3/8: 对齐距离 73
+2026-03-15 18:06:44,482 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 金色命中, 像素=(101,-245)
+2026-03-15 18:06:46,274 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段2): 像素=(-3,-8), 轮次=1
+2026-03-15 18:06:51,250 INFO TaskExecutor GugaDeliveryTask:滑索 4/8: 调整视角 -0.84°/-5.15° → -10px/-61px
+2026-03-15 18:06:51,813 INFO TaskExecutor GugaDeliveryTask:滑索 4/8: 对齐距离 110
+2026-03-15 18:06:51,951 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 金色命中, 像素=(55,-99)
+2026-03-15 18:06:53,242 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段2): 像素=(3,-4), 轮次=1
+2026-03-15 18:07:00,718 INFO TaskExecutor GugaDeliveryTask:滑索 5/8: 调整视角 10.89°/3.63° → 129px/43px
+2026-03-15 18:07:01,282 INFO TaskExecutor GugaDeliveryTask:滑索 5/8: 对齐距离 85
+2026-03-15 18:07:01,666 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 未找到目标，系统扫描 30°
+2026-03-15 18:07:02,315 INFO TaskExecutor GugaDeliveryTask:对齐第2轮: 未找到目标，系统扫描 30°
+2026-03-15 18:07:03,081 INFO TaskExecutor GugaDeliveryTask:对齐第3轮: 白色命中, 像素=(-708,77)
+2026-03-15 18:07:05,510 ERROR TaskExecutor task:ocr result negative box   0.6072710752487183 17x-1 pos:[[26.0, 365.0], [35.0, 356.0], [43.0, 364.0], [34.0, 373.0]] 
+2026-03-15 18:07:06,090 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段2): 像素=(-5,6), 轮次=3
+2026-03-15 18:07:11,878 INFO TaskExecutor GugaDeliveryTask:滑索 6/8: 调整视角 -11.05°/-5.74° → -131px/-68px
+2026-03-15 18:07:12,441 INFO TaskExecutor GugaDeliveryTask:滑索 6/8: 对齐距离 100
+2026-03-15 18:07:12,786 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 白色命中, 像素=(-637,-126)
+2026-03-15 18:07:14,307 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段2): 像素=(-6,-4), 轮次=1
+2026-03-15 18:07:21,098 INFO TaskExecutor GugaDeliveryTask:滑索 7/8: 调整视角 -3.38°/7.17° → -40px/85px
+2026-03-15 18:07:21,661 INFO TaskExecutor GugaDeliveryTask:滑索 7/8: 对齐距离 108
+2026-03-15 18:07:21,942 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 白色命中, 像素=(709,79)
+2026-03-15 18:07:31,078 INFO TaskExecutor GugaDeliveryTask:进入阶段3: 纯金色位置确认
+2026-03-15 18:07:31,115 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段3): 像素=(-6,10), 轮次=1
+2026-03-15 18:07:38,459 INFO TaskExecutor GugaDeliveryTask:滑索 8/8: 调整视角 4.98°/-8.69° → 59px/-103px
+2026-03-15 18:07:39,023 INFO TaskExecutor GugaDeliveryTask:滑索 8/8: 对齐距离 109
+2026-03-15 18:07:39,138 INFO TaskExecutor GugaDeliveryTask:对齐第1轮: 金色命中, 像素=(455,-18)
+2026-03-15 18:07:41,274 INFO TaskExecutor GugaDeliveryTask:对齐完成(阶段2): 像素=(7,-1), 轮次=1
+2026-03-15 18:07:48,690 INFO TaskExecutor GugaDeliveryTask:滑索序列完成，共滑行 8 段
+2026-03-15 18:07:50,712 INFO TaskExecutor GugaDeliveryTask:已离开滑索架
+2026-03-15 18:07:50,712 INFO TaskExecutor GugaDeliveryTask:执行步骤 3/3: walk
+2026-03-15 18:07:52,216 INFO TaskExecutor GugaDeliveryTask:开始交互: 送货
+2026-03-15 18:07:52,216 INFO TaskExecutor GugaDeliveryTask:执行送货交互: 天师府学院
+2026-03-15 18:07:52,834 INFO TaskExecutor GugaDeliveryTask:检测到资源回收站送货，目标: 天师府学院
+2026-03-15 18:08:01,084 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:08:03,092 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:08:03,092 INFO TaskExecutor GugaDeliveryTask:已完成资源回收站送货: 天师府学院
+2026-03-15 18:08:03,092 INFO TaskExecutor GugaDeliveryTask:已到达目的地: 天师府学院
+2026-03-15 18:08:03,092 INFO TaskExecutor GugaDeliveryTask:delivery completed
+2026-03-15 18:08:03,200 INFO update_window_size capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:08:14,426 INFO update_window_size capture:do_update_window_size changed,visible:True,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:08:26,255 INFO update_window_size capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:08:30,866 INFO update_window_size capture:do_update_window_size changed,visible:True,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:08:31,669 INFO update_window_size capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:08:46,014 INFO ok.gui.StartController StartController:do_start: call do_refresh
+2026-03-15 18:08:46,040 INFO ok.gui.StartController DeviceManager:start update_pc_device {'exe': ['Endfield.exe'], 'interaction': <class 'src.interaction.EfInteraction.EfInteraction'>, 'capture_method': ['WGC', 'BitBlt_RenderFull'], 'check_hdr': True, 'force_no_hdr': False, 'require_bg': True}, pc_device: {'address': '', 'imei': 'pc', 'device': 'windows', 'model': '', 'nick': 'Endfield', 'width': 0, 'height': 0, 'hwnd': 'Endfield', 'capture': 'windows', 'connected': True, 'full_path': 'F:\\Endfield Game\\Endfield.exe'}
+2026-03-15 18:08:46,067 INFO ok.gui.StartController capture:do_update_window_size find_hwnd 4854008 F:\Endfield Game\Endfield.exe UnityWndClass real:0,0,0,0
+2026-03-15 18:08:46,068 INFO ok.gui.StartController capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:08:46,068 INFO ok.gui.StartController capture:check available WINDOWS_BUILD_NUMBER:26200 >= 20348 True
+2026-03-15 18:08:46,069 INFO ok.gui.StartController capture:use WGC capture
+2026-03-15 18:08:46,069 INFO ok.gui.StartController DeviceManager:capture method <class 'ok.device.capture.WindowsGraphicsCaptureMethod'>
+2026-03-15 18:08:46,069 INFO ok.gui.StartController StartController:start_device: {'address': '', 'imei': 'pc', 'device': 'windows', 'model': '', 'nick': 'Endfield', 'width': 0, 'height': 0, 'hwnd': 'Endfield', 'capture': 'windows', 'connected': True, 'full_path': 'F:\\Endfield Game\\Endfield.exe'}
+2026-03-15 18:08:46,070 INFO ok.gui.StartController StartController:test check_device_error msg: Endfield未连接，请选择正确的游戏窗口。
+2026-03-15 18:08:46,072 INFO ok.gui.StartController StartController:hdr_enabled F:\Endfield Game\Endfield.exe None
+2026-03-15 18:08:46,072 INFO ok.gui.StartController StartController:check_device_error: capturing frame (1920, 1080)
+2026-03-15 18:08:46,072 INFO ok.gui.StartController StartController:check_device_error: checking feature_set size
+2026-03-15 18:08:46,073 INFO ok.gui.StartController StartController:check_device_error: checking resolution
+2026-03-15 18:08:46,073 INFO ok.gui.StartController TaskExecutor:start check_frame_and_resolution
+2026-03-15 18:08:46,182 INFO ok.gui.StartController task:enabled task <src.tasks.GugaDeliveryTask.GugaDeliveryTask object at 0x000001C69D78DA30>
+2026-03-15 18:08:47,178 INFO TaskExecutor TaskExecutor:get one enabled onetime_task 咕嘎物流
+2026-03-15 18:08:47,180 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:08:49,229 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:08:49,229 INFO TaskExecutor GugaDeliveryTask:info_set current task wait main esc=True
+2026-03-15 18:08:51,240 INFO TaskExecutor GugaDeliveryTask:info_set current task in main esc=True
+2026-03-15 18:08:51,240 INFO TaskExecutor GugaDeliveryTask:opening commission panel
+2026-03-15 18:08:53,600 INFO TaskExecutor GugaDeliveryTask:left_click 更换 (105, 440) after_sleep 2
+2026-03-15 18:08:55,764 INFO TaskExecutor GugaDeliveryTask:left_click 武陵 (1097, 343) after_sleep 2
+2026-03-15 18:08:57,980 INFO TaskExecutor GugaDeliveryTask:left_click 确认 (1183, 650) after_sleep 2
+2026-03-15 18:09:00,322 INFO TaskExecutor GugaDeliveryTask:left_click 仓储节点 (1626, 528) after_sleep 0.5
+2026-03-15 18:09:01,269 INFO TaskExecutor GugaDeliveryTask:left_click 运送委托列表 (488, 119) after_sleep 0.5
+2026-03-15 18:09:06,096 INFO TaskExecutor GugaDeliveryTask:checking first row for '查看任务'...
+2026-03-15 18:09:09,101 INFO TaskExecutor TaskExecutor:wait_until timeout <cyfunction wait_ocr.<locals>.<lambda> at 0x000001C760422270> 3 seconds
+2026-03-15 18:09:09,101 INFO TaskExecutor GugaDeliveryTask:first row clean, scrolling down to find commissions
+2026-03-15 18:09:17,962 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:17,963 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:09:20,406 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:20,407 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:09:20,407 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:09:20,519 INFO TaskExecutor GugaDeliveryTask:left_click 刷新 (1664, 1002) after_sleep 0
+2026-03-15 18:09:21,981 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:21,982 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:09:24,528 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:24,529 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:09:26,120 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:09:26,233 INFO TaskExecutor GugaDeliveryTask:left_click 2秒后可刷新 (1738, 1003) after_sleep 0
+2026-03-15 18:09:27,470 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:27,470 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:09:29,944 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:29,944 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:09:31,833 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:09:31,945 INFO TaskExecutor GugaDeliveryTask:left_click 2秒后可刷新 (1739, 1002) after_sleep 0
+2026-03-15 18:09:33,412 INFO TaskExecutor GugaDeliveryTask:matched: amount=7.98万, type=ticket_wuling
+2026-03-15 18:09:33,412 INFO TaskExecutor GugaDeliveryTask:accepting commission: amount=7.98万, type=ticket_wuling
+2026-03-15 18:09:33,412 INFO TaskExecutor GugaDeliveryTask:accept attempt 1/3
+2026-03-15 18:09:33,526 INFO TaskExecutor GugaDeliveryTask:left_click 接取运送委托 (1688, 762) after_sleep 0
+2026-03-15 18:09:35,711 INFO TaskExecutor TaskExecutor:wait_until timeout <cyfunction wait_ocr.<locals>.<lambda> at 0x000001C760422DD0> 1 seconds
+2026-03-15 18:09:35,711 INFO TaskExecutor GugaDeliveryTask:accept attempt 2/3
+2026-03-15 18:09:35,825 INFO TaskExecutor GugaDeliveryTask:left_click 接取运送委托 (1688, 762) after_sleep 0
+2026-03-15 18:09:37,917 INFO TaskExecutor TaskExecutor:wait_until timeout <cyfunction wait_ocr.<locals>.<lambda> at 0x000001C760422270> 1 seconds
+2026-03-15 18:09:37,917 INFO TaskExecutor GugaDeliveryTask:accept attempt 3/3
+2026-03-15 18:09:38,030 INFO TaskExecutor GugaDeliveryTask:left_click 接取运送委托 (1688, 762) after_sleep 0
+2026-03-15 18:09:40,205 INFO TaskExecutor TaskExecutor:wait_until timeout <cyfunction wait_ocr.<locals>.<lambda> at 0x000001C760422DD0> 1 seconds
+2026-03-15 18:09:40,205 INFO TaskExecutor GugaDeliveryTask:accept failed (possibly taken), waiting 4s before retry
+2026-03-15 18:09:44,349 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:44,351 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:09:46,533 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:46,533 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:09:46,534 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:09:46,647 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:09:47,804 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:47,804 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:09:49,951 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:49,952 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:09:52,249 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:09:52,362 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:09:53,580 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:53,580 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:09:55,782 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:55,782 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:09:57,965 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:09:58,078 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:09:59,313 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:09:59,314 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:10:01,541 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:01,542 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:03,680 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:03,793 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:05,041 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:05,041 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:10:07,241 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:07,242 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:09,394 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:09,508 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:10,701 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:10,702 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:10:12,905 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:12,905 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:15,109 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:15,223 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:16,406 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:16,406 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:10:18,595 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:18,596 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:20,824 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:20,937 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:22,066 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:22,066 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:10:24,209 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:24,210 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:26,537 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:26,651 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:27,830 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:27,830 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:10:30,017 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:30,018 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:32,251 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:32,365 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:33,583 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:33,583 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:10:35,836 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:35,836 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:37,965 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:38,079 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:39,214 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:39,214 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:10:41,351 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:41,351 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:43,680 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:43,793 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:44,988 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:44,989 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:10:47,175 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:47,175 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:49,393 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:49,506 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:50,691 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:50,692 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:10:52,878 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:52,878 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:10:55,108 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:10:55,221 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:10:56,422 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:56,422 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:10:58,606 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:10:58,608 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:11:00,822 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:11:00,935 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:11:02,131 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:02,131 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:11:04,332 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:04,334 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:11:06,536 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:11:06,649 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:11:07,782 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:07,782 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:11:09,938 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:09,939 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:11:12,249 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:11:12,363 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:11:13,501 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:13,501 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:11:15,648 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:15,648 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:11:17,965 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:11:18,078 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:11:19,258 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:19,258 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:11:21,439 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:21,439 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:11:23,678 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:11:23,791 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:11:25,064 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:25,064 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:11:25,913 INFO update_window_size capture:do_update_window_size changed,visible:True,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:11:27,293 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:27,294 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:11:29,391 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:11:29,503 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:11:30,677 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:30,678 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 down...
+2026-03-15 18:11:32,908 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:32,909 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:11:33,134 INFO update_window_size capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:11:35,105 INFO TaskExecutor GugaDeliveryTask:executing refresh
+2026-03-15 18:11:35,247 INFO TaskExecutor GugaDeliveryTask:left_click 4秒后可刷新 (1739, 1003) after_sleep 0
+2026-03-15 18:11:35,341 INFO update_window_size capture:do_update_window_size changed,visible:True,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:11:36,143 INFO update_window_size capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:11:36,551 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:36,551 INFO TaskExecutor GugaDeliveryTask:scroll step 1/1 up...
+2026-03-15 18:11:37,748 INFO update_window_size capture:do_update_window_size changed,visible:True,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:11:38,350 INFO update_window_size capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:11:38,859 INFO TaskExecutor GugaDeliveryTask:no matching commission found
+2026-03-15 18:11:38,860 INFO TaskExecutor GugaDeliveryTask:finished scanning current list, preparing refresh
+2026-03-15 18:11:39,550 INFO TaskExecutor TaskExecutor:<src.tasks.GugaDeliveryTask.GugaDeliveryTask object at 0x000001C69D78DA30> is disabled, raise Exception
+2026-03-15 18:11:39,552 ERROR TaskExecutor GugaDeliveryTask:commission accept error:  
+2026-03-15 18:11:41,553 ERROR TaskExecutor GugaDeliveryTask:failed to accept commission order 
+2026-03-15 18:14:23,403 INFO update_window_size capture:do_update_window_size changed,visible:True,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
+2026-03-15 18:14:25,410 INFO update_window_size capture:do_update_window_size changed,visible:False,exists:True x:9 y:34 window:1920x1080 self.window:1936x1119 real:0x0
