@@ -782,6 +782,8 @@ class GugaDeliveryTask(BaseNavTask):
                         break
                     if not result:
                         return False
+            # Ensure back to main world after finishing all local deliveries
+            self.ensure_main()
             return True
         else:
             return self._run_single_delivery(ORDER_COMMISSION)
