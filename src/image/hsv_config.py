@@ -22,6 +22,13 @@ class HSVRange(tuple, Enum):
     DEST_TEXT = (
         ((16, 200, 170), (30, 255, 255)),
     )
+    # Red text (commission count indicator) - FF8080 color (RGB 255,128,128)
+    # HSV (normalized): H=0.0, S=0.498, V=1.0
+    # OpenCV range: H=0, S=127, V=255
+    RED_TEXT = (
+        ((0, 100, 240), (5, 150, 255)),  # Red hue 0-5 (close to 0), S=100-150 (around 127), V=240-255
+        ((175, 100, 240), (180, 150, 255)),  # Upper red hue 175-180, same S/V range
+    )
     TEXT_HSV_RANGES = (
         # 灰白文字
         ((0, 0, 170), (50, 70, 255)),

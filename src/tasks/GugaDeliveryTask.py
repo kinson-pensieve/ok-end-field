@@ -29,6 +29,20 @@ AREA_ALL = "全部"
 AREA_WULING = "武陵"
 AREA_VALLEY = "四号谷地"
 
+# Commission filter configuration per area
+COMMISSION_CONFIG = {
+    AREA_WULING: {
+        "ticket_types": ["ticket_wuling"],
+        "filter_min": 7.9,
+        "filter_max": 7.99,
+    },
+    AREA_VALLEY: {
+        "ticket_types": ["ticket_valley"],
+        "filter_min": 30.0,
+        "filter_max": 32.0,
+    },
+}
+
 
 class GugaDeliveryTask(BaseNavTask):
     """Guga delivery task - uses Navigator route system for automated delivery"""
@@ -192,29 +206,90 @@ class GugaDeliveryTask(BaseNavTask):
 
         return None
 
-    def _accept_commission_order(self):
-        """Open commission panel and accept a matching commission using TakeDeliveryTask approach.
+    def _check_daily_commission_count(self) -> bool:
+        """Check if today's accepted commission count is 3 (limit reached).
+
+        Uses OCR to detect the number at box (0.80, 0.90, 0.83, 0.95).
+        The red number shows today's accepted commission count (e.g., "3/3").
 
         Returns:
-            bool: True if order accepted successfully
+            bool: True if count is 3 (limit reached), False otherwise
         """
+        try:
+            self.log_info("checking daily commission count...")
+            box = self.box_of_screen(0.80, 0.90, 0.83, 0.95)
+
+            # Try OCR with red color filter first
+            ocr_results = self.ocr(
+                box=box,
+                frame_processor=self.make_hsv_isolator(hR.RED_TEXT),
+            )
+
+            # If red filter didn't work, try without filter as fallback
+            if not ocr_results:
+                self.log_debug("no red number found with color filter, trying without filter...")
+                ocr_results = self.ocr(box=box)
+
+            if not ocr_results:
+                self.log_debug("no OCR results found in commission count box")
+                return False
+
+            self.log_debug(f"OCR results in commission count box: {[t.name for t in ocr_results]}")
+
+            # Extract the count number - look for any digit in results
+            for text_obj in ocr_results:
+                text = text_obj.name.strip()
+                self.log_debug(f"checking OCR text: '{text}'")
+                # Try to parse as integer, handling both "3" and "3/3" format
+                for char in text:
+                    if char.isdigit():
+                        count = int(char)
+                        self.log_info(f"daily commission count: {count}/3")
+                        if count >= 3:
+                            self.log_info("commission limit reached (3/3)")
+                            return True
+                        return False
+
+            self.log_debug("could not find any digit in commission count box OCR results")
+            return False
+        except Exception as e:
+            self.log_error(f"error checking commission count: {e}")
+            return False
+
+    def _accept_commission_order(self, area=None):
+        """Open commission panel and accept a matching commission using TakeDeliveryTask approach.
+
+        Args:
+            area: Target area (AREA_WULING or AREA_VALLEY), defaults to AREA_WULING
+
+        Returns:
+            bool: True if order accepted successfully, None if limit reached
+        """
+        if area is None:
+            area = AREA_WULING
+
+        # Get commission filter config for the area
+        if area not in COMMISSION_CONFIG:
+            self.log_error(f"unknown area: {area}")
+            return False
+
+        area_config = COMMISSION_CONFIG[area]
+        ticket_types = area_config["ticket_types"]
+        filter_min = area_config["filter_min"]
+        filter_max = area_config["filter_max"]
+
         self.ensure_main(time_out=120)
-        self.log_info("opening commission panel")
-        self.to_model_area("武陵", "仓储节点")
+        self.log_info(f"opening commission panel for {area}")
+        self.to_model_area(area, "仓储节点")
         delivery_box = self.wait_ocr(match="运送委托列表", time_out=5)
         if delivery_box:
             self.click(delivery_box[0], move_back=True, after_sleep=0.5)
-        cx = int(self.width * 0.5)
-        cy = int(self.height * 0.5)
-        for _ in range(6):
-            self.scroll(cx, cy, -8)
-            self.sleep(0.2)
         self.wait_ui_stable(refresh_interval=1)
 
-        # check if first row has "查看任务" button
-        self.log_info("checking if first row has '查看任务'...")
+        # check if first row has "查看任务" button (only check once at the beginning)
+        self.log_info("checking first row for '查看任务'...")
         check_task_box = self.box_of_screen(0.79, 0.29, 0.97, 0.34)
-        check_task_results = self.ocr(match="查看任务", box=check_task_box, raise_if_not_found=False)
+        check_task_results = self.wait_ocr(match="查看任务", box=check_task_box, time_out=3)
         if check_task_results:
             self.log_info("first row has '查看任务' - clicking to open task panel")
             self.click(check_task_results[0], after_sleep=2)
@@ -231,13 +306,24 @@ class GugaDeliveryTask(BaseNavTask):
             self.ensure_main(time_out=10)
             return True
 
+        # After first row check, check daily commission count limit
+        self.log_info("checking daily commission count...")
+        if self._check_daily_commission_count():
+            self.log_info("daily commission limit reached, aborting")
+            self.ensure_main(time_out=10)
+            return None  # Return None to indicate limit reached, not failure
+
+        # no "查看任务" in first row, scroll down and start accepting
+        self.log_info("first row clean, scrolling down to find commissions")
+        cx = int(self.width * 0.5)
+        cy = int(self.height * 0.5)
+        for _ in range(6):
+            self.scroll(cx, cy, -8)
+            self.sleep(0.2)
+        self.wait_ui_stable(refresh_interval=1)
+
         reward_regex = r"(\d+\.?\d*)万"
         reward_pattern = re.compile(reward_regex, re.I)
-
-        # only accept wuling commissions in range [7.9, 7.99]万
-        ticket_types = ["ticket_wuling"]
-        filter_min = 7.9
-        filter_max = 7.99
 
         scroll_step = 0
         scroll_direction = -1
@@ -254,6 +340,7 @@ class GugaDeliveryTask(BaseNavTask):
                 )
 
                 if refresh_btn:
+                    self.last_refresh_box = refresh_btn
                     refresh_not_found_count = 0
 
                 # sort rewards by Y coordinate (top to bottom)
@@ -307,7 +394,7 @@ class GugaDeliveryTask(BaseNavTask):
                         self.sleep(1.0)
 
                         delivery_text = self.wait_ocr(
-                            match="点击屏幕继续", time_out=1, raise_if_not_found=False
+                            match="点击屏幕继续", time_out=1
                         )
                         if delivery_text:
                             self.log_info(f"accept succeeded (attempt {attempt})")
@@ -336,9 +423,9 @@ class GugaDeliveryTask(BaseNavTask):
                         continue
 
                     self.log_info("finished scanning current list, preparing refresh")
-                    refresh_not_found_count = 0
 
                     if hasattr(self, 'last_refresh_box') and self.last_refresh_box:
+                        refresh_not_found_count = 0
                         last_click = getattr(self, 'last_refresh_time', 0)
                         elapsed = time.time() - last_click
 
@@ -799,7 +886,10 @@ class GugaDeliveryTask(BaseNavTask):
         # accept order
         pickup_route = None
         if order_type == ORDER_COMMISSION:
-            if not self._accept_commission_order():
+            result = self._accept_commission_order(area=area)
+            if result is None:
+                return None  # daily limit reached (3/3 commissions)
+            elif not result:
                 self.log_error("failed to accept commission order")
                 return False
         elif order_type == ORDER_LOCAL:
@@ -865,13 +955,13 @@ class GugaDeliveryTask(BaseNavTask):
         if area_filter is None:
             area_filter = self.config.get(CFG_AREA, AREA_ALL)
 
-        if order_type == ORDER_LOCAL:
-            # Determine which areas to process based on filter
-            if area_filter == AREA_ALL:
-                areas = [AREA_WULING, AREA_VALLEY]
-            else:
-                areas = [area_filter]
+        # Determine which areas to process based on filter
+        if area_filter == AREA_ALL:
+            areas = [AREA_WULING, AREA_VALLEY]
+        else:
+            areas = [area_filter]
 
+        if order_type == ORDER_LOCAL:
             # Loop through each area until no more orders found
             for area in areas:
                 while True:
@@ -886,7 +976,26 @@ class GugaDeliveryTask(BaseNavTask):
             self.ensure_main()
             return True
         else:
-            return self._run_single_delivery(ORDER_COMMISSION)
+            # Loop accepting commission orders until daily limit reached
+            # Note: For commissions, we cycle through areas unless a specific area is selected
+            current_area_idx = 0
+            while True:
+                area = areas[current_area_idx % len(areas)]
+                result = self._run_single_delivery(ORDER_COMMISSION, area=area)
+                if result is None:
+                    # Limit reached (3/3 commissions today)
+                    self.log_info("daily commission limit reached, stopping loop")
+                    return True
+                if not result:
+                    # Error during delivery, try next area
+                    current_area_idx += 1
+                    if current_area_idx >= len(areas):
+                        # Tried all areas, all failed
+                        return False
+                else:
+                    # Success, continue with same area or move to next
+                    # Keep trying same area as long as we keep getting commissions
+                    pass
 
     def run(self):
         return self.execute()
