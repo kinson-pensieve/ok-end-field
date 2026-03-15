@@ -64,6 +64,7 @@ market_dispatch_terminal_out
 market_good_icon
 market_minus_button
 market_plus_button
+max_icon
 minerals_icon
 monthly_card
 one_click_claim
