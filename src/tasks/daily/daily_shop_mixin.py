@@ -44,13 +44,25 @@ class DailyShopMixin(Common):
         self.back_shop()
         return 0
     def buy_once(self,sum_credit):
-        search_list=[fL.weapon_quota,fL.orobertyl,fL.discount_95_percent_icon]
         results = []
 
-        for search in search_list:
+        for search in (fL.weapon_quota, fL.orobertyl):
             r = self.find_feature(feature_name=search, box=self.credit_good_search_box)
             if r:
                 results.extend(r)
+
+        discount_list = [99, 95]
+
+        result = self.wait_ocr(
+            match=[re.compile(str(i)) for i in discount_list],
+            box=self.box_of_screen(
+                120 / self.width, 156 / self.height,
+                1815 / self.width, 211 / self.height
+            ),
+            time_out=2
+        )
+
+        results.extend(result or [])
         for result in results:
             self.click(result,after_sleep=2)
             cost=self.get_cost()

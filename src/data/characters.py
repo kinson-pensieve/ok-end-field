@@ -1,4 +1,14 @@
 characters = {
+    "luo_qian":{
+        "zh":"洛茜",
+        "en":"rossi",
+        "stars":6
+    },
+    "tang_tang":{
+        "zh":"汤汤",
+        "en":"tangtang",
+        "stars":6
+    },
     "guan_li_yuan": {
         "zh": "管理员",
         "en": "endministrator",

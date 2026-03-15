@@ -179,7 +179,7 @@ class LiaisonMixin(NavigationMixin):
         self.log_info("开始前往干员联络站")
 
         self.press_key("m", after_sleep=2)
-        self.log_info("打开地图界面 (按下 M)")
+        self.log_info("打开地图界面")
 
         if not self.start_tracking_and_align_target(
                 fL.operator_liaison_station,

@@ -64,6 +64,7 @@ market_dispatch_terminal_out
 market_good_icon
 market_minus_button
 market_plus_button
+max_icon
 minerals_icon
 monthly_card
 one_click_claim
@@ -95,6 +96,7 @@ skip_dialog_esc
 snowshine_contact
 source_ore
 switch_q
+tangtang_contact
 ticket_valley
 ticket_wuling
 top_left_tab
@@ -120,3 +122,4 @@ wuling_7_98w_dark
 wuling_7_98w_dark_2k
 wuling_7_98w_dark_4k
 xaihi_contact
+yvonne_contact

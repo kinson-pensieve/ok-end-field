@@ -14,7 +14,7 @@ class ZipLineMixin(NavigationMixin):
         """进入滑索后，根据配置对齐并滑行至送货点
 
         Args:
-            delivery_to: 送货目标名称（用于获取配置中的滑索序号）
+            delivery_to: 送货目标名称（用于获取配置中的滑索距离序列）
             need_scroll: 是否需要滚动
 
         Raises:
@@ -35,7 +35,7 @@ class ZipLineMixin(NavigationMixin):
         """按顺序对齐滑索并执行滑行
 
         Args:
-            zip_line_list: 滑索序号列表
+            zip_line_list: 滑索距离列表
             need_scroll: 是否需要滚动
         """
         for zip_line in zip_line_list:

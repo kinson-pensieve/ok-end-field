@@ -72,9 +72,11 @@ all potential risks.**
 
 ## ✨ Features
 
-<img width="3200" height="2053" src="https://github.com/user-attachments/assets/880024c6-37f9-403d-9c07-c9320ae41173" />
-<img width="3200" height="2053" src="https://github.com/user-attachments/assets/1423fce6-ba09-49cb-b409-90cbbb750ff3" />
-<img width="3200" height="2053" src="https://github.com/user-attachments/assets/67da3017-d6e4-4f46-af77-f406b3d35b92" />
+<img width="3200" height="2136"  src="./readme/1.jpg" />
+<img width="3200" height="2136"  src="./readme/2.jpg" />
+<img width="3200" height="2136"  src="./readme/3.jpg" />
+<img width="3200" height="2136"  src="./readme/4.jpg" />
+<img width="3200" height="2136"  src="./readme/5.jpg" />
 
 ## Feature Overview (by task type)
 

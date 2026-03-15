@@ -65,7 +65,6 @@ class AutoCombatLogic:
                             if current_points >= 1 and time_since_last_skill >= 1.0:
                                 break
                             task.click(key='left')
-                            task.click(key='middle')
                             if task.use_link_skill() or task.use_ult():
                                 continue
                             if current_points < 0 and (task.ocr_lv() or not task.in_team()):

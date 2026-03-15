@@ -1,9 +1,12 @@
 import re
 import time
 
+import win32gui
+
 from src.data.FeatureList import FeatureList as fL
 from src.data.world_map import stages_cost, higher_order_feature_dict
 from src.data.world_map_utils import get_stage_category
+from src.tasks.BaseEfTask import back_window
 from src.tasks.mixin.common import Common
 from src.tasks.mixin.map_mixin import MapMixin
 from src.tasks.mixin.navigation_mixin import NavigationMixin
@@ -175,8 +178,10 @@ class DailyBattleMixin(Common, MapMixin, ZipLineMixin,BattleMixin):
                 if time.time() - end_time > 30:
                     self.log_info("等待超时，进入协议空间超时")
                     return False
+            prev = win32gui.GetForegroundWindow()
             while not self.wait_ocr(match=re.compile("触碰"), time_out=1, box=self.box.bottom_right, log=True):
                 self.move_keys('w', duration=0.25)
+            back_window(prev)
             self.press_key("f")
         else:
             end_time = time.time()
@@ -187,6 +192,7 @@ class DailyBattleMixin(Common, MapMixin, ZipLineMixin,BattleMixin):
         return self.auto_battle(start_sleep=start_sleep, no_battle=no_battle)
 
     def to_end(self,challenge=False):
+        prev = win32gui.GetForegroundWindow()
         if challenge:
             end_feature_name=fL.gather_icon_out_map2
             use_yolo=False
@@ -230,6 +236,7 @@ class DailyBattleMixin(Common, MapMixin, ZipLineMixin,BattleMixin):
                 break
             else:
                 self.move_keys('w', duration=0.25)
+        back_window(prev)
         return True
 
     def get_claim(self, ticket_number, sum_ticket_number):
@@ -266,6 +273,7 @@ class DailyBattleMixin(Common, MapMixin, ZipLineMixin,BattleMixin):
                     match=re.compile("获得奖励"),
                     box=self.box_of_screen(530 / 1920, 330 / 1080, 1400 / 1920, 570 / 1080),
                     time_out=2,
+                    after_sleep=1,
                     log=True
             ):
                 need_ticket_number = ticket_number - 40  # 减耗票逻辑
@@ -280,6 +288,7 @@ class DailyBattleMixin(Common, MapMixin, ZipLineMixin,BattleMixin):
             return 0  # 理智不足，不能继续
 
         # 点击“领取”，失败则返回0
+        self.next_frame()
         if not self.wait_click_ocr(match=re.compile("领取"), box=self.box.bottom_right, time_out=2, log=True):
             self.log_info("领取失败")
             return 0

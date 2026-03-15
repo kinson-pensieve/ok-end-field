@@ -2,8 +2,10 @@ import random
 import re
 import time
 
+import win32gui
+
 from src.interaction.Mouse import active_and_send_mouse_delta
-from src.tasks.BaseEfTask import BaseEfTask
+from src.tasks.BaseEfTask import BaseEfTask, back_window
 
 TOLERANCE = 50
 
@@ -51,7 +53,7 @@ class NavigationMixin(BaseEfTask):
         start_time = time.time()
         short_distance_flag = False
         fail_count = 0
-
+        prev = win32gui.GetForegroundWindow()
         while not self.wait_ocr(
                 match=target_ocr_pattern,
                 box=self.box.bottom_right,
@@ -59,11 +61,13 @@ class NavigationMixin(BaseEfTask):
         ):
             if time.time() - start_time > time_out:
                 self.log_info("导航超时")
+                back_window(prev)
                 return False
 
             if found_special_callback:
                 special_result = found_special_callback()
                 if special_result is not None:
+                    back_window(prev)
                     return special_result
 
             if pre_loop_callback:
@@ -92,7 +96,7 @@ class NavigationMixin(BaseEfTask):
                         ocr=False,
                     )
 
-                    self.move_keys("w", duration=1)
+                    self.move_keys("w", duration=0.75)
                 else:
                     fail_count += 1
                     self.log_info(f"未找到导航路径，连续失败次数: {fail_count}")
@@ -101,12 +105,12 @@ class NavigationMixin(BaseEfTask):
                         self.log_info("切换短距离移动")
                         short_distance_flag = True
 
-                    self.move_keys("w", duration=0.5)
+                    self.move_keys("w", duration=0.25)
             else:
-                self.move_keys("w", duration=0.5)
+                self.move_keys("w", duration=0.25)
 
             self.sleep(0.5)
-
+        back_window(prev)
         return True
 
     def align_ocr_or_find_target_to_center(
@@ -173,6 +177,8 @@ class NavigationMixin(BaseEfTask):
         scroll_bool = False
         sum_dx = 0
         sum_dy = 0
+        prev = win32gui.GetForegroundWindow()
+        move_bool=False
         for i in range(max_time):
             start_action_time = time.time()
             if ocr:
@@ -255,8 +261,11 @@ class NavigationMixin(BaseEfTask):
 
                 # 如果目标在容忍范围内
                 if abs(dx) <= tolerance and abs(dy) <= tolerance:
+                    if move_bool:
+                        back_window(prev)
                     return True
                 else:
+                    move_bool=True
                     dx, dy = self.move_to_target_once(result, max_step=max_step, min_step=min_step,
                                                       slow_radius=slow_radius)
                     sum_dx += dx
@@ -264,6 +273,7 @@ class NavigationMixin(BaseEfTask):
 
             else:
                 # 每次 OCR 失败，直接随机移动
+                move_bool=True
                 max_offset = 60  # 最大随机偏移
                 if last_target:
                     decay = 0.9 ** last_target_fail_count
@@ -323,7 +333,7 @@ class NavigationMixin(BaseEfTask):
                 # cy = int(self.height * 0.5)
                 for _ in range(6):
                     # self.scroll(cx, cy, 8)
-                    self.scroll(0.5, 0.5, 80)
+                    self.scroll_relative(0.5, 0.5, 80)
                     self.sleep(1)
         if raise_if_fail:
             raise Exception("对中失败")

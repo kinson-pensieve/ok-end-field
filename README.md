@@ -65,11 +65,11 @@ An image-recognition-based automation tool for End Field, with background mode s
 
 ## ✨ 主要功能
 
-<img width="3200" height="2053"  src="https://github.com/user-attachments/assets/3ea068e8-929d-43b8-84bf-5c22b6da5f0b" />
-<img width="3200" height="2053"  src="https://github.com/user-attachments/assets/865c1624-caff-4fba-a7ef-ae661f0b7f03" />
-<img width="3200" height="2053"  src="https://github.com/user-attachments/assets/42d004a7-2248-4b46-a757-137e28d80ceb" />
-<img width="3200" height="2053"  src="https://github.com/user-attachments/assets/407b82fd-7415-4261-b584-5a41d557eb71" />
-<img width="3200" height="2053"  src="https://github.com/user-attachments/assets/b31a76f8-f25a-4b7e-8b3f-96ac2dbe4b17" />
+<img width="3200" height="2136"  src="./readme/1.jpg" />
+<img width="3200" height="2136"  src="./readme/2.jpg" />
+<img width="3200" height="2136"  src="./readme/3.jpg" />
+<img width="3200" height="2136"  src="./readme/4.jpg" />
+<img width="3200" height="2136"  src="./readme/5.jpg" />
 
 ## 功能一览（模块化架构 & 任务类型）
 
