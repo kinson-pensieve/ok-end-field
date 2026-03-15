@@ -7,7 +7,9 @@ from functools import partial
 import pyautogui
 
 from src.interaction.Mouse import active_and_send_mouse_delta
-from src.tasks.BaseEfTask import BaseEfTask, TOLERANCE
+from src.tasks.BaseEfTask import BaseEfTask
+
+TOLERANCE = 50
 
 user32 = ctypes.windll.user32
 MOUSEEVENTF_MOVE = 0x0001
