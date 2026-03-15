@@ -341,9 +341,9 @@ class GugaDeliveryTask(BaseNavTask):
                         continue
 
                     self.log_info("finished scanning current list, preparing refresh")
-                    refresh_not_found_count = 0
 
                     if hasattr(self, 'last_refresh_box') and self.last_refresh_box:
+                        refresh_not_found_count = 0
                         last_click = getattr(self, 'last_refresh_time', 0)
                         elapsed = time.time() - last_click
 
