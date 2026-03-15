@@ -4,7 +4,6 @@ import time
 import random
 import win32gui
 import win32api
-from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
 
@@ -19,6 +18,8 @@ from src.navigation.RouteStore import RouteStore
 
 TASK_KEYWORD = "送货任务"
 
+# Removed: @dataclass DeliveryRow (no longer used with TakeDeliveryTask approach)
+
 CFG_ORDER_TYPE = "接单方式"
 ORDER_COMMISSION = "运送委托"
 ORDER_LOCAL = "本地仓储"
@@ -27,13 +28,6 @@ CFG_AREA = "送货区域"
 AREA_ALL = "全部"
 AREA_WULING = "武陵"
 AREA_VALLEY = "四号谷地"
-
-
-@dataclass
-class DeliveryRow:
-    """Commission row - contains OCR elements and bounding box"""
-    elems: List[Box]
-    box: Tuple[float, float, float, float]
 
 
 class GugaDeliveryTask(BaseNavTask):
@@ -106,166 +100,100 @@ class GugaDeliveryTask(BaseNavTask):
             self.log_error(f"failed to load recycling_stations.json: {e}")
             return []
 
-    # ── commission acceptance (from DeliveryTask) ──
+    # ── commission acceptance (TakeDeliveryTask approach) ──
 
-    def _merge_left_right_groups(self) -> List[DeliveryRow]:
-        """Merge OCR results from left/right/mid areas into commission rows"""
+    def _process_ocr_results(self, full_texts: list, filter_min: float, reward_pattern, filter_max: float = 100.0) -> tuple:
+        """Process OCR results - extract rewards, accept buttons, and refresh button.
 
-        def split_items_by_marker(items: list, marker: str):
-            groups = []
-            current = []
-            for item in items:
-                name = getattr(item, "name", "").strip()
-                if not name:
-                    continue
-                current.append(item)
-                if marker in name:
-                    groups.append(current)
-                    current = []
-            if current:
-                groups.append(current)
-            return groups
+        Args:
+            full_texts: list of OCRItem from OCR
+            filter_min: minimum reward threshold
+            reward_pattern: compiled regex for matching reward amounts
+            filter_max: maximum reward threshold (default 100.0)
 
-        screen_scale_y1_y2 = {
-            1.5: (254 / 1280, 1134 / 1280),
-            1.0: (0.1271, 0.8561 + (0.8561 - 0.1271) / 11),
-            9 / 16: (0.075, 0.7916),
-            16 / 9: (290 / 1080, 926 / 1080),
-        }
-        screen_scale_desc = {
-            1.5: "3:2（如 3000x2000）",
-            1.0: "1:1（方屏/接近方屏窗口）",
-            9 / 16: "9:16（竖屏）",
-            16 / 9: "16:9（如 1920x1080、2560x1440）",
-        }
-        x_ranges = [
-            (0.4776, 0.5505),
-            (0.8438, 0.9167),
-            (0.3141, 0.3641),
-        ]
-        screen_scale_areas = {
-            ratio: [[x1, y1, x2, y2] for (x1, x2) in x_ranges]
-            for ratio, (y1, y2) in screen_scale_y1_y2.items()
-        }
-        ratio = self.width / self.height
-        area = screen_scale_areas.get(ratio)
-        if area is None:
-            supported = "、".join(
-                f"{k:.4f} -> {v}" for k, v in screen_scale_desc.items()
-            )
-            raise ValueError(
-                f"不支持的屏幕比例: {ratio:.6f}（当前分辨率: {self.width}x{self.height}）。"
-                f"支持的比例有：{supported}。请调整游戏窗口比例"
-            )
+        Returns:
+            tuple: (rewards list, accept_btns list, refresh_btn)
+        """
+        rewards = []
+        accept_btns = []
+        refresh_btn = None
 
-        left_box = self.box_of_screen(area[0][0], area[0][1], area[0][2], area[0][3])
-        right_box = self.box_of_screen(area[1][0], area[1][1], area[1][2], area[1][3])
-        mid_box = self.box_of_screen(area[2][0], area[2][1], area[2][2], area[2][3])
-
-        areas = [
-            ("left", left_box, 10),
-            ("right", right_box, 10),
-            ("mid", mid_box, 5),
-        ]
-        expected_ratio = [2, 2, 1]
-        total_ratio = sum(expected_ratio)
-
-        results = {name: [] for name, _, _ in areas}
-        start_time = time.time()
-
-        while True:
-            self.next_frame()
-            for name, box, _ in areas:
-                results[name] = self.ocr(
-                    match=re.compile(r"[\u4e00-\u9fff]+"),
-                    box=box, log=True, threshold=0.8,
-                )
-            counts = [len(results[name]) for name, _, _ in areas]
-
-            if time.time() - start_time > 2:
-                break
-
-            min_ok = all(c >= min_count for c, (_, _, min_count) in zip(counts, areas))
-            total_count = sum(counts)
-            if total_count % total_ratio != 0:
-                ratio_ok = False
+        for t in full_texts:
+            name = t.name.strip()
+            if ("刷新" in name or "秒后可刷新" in name) and t.y > self.height * 0.8:
+                refresh_btn = t
+            elif "接取运送委托" in name:
+                accept_btns.append(t)
             else:
-                unit = total_count // total_ratio
-                ratio_ok = all(c == r * unit for c, r in zip(counts, expected_ratio))
+                match = reward_pattern.search(name)
+                if match:
+                    try:
+                        val = float(match.group(1))
+                        if val >= filter_min and val <= filter_max:
+                            rewards.append((t, val))
+                        elif val > filter_max:
+                            self.log_debug(f"reward amount too large ({val}), filtered")
+                    except:
+                        pass
 
-            if min_ok and ratio_ok:
-                break
-            else:
-                self.sleep(0.1)
+        return rewards, accept_btns, refresh_btn
 
-        left_items = [i for i in results["left"] if getattr(i, "name", "").strip()]
-        right_items = [i for i in results["right"] if getattr(i, "name", "").strip()]
-        mid_items = [i for i in results["mid"] if getattr(i, "name", "").strip()]
+    def _detect_ticket_type_with_ceiling(self, reward_obj, ticket_types: list, y_ceiling: float):
+        """Detect ticket type by searching for icon above reward text, with ceiling constraint.
 
-        left_groups = [
-            g for g in split_items_by_marker(left_items, "查看位置") if len(g) >= 2
-        ]
-        right_groups = [
-            g for g in split_items_by_marker(right_items, "接取运送委托") if len(g) >= 2
-        ]
-        available_left = left_groups.copy()
-        available_mid = mid_items.copy()
+        Args:
+            reward_obj: OCRItem with the reward amount
+            ticket_types: list of feature names to search for
+            y_ceiling: Y coordinate ceiling to prevent overlapping with previous row
 
-        rows = []
-        for rg in right_groups:
-            if rg[0].y < rg[1].y:
-                rg_min_y = rg[0].y
-                rg_max_y = rg[1].y + rg[1].height
-            else:
-                rg_min_y = rg[1].y
-                rg_max_y = rg[0].y + rg[0].height
+        Returns:
+            OCRItem or None: detected ticket feature object
+        """
+        search_hw_ratio = 3.6
+        search_h_ratio = 2.4
+        min_box_size = 110
 
-            matched_left = None
-            matched_mid = None
+        search_width = max(reward_obj.height * search_hw_ratio, min_box_size)
+        search_height = max(reward_obj.height * search_h_ratio, min_box_size)
 
-            for lg in available_left:
-                ys = [e.y for e in lg]
-                if min(ys) >= rg_min_y and max(ys) <= rg_max_y:
-                    matched_left = lg
-                    break
+        x_offset_val = (reward_obj.width / 2) - (search_width / 2)
+        target_y = reward_obj.y - search_height
 
-            for m in available_mid:
-                if rg_min_y <= m.y <= rg_max_y:
-                    matched_mid = m
-                    break
+        # ceiling constraint: prevent searching into previous row
+        if target_y < y_ceiling:
+            search_height = reward_obj.y - y_ceiling
+            target_y = y_ceiling
 
-            if matched_left:
-                available_left.remove(matched_left)
-            if matched_mid:
-                available_mid.remove(matched_mid)
+        target_real_height = search_height + reward_obj.height * 0.5
+        y_offset_val = target_y - reward_obj.y
 
-            elems = []
-            if matched_left:
-                elems += matched_left
-            if matched_mid:
-                elems += [matched_mid]
-            elems += rg
+        icon_search_box = reward_obj.copy(
+            x_offset=x_offset_val,
+            y_offset=y_offset_val,
+            width_offset=search_width - reward_obj.width,
+            height_offset=target_real_height - reward_obj.height
+        )
 
-            if len(elems) >= 5:
-                min_x = min(e.x for e in [elems[0], elems[-1]])
-                max_x = max(e.x for e in [elems[0], elems[-1]])
-                min_y = min(e.y for e in [elems[-2], elems[-1]])
-                max_y = max(e.y + e.height for e in [elems[-2], elems[-1]])
-                rows.append(DeliveryRow(elems=elems, box=(min_x, min_y, max_x, max_y)))
+        # boundary checks
+        if icon_search_box.y < 0:
+            icon_search_box.height += icon_search_box.y
+            icon_search_box.y = 0
+        if icon_search_box.x < 0:
+            icon_search_box.width += icon_search_box.x
+            icon_search_box.x = 0
 
-        return rows
+        try:
+            found_ticket = self.find_feature(ticket_types, box=icon_search_box)
+            if found_ticket:
+                return found_ticket[0] if isinstance(found_ticket, list) else found_ticket
+        except Exception as e:
+            self.log_debug(f"icon search box too small (possibly clipped), skipping: {e}")
+            return None
 
-    def _detect_ticket_type(self, row: DeliveryRow) -> str | None:
-        """Detect ticket type from a commission row"""
-        first_name = row.elems[0].name
-        if any(k in first_name for k in self.wuling_location):
-            return "ticket_wuling"
-        if any(k in first_name for k in self.valley_location):
-            return "ticket_valley"
         return None
 
     def _accept_commission_order(self):
-        """Open commission panel, filter for wuling 7.31w orders, and accept one
+        """Open commission panel and accept a matching commission using TakeDeliveryTask approach.
 
         Returns:
             bool: True if order accepted successfully
@@ -283,64 +211,202 @@ class GugaDeliveryTask(BaseNavTask):
             self.sleep(0.2)
         self.wait_ui_stable(refresh_interval=1)
 
+        # check if first row has "查看任务" button
+        self.log_info("checking if first row has '查看任务'...")
+        check_task_box = self.box_of_screen(0.79, 0.29, 0.97, 0.34)
+        check_task_results = self.ocr(match="查看任务", box=check_task_box, raise_if_not_found=False)
+        if check_task_results:
+            self.log_info("first row has '查看任务' - clicking to open task panel")
+            self.click(check_task_results[0], after_sleep=2)
+
+            # click "停止追踪" to close task tracking
+            if not self.wait_click_ocr(match="停止追踪", box="bottom_right", time_out=5, after_sleep=1):
+                self.log_warning("failed to find '停止追踪' button, skipping")
+            else:
+                # click "开始追踪" to return to main world
+                if not self.wait_click_ocr(match="开始追踪", box="bottom_right", time_out=5, after_sleep=2):
+                    self.log_warning("failed to find '开始追踪' button, may not be in main world")
+
+            self.log_info("returned to main world via task panel")
+            self.ensure_main(time_out=10)
+            return True
+
+        reward_regex = r"(\d+\.?\d*)万"
+        reward_pattern = re.compile(reward_regex, re.I)
+
+        # only accept wuling commissions in range [7.9, 7.99]万
+        ticket_types = ["ticket_wuling"]
+        filter_min = 7.9
+        filter_max = 7.99
+
+        scroll_step = 0
+        scroll_direction = -1
+        refresh_not_found_count = 0
+
         while True:
-            rows = self._merge_left_right_groups()
-            for row in rows:
-                if not row:
-                    continue
-                ticket_type = self._detect_ticket_type(row)
-                if ticket_type != "ticket_wuling":
-                    continue
-                if "易损" not in row.elems[2].name or "不易损" in row.elems[2].name:
-                    continue
+            if not self.enabled:
+                break
 
-                x, y, to_x, to_y = row.box
-                box = self.box_of_screen(
-                    x / self.width, y / self.height,
-                    to_x / self.width, to_y / self.height,
+            try:
+                full_texts = self.ocr(box=self.box_of_screen(0.05, 0.15, 0.95, 0.95))
+                rewards, accept_btns, refresh_btn = self._process_ocr_results(
+                    full_texts, filter_min, reward_pattern, filter_max
                 )
-                if self.width >= 3800:
-                    feature_list = [fL.wuling_7_31w_4k, fL.wuling_7_31w_dark_4k]
-                elif self.width >= 2500:
-                    feature_list = [fL.wuling_7_31w_2k, fL.wuling_7_31w_dark_2k]
-                else:
-                    feature_list = [fL.wuling_7_31w, fL.wuling_7_31w_dark]
 
-                result = None
-                for feature_name in feature_list:
-                    result = self.find_feature(
-                        feature_name=feature_name, box=box, threshold=0.98,
+                if refresh_btn:
+                    refresh_not_found_count = 0
+
+                # sort rewards by Y coordinate (top to bottom)
+                rewards.sort(key=lambda x: x[0].y)
+
+                target_btn = None
+                matched_msg = ""
+
+                # initialize ceiling for first row
+                current_ceiling = self.height * 0.15
+
+                # iterate through rewards in visual order
+                for reward_obj, val in rewards:
+                    safe_ceiling = current_ceiling + 5
+
+                    # match accept button by Y coordinate proximity
+                    r_cy = reward_obj.y + reward_obj.height / 2
+                    my_btn = None
+                    for btn in accept_btns:
+                        if abs(r_cy - (btn.y + btn.height / 2)) < btn.height * 0.8:
+                            my_btn = btn
+                            break
+
+                    # update ceiling for next row
+                    current_ceiling = reward_obj.y + reward_obj.height
+
+                    if not my_btn:
+                        continue
+
+                    # detect ticket type with ceiling constraint
+                    ticket_result = self._detect_ticket_type_with_ceiling(
+                        reward_obj, ticket_types, safe_ceiling
                     )
-                    if result:
-                        break
-                if result:
-                    self.click(row.elems[-1], after_sleep=2, down_time=0.1, move_back=True)
-                    self.log_info("attempting to accept commission")
-                    self.next_frame()
-                    if not self.wait_ocr(match="接取运送委托", box=self.box.bottom_right, time_out=1):
-                        self.log_info("commission accepted successfully")
-                        # Wait for "点击屏幕继续" prompt and click to continue
-                        if self.wait_ocr(match="点击屏幕继续", box="bottom", time_out=10):
-                            self.click_relative(0.5, 0.5, after_sleep=2)
-                            self.log_info("clicked to continue after accepting commission")
-                        return True
-                    else:
-                        self.log_info("accept failed (possibly taken), continuing search")
 
-            self.log_info("no matching commission found, refreshing")
-            for i in range(2):
-                if last_refresh_box := self.wait_ocr(match="刷新", box=self.box.bottom_right):
-                    now = time.time()
-                    wait = max(0.0, 5.4 - (now - self._last_refresh_ts))
-                    if wait > 0:
-                        self.sleep(wait)
-                    self.click(last_refresh_box, move_back=True)
-                    self._last_refresh_ts = time.time()
-                    self.wait_ui_stable(refresh_interval=1)
-                    break
+                    if ticket_result and ticket_result.name == "ticket_wuling":
+                        target_btn = my_btn
+                        matched_msg = f"amount={val}万, type={ticket_result.name}"
+                        self.log_info(f"matched: {matched_msg}")
+                        break
+                    else:
+                        self.log_debug(f"amount matches ({val}万) but no ticket icon found")
+
+                # execute accept if matched
+                if target_btn:
+                    self.log_info(f"accepting commission: {matched_msg}")
+
+                    success = False
+                    for attempt in range(1, 4):
+                        self.log_info(f"accept attempt {attempt}/3")
+                        self.click(target_btn, after_sleep=0)
+                        self.sleep(1.0)
+
+                        delivery_text = self.wait_ocr(
+                            match="点击屏幕继续", time_out=1, raise_if_not_found=False
+                        )
+                        if delivery_text:
+                            self.log_info(f"accept succeeded (attempt {attempt})")
+                            success = True
+                            self.click_relative(0.5, 0.5, after_sleep=2)
+                            self.ensure_main(time_out=10)
+                            return True
+                        else:
+                            self.log_debug(f"attempt {attempt} not successful, retrying...")
+
+                    if not success:
+                        self.log_info("accept failed (possibly taken), waiting 4s before retry")
+                        self.sleep(4)
+
                 else:
-                    self.log_info("refresh button not found, retrying...")
-                    time.sleep(1.0)
+                    self.log_info("no matching commission found")
+
+                    # refresh logic (same as TakeDeliveryTask)
+                    if scroll_step < 1:
+                        scroll_step += 1
+                        direction_str = "down" if scroll_direction == -1 else "up"
+                        self.log_info(f"scroll step {scroll_step}/1 {direction_str}...")
+
+                        self.scroll(cx, cy, scroll_direction * 3)
+                        self.sleep(1.0)
+                        continue
+
+                    self.log_info("finished scanning current list, preparing refresh")
+                    refresh_not_found_count = 0
+
+                    if hasattr(self, 'last_refresh_box') and self.last_refresh_box:
+                        last_click = getattr(self, 'last_refresh_time', 0)
+                        elapsed = time.time() - last_click
+
+                        if elapsed < 5.6:
+                            self.log_debug(f"refresh CD ({elapsed:.1f}/5.6s), waiting...")
+                            self.sleep(5.6 - elapsed)
+
+                        self.log_info(f"executing refresh")
+                        self.click(self.last_refresh_box, move_back=True)
+                        self.last_refresh_time = time.time()
+
+                        scroll_direction *= -1
+                        scroll_step = 0
+
+                        self.sleep(1.0)
+                    else:
+                        refresh_not_found_count += 1
+                        self.log_info(
+                            f"refresh button not located yet ({refresh_not_found_count}/10)"
+                        )
+
+                        if refresh_not_found_count >= 10:
+                            self.log_info(
+                                "unable to locate refresh for 10 iterations, aborting"
+                            )
+                            return False
+
+                        self.log_info("waiting 1s before retry...")
+                        self.sleep(1.0)
+                        continue
+
+            except Exception as e:
+                self.log_error(f"commission accept error: {e}")
+                if "SetCursorPos" in str(e) or "拒绝访问" in str(e):
+                    self.log_warning(
+                        "permission error detected, try running as administrator"
+                    )
+                time.sleep(2)
+                continue
+
+        return False
+
+    def _is_fragile_order(self, reward_obj) -> bool:
+        """Check if the order is for fragile goods (易损 but not 不易损).
+
+        Args:
+            reward_obj: OCRItem with the reward amount
+
+        Returns:
+            bool: True if fragile goods order
+        """
+        # scan nearby area for fragile markers
+        search_box = reward_obj.copy(
+            y_offset=reward_obj.height,
+            height_offset=reward_obj.height * 2
+        )
+        try:
+            results = self.ocr(match=re.compile("易损|不易损"), box=search_box)
+            if not results:
+                return False
+
+            for result in results:
+                name = result.name.strip()
+                if "易损" in name and "不易损" not in name:
+                    return True
+            return False
+        except:
+            return False
 
     def _accept_local_order(self, area):
         """Accept a local storage order from the warehouse node.
