@@ -216,7 +216,7 @@ class GugaDeliveryTask(BaseNavTask):
         """
         try:
             self.log_info("checking daily commission count...")
-            box = self.box_of_screen(0.80, 0.90, 0.83, 0.95)
+            box = self.box_of_screen(0.80, 0.90, 0.83, 0.96)
 
             # Use OCR to extract the number in the red box
             ocr_results = self.ocr(box=box)
