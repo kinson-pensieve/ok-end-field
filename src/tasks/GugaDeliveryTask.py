@@ -682,6 +682,36 @@ class GugaDeliveryTask(BaseNavTask):
     # ── main flow ──
 
     def _run_single_delivery(self, order_type, area=None):
+        """Execute a single delivery cycle with retry logic.
+
+        Wraps _do_single_delivery with up to 3 retry attempts.
+
+        Args:
+            order_type: ORDER_COMMISSION or ORDER_LOCAL
+            area: area name, required for ORDER_LOCAL
+
+        Returns:
+            bool | None: True if completed, False if failed, None if no local orders
+        """
+        max_retries = 3
+        for attempt in range(1, max_retries + 1):
+            try:
+                result = self._do_single_delivery(order_type, area=area)
+                if result is not None:  # True or False, not None (no orders)
+                    return result
+                else:
+                    return None  # no orders available
+            except Exception as e:
+                self.log_error(f"delivery attempt {attempt}/{max_retries} failed: {e}")
+                if attempt < max_retries:
+                    self.log_info(f"retrying delivery (attempt {attempt + 1}/{max_retries})")
+                    self.ensure_main(time_out=5)
+                else:
+                    self.log_error(f"all {max_retries} delivery attempts failed")
+                    return False
+        return False
+
+    def _do_single_delivery(self, order_type, area=None):
         """Execute a single delivery cycle: accept -> navigate to storage -> detect destination -> navigate -> deliver
 
         For local orders, handles three cases:
