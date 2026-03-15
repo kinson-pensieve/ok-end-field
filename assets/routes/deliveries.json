@@ -1,0 +1,1301 @@
+[
+  {
+    "id": "bc891f71",
+    "name": "彦宁",
+    "type": "送货",
+    "area": "武陵城",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.24
+          },
+          {
+            "key": "w",
+            "duration": 2.02
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 109,
+            "angle_x": 1.52,
+            "angle_y": -2.7
+          },
+          {
+            "distance": 109,
+            "angle_x": 1.43,
+            "angle_y": 2.7
+          },
+          {
+            "distance": 73,
+            "angle_x": -0.34,
+            "angle_y": -2.28
+          },
+          {
+            "distance": 110,
+            "angle_x": -0.84,
+            "angle_y": -5.15
+          },
+          {
+            "distance": 85,
+            "angle_x": 10.89,
+            "angle_y": 3.63
+          },
+          {
+            "distance": 100,
+            "angle_x": -11.05,
+            "angle_y": -5.74
+          },
+          {
+            "distance": 108,
+            "angle_x": -3.38,
+            "angle_y": 7.17
+          },
+          {
+            "distance": 109,
+            "angle_x": 4.98,
+            "angle_y": -8.69
+          },
+          {
+            "distance": 110,
+            "angle_x": -2.19,
+            "angle_y": 2.62
+          },
+          {
+            "distance": 109,
+            "angle_x": 0.93,
+            "angle_y": -2.53
+          },
+          {
+            "distance": 109,
+            "angle_x": -0.25,
+            "angle_y": 4.89
+          },
+          {
+            "distance": 108,
+            "angle_x": -7.26,
+            "angle_y": -3.97
+          },
+          {
+            "distance": 89,
+            "angle_x": -1.77,
+            "angle_y": 2.45
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 0.46
+          },
+          {
+            "key": "a",
+            "duration": 1.06
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bc261f71",
+    "name": "交货",
+    "type": "送货",
+    "area": "武陵城",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.24
+          },
+          {
+            "key": "w",
+            "duration": 2.02
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 109,
+            "angle_x": 1.52,
+            "angle_y": -2.7
+          },
+          {
+            "distance": 109,
+            "angle_x": 1.43,
+            "angle_y": 2.7
+          },
+          {
+            "distance": 73,
+            "angle_x": -0.34,
+            "angle_y": -2.28
+          },
+          {
+            "distance": 110,
+            "angle_x": -0.84,
+            "angle_y": -5.15
+          },
+          {
+            "distance": 85,
+            "angle_x": 10.89,
+            "angle_y": 3.63
+          },
+          {
+            "distance": 100,
+            "angle_x": -11.05,
+            "angle_y": -5.74
+          },
+          {
+            "distance": 108,
+            "angle_x": -3.38,
+            "angle_y": 7.17
+          },
+          {
+            "distance": 109,
+            "angle_x": 4.98,
+            "angle_y": -8.69
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 0.6
+          },
+          {
+            "key": "d",
+            "duration": 0.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "6e15673d",
+    "name": "莫莉",
+    "type": "送货",
+    "area": "矿脉源区",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.58
+          },
+          {
+            "key": "a",
+            "duration": 1.33
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 76,
+            "angle_x": 0.51,
+            "angle_y": 1.52
+          },
+          {
+            "distance": 110,
+            "angle_x": 6.24,
+            "angle_y": -9.2
+          },
+          {
+            "distance": 66,
+            "angle_x": 0.42,
+            "angle_y": -5.82
+          },
+          {
+            "distance": 110,
+            "angle_x": -8.86,
+            "angle_y": -2.45
+          },
+          {
+            "distance": 1,
+            "angle_x": -15.19,
+            "angle_y": -17.97
+          },
+          {
+            "distance": 95,
+            "angle_x": 3.04,
+            "angle_y": -3.12
+          },
+          {
+            "distance": 66,
+            "angle_x": -11.73,
+            "angle_y": -8.27
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 7.01
+          },
+          {
+            "key": "a",
+            "duration": 0.46
+          },
+          {
+            "key": "s",
+            "duration": 0.34
+          },
+          {
+            "key": "a",
+            "duration": 1.81
+          },
+          {
+            "key": "s",
+            "duration": 1.72
+          },
+          {
+            "key": "s",
+            "duration": 0.18
+          },
+          {
+            "key": "s",
+            "duration": 0.9
+          },
+          {
+            "key": "a",
+            "duration": 0.58
+          },
+          {
+            "key": "s",
+            "duration": 0.53
+          },
+          {
+            "key": "a",
+            "duration": 0.57
+          },
+          {
+            "key": "s",
+            "duration": 0.23
+          },
+          {
+            "key": "w",
+            "duration": 0.18
+          },
+          {
+            "key": [
+              "a",
+              "w"
+            ],
+            "duration": 0.12
+          },
+          {
+            "key": "a",
+            "duration": 0.24
+          },
+          {
+            "key": [
+              "a",
+              "s"
+            ],
+            "duration": 0.07
+          },
+          {
+            "key": "s",
+            "duration": 0.59
+          },
+          {
+            "key": "d",
+            "duration": 0.09
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "098e234a",
+    "name": "里斯卡",
+    "type": "送货",
+    "area": "供能高地",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.7
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 92,
+            "angle_x": -0.51,
+            "angle_y": -6.92
+          },
+          {
+            "distance": 100,
+            "angle_x": 5.06,
+            "angle_y": -6.41
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 2.78
+          },
+          {
+            "key": "a",
+            "duration": 2.83
+          },
+          {
+            "key": "s",
+            "duration": 0.98
+          },
+          {
+            "key": "a",
+            "duration": 0.1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "168fcc90",
+    "name": "常沄",
+    "type": "送货",
+    "area": "武陵城",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.24
+          },
+          {
+            "key": "w",
+            "duration": 2.03
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 109,
+            "angle_x": -0.42,
+            "angle_y": 0.17
+          },
+          {
+            "distance": 109,
+            "angle_x": 2.03,
+            "angle_y": 4.64
+          },
+          {
+            "distance": 73,
+            "angle_x": -1.1,
+            "angle_y": -9.37
+          },
+          {
+            "distance": 110,
+            "angle_x": -2.36,
+            "angle_y": -7.51
+          },
+          {
+            "distance": 85,
+            "angle_x": 0.08,
+            "angle_y": 2.53
+          },
+          {
+            "distance": 100,
+            "angle_x": -15.44,
+            "angle_y": -8.1
+          },
+          {
+            "distance": 108,
+            "angle_x": -4.89,
+            "angle_y": 5.99
+          },
+          {
+            "distance": 50,
+            "angle_x": -3.71,
+            "angle_y": 1.77
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 3.87
+          },
+          {
+            "key": "a",
+            "duration": 1.35
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "56f88682",
+    "name": "总控中心",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.5
+          },
+          {
+            "key": "s",
+            "duration": 0.8
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 69,
+            "angle_x": -11.81,
+            "angle_y": -13.0
+          },
+          {
+            "distance": 72,
+            "angle_x": 1.1,
+            "angle_y": 3.04
+          },
+          {
+            "distance": 108,
+            "angle_x": -5.65,
+            "angle_y": -5.74
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.42
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "8443f5db",
+    "name": "样本中心",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.5
+          },
+          {
+            "key": "s",
+            "duration": 0.8
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 53,
+            "angle_x": -0.25,
+            "angle_y": 1.86
+          },
+          {
+            "distance": 100,
+            "angle_x": -6.5,
+            "angle_y": -8.94
+          },
+          {
+            "distance": 62,
+            "angle_x": 3.63,
+            "angle_y": -8.52
+          },
+          {
+            "distance": 36,
+            "angle_x": -5.06,
+            "angle_y": 3.04
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 0.16
+          },
+          {
+            "key": "s",
+            "duration": 0.22
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2b65109e",
+    "name": "法比安柯林斯",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.07
+          },
+          {
+            "key": "s",
+            "duration": 0.96
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 69,
+            "angle_x": -6.67,
+            "angle_y": -9.11
+          },
+          {
+            "distance": 47,
+            "angle_x": -6.67,
+            "angle_y": 7.68
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 2.43
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "a",
+            "duration": 0.39
+          },
+          {
+            "key": "s",
+            "duration": 0.63
+          },
+          {
+            "key": "d",
+            "duration": 0.18
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "4d3809f3",
+    "name": "基特",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.15
+          },
+          {
+            "key": "s",
+            "duration": 1.07
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 53,
+            "angle_x": -0.08,
+            "angle_y": -0.34
+          },
+          {
+            "distance": 100,
+            "angle_x": -4.22,
+            "angle_y": -5.57
+          },
+          {
+            "distance": 62,
+            "angle_x": 5.57,
+            "angle_y": -6.41
+          },
+          {
+            "distance": 36,
+            "angle_x": -4.22,
+            "angle_y": 4.98
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 3.34
+          },
+          {
+            "key": "w",
+            "duration": 2.62
+          },
+          {
+            "key": "a",
+            "duration": 2.62
+          },
+          {
+            "key": "w",
+            "duration": 1.78
+          },
+          {
+            "key": "a",
+            "duration": 5.18
+          },
+          {
+            "key": "s",
+            "duration": 1.05
+          },
+          {
+            "key": "a",
+            "duration": 5.15
+          },
+          {
+            "key": "s",
+            "duration": 1.67
+          },
+          {
+            "key": "a",
+            "duration": 1.17
+          },
+          {
+            "key": "s",
+            "duration": 1.5
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "037185e6",
+    "name": "英格",
+    "type": "送货",
+    "area": "源石研究园",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.0
+          },
+          {
+            "key": "s",
+            "duration": 1.0
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 53,
+            "angle_x": 0.84,
+            "angle_y": -0.84
+          },
+          {
+            "distance": 100,
+            "angle_x": -10.38,
+            "angle_y": -13.25
+          },
+          {
+            "distance": 89,
+            "angle_x": 1.27,
+            "angle_y": 4.13
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 3.0
+          },
+          {
+            "key": "w",
+            "duration": 1.93
+          },
+          {
+            "key": "d",
+            "duration": 0.5
+          },
+          {
+            "key": "w",
+            "duration": 0.5
+          },
+          {
+            "key": "d",
+            "duration": 0.5
+          },
+          {
+            "key": "w",
+            "duration": 1.2
+          },
+          {
+            "key": "d",
+            "duration": 0.1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "235fc03c",
+    "name": "库济米尼奇娜",
+    "type": "送货",
+    "area": "供能高地",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.47
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 92
+          },
+          {
+            "distance": 109,
+            "angle_x": 0.42,
+            "angle_y": -11.73
+          },
+          {
+            "distance": 69,
+            "angle_x": 0.0,
+            "angle_y": 5.91
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 1.19
+          },
+          {
+            "key": "w",
+            "duration": 3.71
+          },
+          {
+            "key": "d",
+            "duration": 1.6
+          },
+          {
+            "key": "w",
+            "duration": 0.66
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fd0f6092",
+    "name": "戈里昂",
+    "type": "送货",
+    "area": "供能高地",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.67
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 97,
+            "angle_x": -3.54,
+            "angle_y": -8.94
+          },
+          {
+            "distance": 72,
+            "angle_x": -5.65,
+            "angle_y": -17.97
+          },
+          {
+            "distance": 96,
+            "angle_x": 5.23,
+            "angle_y": -4.81
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 2.0
+          },
+          {
+            "key": "a",
+            "duration": 4.5
+          },
+          {
+            "key": "w",
+            "duration": 4.0
+          },
+          {
+            "key": "a",
+            "duration": 3.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ad660809",
+    "name": "联盟停车场",
+    "type": "送货",
+    "area": "供能高地",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.58
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 92,
+            "angle_x": -0.51,
+            "angle_y": -0.84
+          },
+          {
+            "distance": 110,
+            "angle_x": -2.7,
+            "angle_y": -8.52
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "angle_x": 120.0,
+            "angle_y": 0.0,
+            "key": "w",
+            "duration": 4.4
+          },
+          {
+            "key": "d",
+            "duration": 0.7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5a872d7a",
+    "name": "疏散区",
+    "type": "送货",
+    "area": "供能高地",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.58
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 97,
+            "angle_x": -0.34,
+            "angle_y": 2.78
+          },
+          {
+            "distance": 72,
+            "angle_x": -1.27,
+            "angle_y": -12.91
+          },
+          {
+            "distance": 96,
+            "angle_x": -2.45,
+            "angle_y": 3.12
+          },
+          {
+            "distance": 55,
+            "angle_x": -4.73,
+            "angle_y": 4.3
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 0.79
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "73b40f84",
+    "name": "齐纶",
+    "type": "送货",
+    "area": "武陵城",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.46
+          },
+          {
+            "key": "w",
+            "duration": 2.07
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 89,
+            "angle_x": 2.78,
+            "angle_y": -2.03
+          },
+          {
+            "distance": 109,
+            "angle_x": 0.93,
+            "angle_y": -4.89
+          },
+          {
+            "distance": 110,
+            "angle_x": -1.27,
+            "angle_y": -0.84
+          },
+          {
+            "distance": 102,
+            "angle_x": -15.53,
+            "angle_y": -6.08
+          },
+          {
+            "distance": 110,
+            "angle_x": 6.5,
+            "angle_y": -5.74
+          },
+          {
+            "distance": 56,
+            "angle_x": -1.86,
+            "angle_y": -12.91
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "w",
+            "duration": 1.64
+          },
+          {
+            "key": "a",
+            "duration": 1.24
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c37b25a0",
+    "name": "陆言",
+    "type": "送货",
+    "area": "矿脉源区",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.9
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 76
+          },
+          {
+            "distance": 110,
+            "angle_x": 3.21,
+            "angle_y": -7.93
+          },
+          {
+            "distance": 66,
+            "angle_x": 3.21,
+            "angle_y": -10.04
+          },
+          {
+            "distance": 110,
+            "angle_x": -8.86,
+            "angle_y": 2.03
+          },
+          {
+            "distance": 99,
+            "angle_x": -10.38,
+            "angle_y": -6.67
+          },
+          {
+            "distance": 95,
+            "angle_x": -1.69,
+            "angle_y": -0.59
+          },
+          {
+            "distance": 86,
+            "angle_x": -19.24,
+            "angle_y": -14.18
+          },
+          {
+            "distance": 75,
+            "angle_x": -16.29,
+            "angle_y": 4.47
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "s",
+            "duration": 2.5
+          },
+          {
+            "key": "a",
+            "duration": 4.5
+          },
+          {
+            "key": "s",
+            "duration": 0.1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b76eb879",
+    "name": "临时堆放区北",
+    "type": "送货",
+    "area": "矿脉源区",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.8
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 76,
+            "angle_x": -0.68,
+            "angle_y": 1.18
+          },
+          {
+            "distance": 110,
+            "angle_x": 2.28,
+            "angle_y": -4.64
+          },
+          {
+            "distance": 66,
+            "angle_x": 2.11,
+            "angle_y": -9.87
+          },
+          {
+            "distance": 110,
+            "angle_x": 0.34,
+            "angle_y": -3.88
+          },
+          {
+            "distance": 99,
+            "angle_x": -4.81,
+            "angle_y": -8.35
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 1.5
+          },
+          {
+            "key": "s",
+            "duration": 0.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bb1f26ab",
+    "name": "临时堆放区东",
+    "type": "送货",
+    "area": "矿脉源区",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 1.8
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 76,
+            "angle_x": 22.78,
+            "angle_y": 17.38
+          },
+          {
+            "distance": 110,
+            "angle_x": 4.13,
+            "angle_y": -8.1
+          },
+          {
+            "distance": 66,
+            "angle_x": -0.68,
+            "angle_y": -15.95
+          },
+          {
+            "distance": 110,
+            "angle_x": -9.79,
+            "angle_y": 1.35
+          },
+          {
+            "distance": 109,
+            "angle_x": -6.84,
+            "angle_y": -4.22
+          },
+          {
+            "distance": 78,
+            "angle_x": -7.26,
+            "angle_y": -2.95
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "d",
+            "duration": 0.23
+          },
+          {
+            "key": "d",
+            "duration": 0.11
+          },
+          {
+            "key": "s",
+            "duration": 0.06
+          }
+        ]
+      }
+    ]
+  }
+]
