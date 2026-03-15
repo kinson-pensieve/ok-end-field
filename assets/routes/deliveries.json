@@ -10,12 +10,8 @@
         "type": "walk",
         "actions": [
           {
-            "key": "a",
-            "duration": 0.24
-          },
-          {
             "key": "w",
-            "duration": 2.02
+            "duration": 2.85
           }
         ]
       },
@@ -106,7 +102,7 @@
   },
   {
     "id": "bc261f71",
-    "name": "交货",
+    "name": "天师府学院",
     "type": "送货",
     "area": "武陵城",
     "teleport": "",
@@ -115,12 +111,8 @@
         "type": "walk",
         "actions": [
           {
-            "key": "a",
-            "duration": 0.24
-          },
-          {
             "key": "w",
-            "duration": 2.02
+            "duration": 2.85
           }
         ]
       },
@@ -390,12 +382,8 @@
         "type": "walk",
         "actions": [
           {
-            "key": "a",
-            "duration": 0.24
-          },
-          {
             "key": "w",
-            "duration": 2.03
+            "duration": 2.85
           }
         ]
       },
@@ -1030,12 +1018,8 @@
         "type": "walk",
         "actions": [
           {
-            "key": "a",
-            "duration": 0.46
-          },
-          {
             "key": "w",
-            "duration": 2.07
+            "duration": 2.85
           }
         ]
       },

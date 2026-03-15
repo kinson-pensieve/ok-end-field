@@ -141,7 +141,15 @@
         "actions": [
           {
             "key": "s",
-            "duration": 2.7
+            "duration": 1.5
+          },
+          {
+            "key": "a",
+            "duration": 0.5
+          },
+          {
+            "key": "s",
+            "duration": 1.5
           }
         ]
       }
