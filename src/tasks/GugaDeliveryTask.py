@@ -319,6 +319,10 @@ class GugaDeliveryTask(BaseNavTask):
                     self.next_frame()
                     if not self.wait_ocr(match="接取运送委托", box=self.box.bottom_right, time_out=1):
                         self.log_info("commission accepted successfully")
+                        # Wait for "点击屏幕继续" prompt and click to continue
+                        if self.wait_ocr(match="点击屏幕继续", box="bottom", time_out=10):
+                            self.click_relative(0.5, 0.5, after_sleep=2)
+                            self.log_info("clicked to continue after accepting commission")
                         return True
                     else:
                         self.log_info("accept failed (possibly taken), continuing search")
