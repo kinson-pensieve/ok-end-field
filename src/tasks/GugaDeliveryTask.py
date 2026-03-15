@@ -570,6 +570,9 @@ class GugaDeliveryTask(BaseNavTask):
             station_name = station.get("name")
             self.log_info(f"confirming recycling station: {station_name}")
 
+            # Ensure we're back in main screen before opening map
+            self.ensure_main(time_out=2)
+
             # Open map for this station
             self.press_key("m", after_sleep=2)
             self.sleep(1)
