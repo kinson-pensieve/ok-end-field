@@ -386,28 +386,25 @@ class GugaDeliveryTask(BaseNavTask):
                 # execute accept if matched
                 if target_btn:
                     self.log_info(f"accepting commission: {matched_msg}")
+                    self.click(target_btn, after_sleep=1)
 
-                    success = False
-                    for attempt in range(1, 4):
-                        self.log_info(f"accept attempt {attempt}/3")
-                        self.click(target_btn, after_sleep=0)
-                        self.sleep(1.0)
+                    # Wait for "点击屏幕继续" with longer timeout (single click, no retry)
+                    delivery_text = self.wait_ocr(
+                        match="点击屏幕继续", time_out=5
+                    )
+                    if delivery_text:
+                        self.log_info("accept succeeded, clicking to continue")
+                        self.click_relative(0.5, 0.5, after_sleep=2)
+                        self.ensure_main(time_out=10)
+                        return True
 
-                        delivery_text = self.wait_ocr(
-                            match="点击屏幕继续", time_out=1
-                        )
-                        if delivery_text:
-                            self.log_info(f"accept succeeded (attempt {attempt})")
-                            success = True
-                            self.click_relative(0.5, 0.5, after_sleep=2)
-                            self.ensure_main(time_out=10)
-                            return True
-                        else:
-                            self.log_debug(f"attempt {attempt} not successful, retrying...")
+                    # Check if already back to main world (clicked through by game)
+                    if self.is_main():
+                        self.log_info("accept succeeded (already in main world)")
+                        return True
 
-                    if not success:
-                        self.log_info("accept failed (possibly taken), waiting 4s before retry")
-                        self.sleep(4)
+                    self.log_info("accept failed (possibly taken), waiting 4s before retry")
+                    self.sleep(4)
 
                 else:
                     self.log_info("no matching commission found")
