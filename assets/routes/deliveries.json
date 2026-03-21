@@ -559,7 +559,7 @@
   },
   {
     "id": "2b65109e",
-    "name": "法比安柯林斯",
+    "name": "法比安·柯林斯",
     "type": "送货",
     "area": "源石研究园",
     "teleport": "",
@@ -1276,6 +1276,108 @@
           {
             "key": "s",
             "duration": 0.06
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ea887ab0",
+    "name": "越医生",
+    "type": "送货",
+    "area": "矿脉源区",
+    "teleport": "",
+    "steps": [
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 0.79
+          },
+          {
+            "key": "a",
+            "duration": 0.68
+          },
+          {
+            "key": "a",
+            "duration": 0.39
+          }
+        ]
+      },
+      {
+        "type": "zipline",
+        "nodes": [
+          {
+            "distance": 76,
+            "angle_x": -1.35,
+            "angle_y": 1.94
+          },
+          {
+            "distance": 110,
+            "angle_x": 1.94,
+            "angle_y": -10.21
+          },
+          {
+            "distance": 66,
+            "angle_x": -3.29,
+            "angle_y": -4.56
+          },
+          {
+            "distance": 110,
+            "angle_x": -17.64,
+            "angle_y": -2.11
+          },
+          {
+            "distance": 99,
+            "angle_x": -11.56,
+            "angle_y": -25.23
+          },
+          {
+            "distance": 95,
+            "angle_x": 9.79,
+            "angle_y": -4.81
+          }
+        ]
+      },
+      {
+        "type": "walk",
+        "actions": [
+          {
+            "key": "a",
+            "duration": 2.29
+          },
+          {
+            "key": "w",
+            "duration": 3.69
+          },
+          {
+            "key": "a",
+            "duration": 0.75
+          },
+          {
+            "key": "w",
+            "duration": 4.31
+          },
+          {
+            "key": "d",
+            "duration": 1.74
+          },
+          {
+            "key": "w",
+            "duration": 0.9
+          },
+          {
+            "key": "d",
+            "duration": 3.9
+          },
+          {
+            "key": "w",
+            "duration": 1.29
+          },
+          {
+            "key": "d",
+            "duration": 2.0
           }
         ]
       }
