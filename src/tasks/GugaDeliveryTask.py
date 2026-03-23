@@ -294,13 +294,13 @@ class GugaDeliveryTask(BaseNavTask):
             self.log_info("first row has '查看任务' - clicking to open task panel")
             self.click(check_task_results[0], after_sleep=2)
 
-            # click "停止追踪" to close task tracking
+            # click "停止追踪" to close task tracking (may not exist if not tracked yet)
             if not self.wait_click_ocr(match="停止追踪", box="bottom_right", time_out=5, after_sleep=1):
-                self.log_warning("failed to find '停止追踪' button, skipping")
-            else:
-                # click "开始追踪" to return to main world
-                if not self.wait_click_ocr(match="开始追踪", box="bottom_right", time_out=5, after_sleep=2):
-                    self.log_warning("failed to find '开始追踪' button, may not be in main world")
+                self.log_info("no '停止追踪' found, task may not be tracked yet")
+
+            # click "开始追踪" to start tracking and return to main world
+            if not self.wait_click_ocr(match="开始追踪", box="bottom_right", time_out=5, after_sleep=2):
+                self.log_warning("failed to find '开始追踪' button, may not be in main world")
 
             self.log_info("returned to main world via task panel")
             self.ensure_main(time_out=10)
