@@ -194,30 +194,27 @@ class Zipliner:
             task.active_and_send_mouse_delta(move_px_x, move_px_y)
             task.sleep(0.15)
 
-            # 白色命中后检测是否已进入金色区域，未进入则跳过精调直接重搜
-            if not is_gold:
-                frame = task.next_frame()
-                white_result = task.ocr(
-                    frame=frame,
-                    frame_processor=task.make_hsv_isolator(hR.WHITE),
-                )
-                white_matched = [r for r in white_result if pattern.search(r.name)] if white_result else []
-                if white_matched:
-                    task.log_info("白色仍在，跳过精调继续搜索")
-                    continue
-                task.log_debug("白色消失，进入精调")
+            # 只有金色命中且偏移在阶段2搜索范围内才进入精调，否则回阶段1继续逼近
+            if not (is_gold and abs(px_dx) <= half_ratio * task.width and abs(px_dy) <= v_half * task.height):
+                continue
 
             # ── 阶段2: 小范围金色精调（带文字匹配）──
             small_fail = 0
-            while small_fail < 10:
+            small_total = 0
+            last_good_dx = None  # 最后一次成功检测的偏移
+            last_good_dy = None
+            while small_fail < 10 and small_total < 30:
                 if stop_event and stop_event.is_set():
                     return False
                 frame = task.next_frame()
                 result, is_gold = self._scan_target(frame, pattern, box=small_box, gold_only=True)
 
+                small_total += 1
                 if is_gold:
                     small_fail = 0  # 找到金色，重置连续失败计数
                     angle_x, angle_y, px_dx, px_dy = self._calc_offset(result)
+                    last_good_dx = px_dx
+                    last_good_dy = px_dy
                     task.log_debug(f"阶段2: 金色命中, "
                                    f"角度=({angle_x}°,{angle_y}°), 像素=({px_dx},{px_dy})")
                     if abs(px_dx) <= tolerance and abs(px_dy) <= tolerance:
@@ -237,12 +234,21 @@ class Zipliner:
                         task.active_and_send_mouse_delta(jitter, 0)
                     task.sleep(0.1)
 
+            # 阶段2退出后判断：最后偏移接近容差且丢失了数字 → 进阶段3，否则回阶段1
+            near_center = (last_good_dx is not None
+                           and abs(last_good_dx) <= tolerance * 3
+                           and abs(last_good_dy) <= tolerance * 3)
+            if not near_center:
+                task.log_info(f"阶段2退出: 目标不够近(last={last_good_dx},{last_good_dy})，回退阶段1")
+                continue
             # ── 阶段3: 纯金色位置确认（不匹配文字）──
             task.log_info("进入阶段3: 纯金色位置确认")
             phase3_fail = 0
-            while phase3_fail < 10:
+            phase3_total = 0
+            while phase3_fail < 10 and phase3_total < 30:
                 if stop_event and stop_event.is_set():
                     return False
+                phase3_total += 1
                 frame = task.next_frame()
                 gold_raw = task.ocr(
                     box=tiny_box, frame=frame,
@@ -255,8 +261,8 @@ class Zipliner:
                     if abs(raw_dx) <= tolerance and abs(raw_dy) <= tolerance:
                         task.log_info(f"对齐完成(阶段3): 像素=({raw_dx},{raw_dy}), 轮次={attempt + 1}")
                         return True
-                    adj_px_x = self._degrees_to_pixels(self._pixels_to_degrees(raw_dx) * 0.85)
-                    adj_px_y = self._degrees_to_pixels(self._pixels_to_degrees(raw_dy) * 0.85)
+                    adj_px_x = round(raw_dx * 0.85)
+                    adj_px_y = round(raw_dy * 0.85)
                     task.log_debug(f"阶段3微调: {raw_dx}px/{raw_dy}px ×0.85 → {adj_px_x}px/{adj_px_y}px")
                     task.active_and_send_mouse_delta(adj_px_x, adj_px_y)
                     task.sleep(0.1)
