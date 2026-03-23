@@ -375,7 +375,7 @@ class GugaDeliveryTask(BaseNavTask):
                         reward_obj, ticket_types, safe_ceiling
                     )
 
-                    if ticket_result and ticket_result.name == "ticket_wuling":
+                    if ticket_result and ticket_result.name in ticket_types:
                         target_btn = my_btn
                         matched_msg = f"amount={val}万, type={ticket_result.name}"
                         self.log_info(f"matched: {matched_msg}")
@@ -953,10 +953,18 @@ class GugaDeliveryTask(BaseNavTask):
             area_filter = self.config.get(CFG_AREA, AREA_ALL)
 
         # Determine which areas to process based on filter
-        if area_filter == AREA_ALL:
-            areas = [AREA_WULING, AREA_VALLEY]
+        if order_type == ORDER_COMMISSION:
+            # Commission: always use a single area, default to latest map (武陵)
+            if area_filter == AREA_ALL:
+                areas = [AREA_WULING]
+            else:
+                areas = [area_filter]
         else:
-            areas = [area_filter]
+            # Local: support all areas
+            if area_filter == AREA_ALL:
+                areas = [AREA_WULING, AREA_VALLEY]
+            else:
+                areas = [area_filter]
 
         if order_type == ORDER_LOCAL:
             # Loop through each area until no more orders found
